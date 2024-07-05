@@ -31,3 +31,18 @@ body {
     text-wrap: balance;
   }
 }
+
+.svg-container {
+  width: 100%;
+  height: auto;
+  max-width: 800px; /* 必要に応じて最大幅を調整 */
+  max-height: 400px; /* 必要に応じて最大高さを調整 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.svg-content svg {
+  width: 100%;
+  height: auto;
+}

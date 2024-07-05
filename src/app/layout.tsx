@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import RegisterButton from "@/components/list/RegisterButton";
+import PageBack from "@/components/fablic/PageBack";
+import TopMenuBtn from "@/components/TopMenuBtn";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,12 +14,29 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  pathname,
+}: {
+  children: React.ReactNode,
+  pathname: string,
+}) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="ja">
+      <body className={inter.className}>
+        <main className="min-h-screen bg-white">
+          <header className="fixed w-screen top-0 left-0 h-[10vh] bg-slate-900">
+            <div className="h-full flex justify-between items-center w-full">
+              <p className="text-xl pl-10 w-1/2">
+                システム名
+              </p>
+              <div className='w-full h-[5vh] flex justify-end'>
+                <TopMenuBtn/>
+              </div>
+            </div>
+          </header>
+          <div className="w-screen h-[10vh]"></div>
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
