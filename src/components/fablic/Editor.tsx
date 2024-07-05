@@ -89,7 +89,7 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
       // Function to constrain viewport within canvas boundaries
       const handleMouseDown = (opt: fabric.IEvent) => {
         const evt = opt.e as MouseEvent;
-        if (evt.altKey) {
+        if (evt.shiftKey) {
           canvas._objects.map((obj) => {
             obj.lockMovementX = true
             obj.lockMovementY = true

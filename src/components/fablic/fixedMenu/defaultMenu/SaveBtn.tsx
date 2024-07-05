@@ -37,7 +37,7 @@ const style = {
 const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, keep }: SaveBtnProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState(keep!.title ? keep!.title :"無題")
+  const [title, setTitle] = useState(keep?.title ? keep!.title :"無題")
 
   const handleOpen = () => {
     setOpen(true);
