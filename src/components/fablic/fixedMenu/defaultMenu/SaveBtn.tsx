@@ -2,7 +2,7 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { Box, Button, Modal, TextField } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
-
+import { v4 as uuidv4 } from 'uuid';
 
 interface SaveBtnProps {
   canvas: fabric.Canvas | null;
@@ -12,7 +12,7 @@ interface SaveBtnProps {
   setGridLines: React.Dispatch<React.SetStateAction<fabric.Line[]>>;
   drawGrid: (canvas: fabric.Canvas) => void;
   keep: {
-    id: number;
+    uuid: string;
     title: string
     fabric_object: fabric.Object | null; // fabric_objectがnullになる可能性も考慮
     width: number;
@@ -37,7 +37,7 @@ const style = {
 const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, keep }: SaveBtnProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState(keep?.title ? keep!.title :"無題")
+  const [title, setTitle] = useState(keep?.title ? keep!.title : "無題")
 
   const handleOpen = () => {
     setOpen(true);
@@ -57,6 +57,46 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
         canvas.remove(line)
       })
       setGridLines([])
+      let uuid;
+      if (keep) {
+        uuid = keep.uuid
+      } else {
+        uuid = uuidv4()
+      }
+
+      let pathArray: string[] = [];
+
+      canvas.getObjects('image').forEach(async (obj: any) => {
+        const img = obj as fabric.Image; // 型アサーションを使用して fabric.Image 型にキャストする
+        const src = img.getSrc();
+        if (src.startsWith('data:image')) {
+          const res = await fetch('/api/imageUpload', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ src: src, uuid: uuid }),
+          });
+          const jsonRes = await res.json();
+          console.log(jsonRes)
+          const path = jsonRes.fullPath
+          img.setSrc(path)
+          pathArray.push(path)
+          canvas.renderAll();
+        } else if (src.startsWith('http://') || src.startsWith('https://')) {
+          pathArray.push(src)
+        }
+
+      });
+      // const deleteImg = await fetch('api/deleteImage', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(pathArray),
+
+      // })
+
       const json = canvas.toJSON()
       const svg = canvas.toSVG();
 
@@ -65,7 +105,7 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
 
         if (keep) {
           const body = JSON.stringify({
-            id: keep.id,
+            uuid: uuid,
             title: title,
             json: json,
             width: keep.width,
@@ -82,6 +122,7 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
           });
         } else {
           const body = JSON.stringify({
+            uuid: uuid,
             json: json,
             width: width,
             height: height,

@@ -13,8 +13,8 @@ interface EditorProps {
   width: number;
   height: number;
   keep: {
-    id: number;
-    title:string;
+    uuid: string;
+    title: string;
     fabric_object: fabric.Object | null; // fabric_objectがnullになる可能性も考慮
     width: number;
     height: number;
@@ -205,14 +205,14 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
           <div ref={containerRef} className="size-fit border border-solid border-black">
             <canvas ref={canvasRef} width={width} height={height} />
           </div>
-            <BubbleMenu
-              canvas={canvas}
-              activeObj={activeObj}
-              saveState={saveState}
-              bubbleRef={bubbleRef}
-              selectObject={selectObject}
-              bubbleMenuPosition={bubbleMenuPosition}
-            />
+          <BubbleMenu
+            canvas={canvas}
+            activeObj={activeObj}
+            saveState={saveState}
+            bubbleRef={bubbleRef}
+            selectObject={selectObject}
+            bubbleMenuPosition={bubbleMenuPosition}
+          />
           <Menu
             canvas={canvas}
             undoStack={undoStack}

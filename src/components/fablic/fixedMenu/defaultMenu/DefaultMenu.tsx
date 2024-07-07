@@ -25,7 +25,7 @@ interface DefaultMenuProps {
   width: number;
   height: number;
   keep: {
-    id: number;
+    uuid: string;
     title: string
     fabric_object: fabric.Object | null; // fabric_objectがnullになる可能性も考慮
     width: number;
@@ -43,7 +43,7 @@ const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, 
       <ExportPdfBtn canvas={canvas} gridLines={gridLines} setGridLines={setGridLines} containerElm={containerElm} drawGrid={drawGrid} />
       <SaveBtn canvas={canvas} width={width} height={height} setGridLines={setGridLines} gridLines={gridLines} drawGrid={drawGrid} keep={keep} />
       {keep &&
-        <DeleteBtn id={keep.id as number} />
+        <DeleteBtn uuid={keep.uuid} />
       }
     </div>
   )

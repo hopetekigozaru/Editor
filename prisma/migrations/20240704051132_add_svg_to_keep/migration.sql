@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `keep` MODIFY `svg` LONGTEXT NOT NULL;

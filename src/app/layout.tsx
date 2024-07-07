@@ -22,14 +22,14 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className}>
-        <main className="min-h-screen bg-white">
+        <main className="min-h-screen bg-white text-white">
           <header className="fixed w-screen top-0 left-0 h-[10vh] bg-slate-900">
             <div className="h-full flex justify-between items-center w-full">
-              <p className="text-xl pl-10 w-1/2">
+              <p className="text-xl pl-10 w-1/2 ">
                 システム名
               </p>
               <div className='w-full h-[5vh] flex justify-end'>
-                <TopMenuBtn/>
+                <TopMenuBtn />
               </div>
             </div>
           </header>

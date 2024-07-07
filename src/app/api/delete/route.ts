@@ -1,16 +1,23 @@
-import prisma from "@/lib/prisma";
+import { createClient } from "@/utils/supabase/server";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
+  const supabase = createClient();
   try {
-    const keep = await prisma.keep.delete({
-      where: { id: body.id }, // 更新するレコードをIDで特定
-    });
+    const { data: keeps, error } = await supabase
+      .from('keeps')
+      .delete().eq('uuid', body.uuid);
 
-    console.log(keep); // 更新後のデータをログに出力
+    if (error) {
+      console.error('Error inserting data:', error);
+    } else {
+      console.log('Data inserted successfully:', keeps);
+    }
 
-    return new Response(JSON.stringify(keep), {
+    console.log(keeps); // 更新後のデータをログに出力
+
+    return new Response(JSON.stringify(keeps), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',

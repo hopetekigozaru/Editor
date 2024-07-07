@@ -32,8 +32,8 @@ interface MenuProps {
   width: number
   height: number
   keep: {
-    id: number;
-    title:string
+    uuid: string;
+    title: string
     fabric_object: fabric.Object | null; // fabric_objectがnullになる可能性も考慮
     width: number;
     height: number;

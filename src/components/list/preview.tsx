@@ -1,11 +1,9 @@
 'use client'
 
-import { Prisma } from '@prisma/client';
-
 interface PreviewProps {
   keep: {
-    id: number;
-    fabric_object: Prisma.JsonValue;
+    uuid: string;
+    fabric_object: JSON;
     width: number;
     height: number;
     svg: string;
@@ -16,7 +14,7 @@ interface PreviewProps {
 
 const Preview: React.FC<PreviewProps> = ({ keep }) => {
   return (
-    <a className='svg-container'  href={"/edit?keep_id=" + keep.id}>
+    <a className='svg-container' href={"/edit?keep_id=" + keep.uuid} >
       <div className='svg-content border border-black border-solid' dangerouslySetInnerHTML={{ __html: keep.svg }} />
     </a>
   );

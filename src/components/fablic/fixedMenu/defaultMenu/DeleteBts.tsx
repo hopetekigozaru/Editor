@@ -17,7 +17,7 @@ const style = {
   pb: 3,
 };
 
-const DeleteBtn = ({id}:{id:number}) => {
+const DeleteBtn = ({ uuid }: { uuid: string }) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -31,7 +31,7 @@ const DeleteBtn = ({id}:{id:number}) => {
 
   const deleteKeep = async () => {
     const body = JSON.stringify({
-      id: id,
+      uuid: uuid,
     });
 
     const res = await fetch('/api/delete', {
@@ -42,7 +42,7 @@ const DeleteBtn = ({id}:{id:number}) => {
       body: body,
     });
 
-    if(res && res.status == 200){
+    if (res && res.status == 200) {
       router.push('/')
     }
 
@@ -64,16 +64,16 @@ const DeleteBtn = ({id}:{id:number}) => {
       >
         <Box sx={{ ...style, width: '50vw' }}>
           <div className='w-full flex justify-center'>
-          <div className="w-2/3 flex flex-col justify-center items-center my-10">
-            <div className='text-black text-lg w-full text-center'>
-              削除しますか？
-            </div>
-            <div className="flex w-full justify-between mt-5">
-            <Button variant="outlined" onClick={deleteKeep} color='error'>削除する</Button>
-              <Button variant="outlined" onClick={() => setOpen(false)}>キャンセル</Button>
-            </div>
+            <div className="w-2/3 flex flex-col justify-center items-center my-10">
+              <div className='text-black text-lg w-full text-center'>
+                削除しますか？
+              </div>
+              <div className="flex w-full justify-between mt-5">
+                <Button variant="outlined" onClick={deleteKeep} color='error'>削除する</Button>
+                <Button variant="outlined" onClick={() => setOpen(false)}>キャンセル</Button>
+              </div>
 
-          </div>
+            </div>
 
           </div>
         </Box>
