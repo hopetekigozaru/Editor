@@ -21,7 +21,7 @@ const Singup = () => {
       });
       if (error) throw error;
       console.log('signup successful')
-      router.push('/pre_register')
+      router.push('/signup/pre_register')
     } catch (error: unknown) { // unknown 型を指定してエラーメッセージを取得
       if (error instanceof Error) {
         console.error(error.message)
