@@ -193,6 +193,7 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
       horizontal.moveTo(0)
     }
 
+
     setGridLines(lines);
   };
 
