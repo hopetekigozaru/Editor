@@ -25,7 +25,6 @@ const PanningBtn = ({ canvas ,constrainViewport , isPan,setIsPan,setIsZoom}: Pan
       constrainViewport();
     }
   }
-  console.log(isPan)
   return (
     <button className={`block  mt-1 ${isPan ? 'bg-gray-800' : 'bg-gray-500'}`} onClick={panning} >
       <ZoomOutIcon className="text-white" />

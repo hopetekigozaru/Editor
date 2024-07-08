@@ -1,6 +1,7 @@
-import { createClient } from "@/utils/supabase/server";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse, NextRequest } from "next/server";
 import { v4 } from "uuid";
+import { cookies } from "next/headers";
 
 function base64ToBlob(base64String: string) {
   const contentType = base64String.match(/^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/)?.[1];
@@ -26,10 +27,11 @@ function base64ToBlob(base64String: string) {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const supabase = createClient();
+  const supabase = createRouteHandlerClient({ cookies });
   const blob = base64ToBlob(body.src)
   const uuid = v4()
   try {
+
     const { data: image, error } = await supabase.storage
       .from('EditorBucket').upload('fabric/' + body.uuid + '/' + uuid, blob, {
         contentType: blob.type // ここで適切な MIME タイプを指定する
@@ -41,7 +43,9 @@ export async function POST(req: NextRequest) {
       console.log('Data imageUpload successfully:', image);
     }
 
-    return new Response(JSON.stringify(image), {
+    const publicURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/EditorBucket/fabric/${body.uuid}/${uuid}`;
+
+    return new Response(JSON.stringify({ image, publicURL }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',

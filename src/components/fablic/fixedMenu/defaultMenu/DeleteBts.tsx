@@ -43,7 +43,7 @@ const DeleteBtn = ({ uuid }: { uuid: string }) => {
     });
 
     if (res && res.status == 200) {
-      router.push('/')
+      router.push('/dashboard')
     }
 
   }

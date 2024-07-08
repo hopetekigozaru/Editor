@@ -1,7 +1,7 @@
 import Editor from "@/components/fablic/Editor";
-import { createClient } from "@/utils/supabase/server";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { fabric } from "fabric"; // fabricのインポートが必要
-
+import { cookies } from "next/headers";
 interface keepProps {
   uuid: string;
   title: string;
@@ -15,7 +15,7 @@ const Register = async ({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
-  const supabase = createClient();
+  const supabase = createServerComponentClient({cookies});
   const { data: keeps, error } = await supabase
     .from("keeps")
     .select("uuid, title, fabric_object, width, height")

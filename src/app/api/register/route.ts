@@ -1,11 +1,14 @@
 
-import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const supabase = createClient();
+  const supabase = createRouteHandlerClient({cookies});
   try {
+    const {data:user} = await supabase.auth.getUser()
+
     const { data: keeps, error } = await supabase
       .from('keeps')
       .insert([
@@ -15,7 +18,8 @@ export async function POST(req: NextRequest) {
           title: body.title,
           width: body.width,
           height: body.height,
-          svg: body.svg
+          svg: body.svg,
+          user_id: user.user?.id
         }
       ]);
 

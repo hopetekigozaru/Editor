@@ -15,7 +15,7 @@ interface EditorProps {
   keep: {
     uuid: string;
     title: string;
-    fabric_object: fabric.Object | null; // fabric_objectがnullになる可能性も考慮
+    fabric_object: fabric.Object; // fabric_objectがnullになる可能性も考慮
     width: number;
     height: number;
   } | null;
@@ -51,23 +51,12 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
     const canvasElm = canvasRef.current;
     if (!canvasElm) return;
 
+
     const canvasInstance = new fabric.Canvas(canvasElm);
     setCanvas(canvasInstance);
 
     // Enable selection
     canvasInstance.selection = true;
-
-    // Draw grid
-    // Load JSON data if available
-    // 画像オブジェクトをFabric.jsの形式に変換する関数
-    if (keep) {
-      canvasInstance.loadFromJSON(keep?.fabric_object, () => {
-        drawGrid(canvasInstance);
-        canvasInstance.renderAll.bind(canvasInstance)
-      })
-    } else {
-      drawGrid(canvasInstance)
-    }
 
 
     // Cleanup on unmount
@@ -83,6 +72,18 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
   useEffect(() => {
     // Setup object:modified event listener
     if (canvas) {
+      // Draw grid
+      // Load JSON data if available
+      // 画像オブジェクトをFabric.jsの形式に変換する関数
+      if (keep && canvas) {
+        canvas.clear();
+        canvas.loadFromJSON(keep!.fabric_object, () => {
+          drawGrid(canvas);
+          canvas.renderAll.bind(canvas)
+        })
+      } else {
+        drawGrid(canvas)
+      }
       saveState(); // Save initial state
       canvas.on('object:modified', saveState);
 
@@ -103,10 +104,10 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
           setIsDragging(false);
           canvas.selection = true;
           const activeObj = canvas.getActiveObject();
-          // if (activeObj) {
-          //   const length = canvas._objects.length;
-          //   activeObj.moveTo(length - 1)
-          // }
+          if (activeObj) {
+            const length = canvas._objects.length;
+            activeObj.moveTo(length - 1)
+          }
         }
       };
 

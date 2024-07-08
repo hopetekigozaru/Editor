@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import RegisterButton from "@/components/list/RegisterButton";
-import PageBack from "@/components/fablic/PageBack";
 import TopMenuBtn from "@/components/TopMenuBtn";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className}>
-        <main className="min-h-screen bg-white text-white">
+        <main className="min-h-screen h-full bg-white text-white">
           <header className="fixed w-screen top-0 left-0 h-[10vh] bg-slate-900">
             <div className="h-full flex justify-between items-center w-full">
               <p className="text-xl pl-10 w-1/2 ">

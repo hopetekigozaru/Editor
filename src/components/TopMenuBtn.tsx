@@ -3,17 +3,20 @@
 import { usePathname } from "next/navigation"
 import RegisterButton from "./list/RegisterButton"
 import PageBack from "./fablic/PageBack"
+import Logout from "./Auth/Logout"
 
 const TopMenuBtn = () => {
   const pathName = usePathname()
-  console.log(pathName)
   return (
     <>
-      {pathName === '/' &&
-        <RegisterButton />
+      {pathName === '/dashboard' &&
+        <>
+          <RegisterButton />
+          <Logout />
+        </>
       }
-      {(pathName === '/register' || pathName === '/edit' )&&
-        <PageBack/>
+      {(pathName === '/register' || pathName === '/edit') &&
+        <PageBack />
       }
     </>
   )

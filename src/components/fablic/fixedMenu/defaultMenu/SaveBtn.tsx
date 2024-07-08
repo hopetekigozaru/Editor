@@ -64,40 +64,67 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
         uuid = uuidv4()
       }
 
-      let pathArray: string[] = [];
-
-      canvas.getObjects('image').forEach(async (obj: any) => {
-        const img = obj as fabric.Image; // 型アサーションを使用して fabric.Image 型にキャストする
+      const pathArray: string[] = [];
+      for (const obj of canvas.getObjects('image')) {
+        const img = obj as fabric.Image;
         const src = img.getSrc();
         if (src.startsWith('data:image')) {
-          const res = await fetch('/api/imageUpload', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ src: src, uuid: uuid }),
-          });
-          const jsonRes = await res.json();
-          console.log(jsonRes)
-          const path = jsonRes.fullPath
-          img.setSrc(path)
-          pathArray.push(path)
-          canvas.renderAll();
+          try {
+            const res = await fetch('/api/imageUpload', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ src: src, uuid: uuid }),
+            });
+            if (!res.ok) {
+              throw new Error(`Failed to upload image: ${res.status}`);
+            }
+            const jsonRes = await res.json();
+            const path = jsonRes.image.path;
+            const url = jsonRes.publicURL;
+
+            // setSrcをPromiseでラップし、完了後にrenderAllを呼ぶ
+            await new Promise<void>((resolve, reject) => {
+              img.setSrc(url, () => {
+                canvas.renderAll();
+                resolve();
+              });
+            });
+
+            pathArray.push(path);
+          } catch (error) {
+            console.error('Error uploading image:', error);
+          }
         } else if (src.startsWith('http://') || src.startsWith('https://')) {
-          pathArray.push(src)
+          const trimmedSrc = src.replace(process.env.NEXT_PUBLIC_SUPABASE_URL + '/storage/v1/object/public/EditorBucket/', '');
+          console.log(trimmedSrc);
+          pathArray.push(trimmedSrc);
         }
+      }
+      const deleteBody = {
+        pathArray,
+        uuid
+      }
 
+      // 画像の削除処理
+      const deleteImgResponse = await fetch('api/deleteImage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(deleteBody),
       });
-      // const deleteImg = await fetch('api/deleteImage', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(pathArray),
 
-      // })
-
+      // 削除が成功したかどうかを確認
+      if (deleteImgResponse.ok) {
+        console.log('Images deleted successfully:', pathArray);
+      } else {
+        console.error('Failed to delete images:', deleteImgResponse.status);
+        return;
+      }
       const json = canvas.toJSON()
+      console.log(json)
       const svg = canvas.toSVG();
 
       if (json.objects.length > 0) {
@@ -140,7 +167,7 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
         }
         console.log(res.status)
         if (res && res.status == 200) {
-          router.push('/');
+          router.push('/dashboard');
         }
       }
       drawGrid(canvas)

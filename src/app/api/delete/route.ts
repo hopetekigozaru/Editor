@@ -1,10 +1,26 @@
-import { createClient } from "@/utils/supabase/server";
+
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse, NextRequest } from "next/server";
+import { cookies } from "next/headers";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const supabase = createClient();
+  const supabase = createRouteHandlerClient({ cookies });
   try {
+
+    const { data: files } = await supabase.storage.from('EditorBucket').list('fabric/' + body.uuid);
+
+    if (files) {
+      for (const file of files) {
+        const { data, error } = await supabase.storage.from('EditorBucket').remove(['fabric/' + body.uuid + '/' + file.name]);
+        if (error) {
+          console.error('Error removing file:', error.message);
+        } else {
+          console.log('successfully removing file', data)
+        }
+      }
+    }
+
     const { data: keeps, error } = await supabase
       .from('keeps')
       .delete().eq('uuid', body.uuid);

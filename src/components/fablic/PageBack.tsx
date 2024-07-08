@@ -5,11 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 const PageBack = () => {
   const router = useRouter();
   const pageBack = () => {
-    router.back()
+    router.push('/dashboard')
   }
   return (
     <div>
-      <button onClick={pageBack} className="pr-10">一覧に戻る</button>
+      <button onClick={pageBack} className="mr-10">一覧に戻る</button>
     </div>
   )
 }
