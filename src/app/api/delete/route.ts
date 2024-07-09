@@ -8,6 +8,19 @@ export async function POST(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
   try {
 
+    const { data: svgFiles } = await supabase.storage.from('EditorBucket').list('svg/' + body.uuid);
+
+    if (svgFiles) {
+      for (const file of svgFiles) {
+        const { data, error } = await supabase.storage.from('EditorBucket').remove(['svg/' + body.uuid + '/' + file.name]);
+        if (error) {
+          console.error('Error removing file:', error.message);
+        } else {
+          console.log('successfully removing file', data)
+        }
+      }
+    }
+
     const { data: files } = await supabase.storage.from('EditorBucket').list('fabric/' + body.uuid);
 
     if (files) {

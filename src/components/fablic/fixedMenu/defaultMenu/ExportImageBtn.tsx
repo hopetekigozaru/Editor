@@ -1,13 +1,13 @@
 import ImageIcon from '@mui/icons-material/Image';
 
 interface exportImageBtnProps {
-canvas: fabric.Canvas | null;
-gridLines: fabric.Line[];
-setGridLines: React.Dispatch<React.SetStateAction<fabric.Line[]>>;
-drawGrid: (canvas: fabric.Canvas) => void;
+  canvas: fabric.Canvas | null;
+  gridLines: fabric.Line[];
+  setGridLines: React.Dispatch<React.SetStateAction<fabric.Line[]>>;
+  drawGrid: (canvas: fabric.Canvas) => void;
 }
 
-const ExportImageBtn = ({canvas,gridLines,setGridLines,drawGrid}:exportImageBtnProps) => {
+const ExportImageBtn = ({ canvas, gridLines, setGridLines, drawGrid }: exportImageBtnProps) => {
   const exportAsImage = () => {
     if (canvas) {
       canvas.discardActiveObject(); // アクティブなオブジェクトの選択を解除
@@ -33,12 +33,12 @@ const ExportImageBtn = ({canvas,gridLines,setGridLines,drawGrid}:exportImageBtnP
   };
   return (
     <div>
-      <button type='button' onClick={exportAsImage}className='hover:opacity-75'>
+      <button type='button' onClick={exportAsImage} className='hover:opacity-75'>
         <div>
-          <ImageIcon />
+          <ImageIcon fontSize='large' />
         </div>
         <div>
-          <p className='text-xs'>
+          <p>
             画像として出力
           </p>
         </div>

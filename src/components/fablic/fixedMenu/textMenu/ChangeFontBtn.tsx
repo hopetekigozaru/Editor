@@ -8,7 +8,7 @@ interface ChangeFontBtnProps {
   saveState: () => void;
 }
 
-const ChangeFontBtn = ({canvas,activeObj,saveState}:ChangeFontBtnProps) => {
+const ChangeFontBtn = ({ canvas, activeObj, saveState }: ChangeFontBtnProps) => {
   const [open, setOpen] = useState(false);
   const [fontFamily, setFontFamily] = useState('Arial');
 
@@ -31,10 +31,10 @@ const ChangeFontBtn = ({canvas,activeObj,saveState}:ChangeFontBtnProps) => {
     <div className='relative'>
       <button type='button' onClick={() => { setOpen(true) }} className='hover:opacity-75' >
         <div>
-          <FontDownloadIcon />
+          <FontDownloadIcon fontSize='large' />
         </div>
         <div>
-          <p className='text-xs'>
+          <p>
             フォント
           </p>
         </div>

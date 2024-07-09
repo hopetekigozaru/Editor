@@ -40,10 +40,10 @@ const AddTextBtn = ({ canvas, saveState }: AddTextProps) => {
     <div>
       <button className='hover:opacity-75' type='button' onClick={() => addText('新しいテキスト', 50, 50, 24, 0, canvas)}>
         <div>
-          <TitleIcon />
+          <TitleIcon fontSize='large' />
         </div>
         <div>
-          <p className='text-xs'>
+          <p>
             テキストを追加
           </p>
         </div>

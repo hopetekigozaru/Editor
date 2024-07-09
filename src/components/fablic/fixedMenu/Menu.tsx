@@ -156,7 +156,7 @@ const Menu = ({
 
 
   return (
-    <div className='fixed bottom-0 left-0 w-screen h-[12vh] bg-primary flex justify-center items-center'>
+    <div className='fixed bottom-0 left-0 w-screen h-[15vh] bg-primary flex justify-center items-center rounded-tl-[5em] rounded-tr-[5rem]'>
       {(!isTextMenu && !isFontSize) &&
         <DefaultMenu
           canvas={canvas}

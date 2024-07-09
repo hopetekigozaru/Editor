@@ -6,10 +6,10 @@ interface ZoomBtnProps {
   constrainViewport: () => void
   isZoom: boolean
   setIsZoom: Dispatch<SetStateAction<boolean>>
-  setIsPan:Dispatch<SetStateAction<boolean>>
+  setIsPan: Dispatch<SetStateAction<boolean>>
 }
 
-const ZoomBtn = ({ canvas, constrainViewport, isZoom, setIsZoom ,setIsPan}: ZoomBtnProps) => {
+const ZoomBtn = ({ canvas, constrainViewport, isZoom, setIsZoom, setIsPan }: ZoomBtnProps) => {
   const zoom = () => {
     if (canvas) {
       const zoom = canvas.getZoom();
@@ -26,8 +26,8 @@ const ZoomBtn = ({ canvas, constrainViewport, isZoom, setIsZoom ,setIsPan}: Zoom
     }
   }
   return (
-    <button className={`block ${isZoom ? 'bg-primary hover:opacity-80' : 'bg-gray-500'}`} onClick={zoom}>
-      <ZoomInIcon className="text-white" />
+    <button className={`block p-2 ${isZoom ? 'bg-primary hover:opacity-80' : 'bg-gray-500'}`} onClick={zoom}>
+      <ZoomInIcon fontSize='large' className="text-white" />
     </button>
   )
 }

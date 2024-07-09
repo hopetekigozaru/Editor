@@ -9,7 +9,7 @@ const PageBack = () => {
   }
   return (
     <div>
-      <button onClick={pageBack} className="mr-10 hover:opacity-75">一覧に戻る</button>
+      <button onClick={pageBack} className="mr-10 text-xl hover:opacity-75">一覧に戻る</button>
     </div>
   )
 }

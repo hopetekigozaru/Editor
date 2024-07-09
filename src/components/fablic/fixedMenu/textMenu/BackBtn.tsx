@@ -16,10 +16,10 @@ const BackBtn = ({ canvas }: BackBtnProps) => {
   return (
     <button type='button' onClick={focusOut} className='hover:opacity-75'>
       <div className='flex justify-center'>
-        <ArrowBackIcon />
+        <ArrowBackIcon fontSize='large' />
       </div>
       <div>
-        <p className='text-xs'>
+        <p>
           戻る
         </p>
       </div>

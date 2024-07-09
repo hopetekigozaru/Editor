@@ -6,7 +6,7 @@ interface ChangeFontSizeSliderProps {
   activeObj: fabric.Textbox | undefined;
   saveState: () => void;
 }
-const ChangeFontSizeSlider = ({canvas,activeObj,saveState}:ChangeFontSizeSliderProps) => {
+const ChangeFontSizeSlider = ({ canvas, activeObj, saveState }: ChangeFontSizeSliderProps) => {
   const [fontSize, setFontSize] = useState<number>(24);
 
   const debouncedFontSizeChange = debounce((fontSize: number) => {
@@ -29,7 +29,7 @@ const ChangeFontSizeSlider = ({canvas,activeObj,saveState}:ChangeFontSizeSliderP
       <div className='w-1/3'>
         <Slider defaultValue={fontSize} aria-label="Default" onChange={handleFontSizeChange} valueLabelDisplay="auto" color="secondary" />
       </div>
-      <p className='text-black ml-5'>{fontSize}</p>
+      <p className='text-white ml-5'>{fontSize}</p>
     </>
   )
 }

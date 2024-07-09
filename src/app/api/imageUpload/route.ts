@@ -2,6 +2,7 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse, NextRequest } from "next/server";
 import { v4 } from "uuid";
 import { cookies } from "next/headers";
+import { fabric } from 'fabric';
 
 function base64ToBlob(base64String: string) {
   const contentType = base64String.match(/^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/)?.[1];

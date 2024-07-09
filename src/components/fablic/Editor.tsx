@@ -33,9 +33,9 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
   const [undoStack, setUndoStack] = useState<string[]>([]);
   const [redoStack, setRedoStack] = useState<string[]>([]);
   const [continuous, setContinuous] = useState<boolean>(false);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [lastPosX, setLastPosX] = useState<number | undefined>(undefined);
-  const [lastPosY, setLastPosY] = useState<number | undefined>(undefined);
+  const isDraggingRef = useRef(false);
+  const lastPosXRef = useRef(0);
+  const lastPosYRef = useRef(0);
 
   const saveState = useCallback(() => {
     if (canvas) {
@@ -51,17 +51,11 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
     const canvasElm = canvasRef.current;
     if (!canvasElm) return;
 
-
-
-
     const canvasInstance = new fabric.Canvas(canvasElm);
     setCanvas(canvasInstance);
 
     // Enable selection
     canvasInstance.selection = true;
-
-
-
 
     // Cleanup on unmount
     return () => {
@@ -101,11 +95,11 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
           })
           canvas.discardActiveObject();
           canvas.selection = false;
-          setIsDragging(true);
-          setLastPosX(evt.clientX);
-          setLastPosY(evt.clientY);
+          isDraggingRef.current = true;
+          lastPosXRef.current = evt.clientX;
+          lastPosYRef.current = evt.clientY;
         } else {
-          setIsDragging(false);
+          isDraggingRef.current = false;
           canvas.selection = true;
           const activeObj = canvas.getActiveObject();
           if (activeObj) {
@@ -116,22 +110,22 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
       };
 
       const handleMouseMove = (opt: fabric.IEvent) => {
-        if (isDragging) {
+        if (isDraggingRef.current) {
           const e = opt.e as MouseEvent;
           const vpt = canvas.viewportTransform;
-          if (vpt && lastPosX !== undefined && lastPosY !== undefined) {
-            vpt[4] += e.clientX - lastPosX;
-            vpt[5] += e.clientY - lastPosY;
+          if (vpt && lastPosXRef.current !== undefined && lastPosYRef.current !== undefined) {
+            vpt[4] += e.clientX - lastPosXRef.current;
+            vpt[5] += e.clientY - lastPosYRef.current;
             constrainViewport();
             canvas.requestRenderAll();
-            setLastPosX(e.clientX);
-            setLastPosY(e.clientY);
+            lastPosXRef.current = e.clientX;
+            lastPosYRef.current = e.clientY;
           }
         }
       };
 
       const handleMouseUp = () => {
-        setIsDragging(false);
+        isDraggingRef.current = false;
         canvas.selection = true;
         canvas._objects.map((obj) => {
           obj.lockMovementX = false
@@ -151,7 +145,7 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
         canvas.off('mouse:up', handleMouseUp);
       };
     }
-  }, [canvas, saveState, isDragging, lastPosX, lastPosY]);
+  }, [canvas, saveState, isDraggingRef.current, lastPosXRef.current, lastPosYRef.current]);
 
   const constrainViewport = () => {
     if (canvas) {

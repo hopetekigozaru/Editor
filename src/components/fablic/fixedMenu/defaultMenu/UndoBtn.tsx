@@ -39,10 +39,10 @@ const UndoBtn = ({ canvas, undoStack, setUndoStack, continuous, setContinuous, s
     <div>
       <button type='button' onClick={handleUndo} className='cursor-pointer hover:opacity-75'>
         <div className='flex justify-center'>
-          <UndoIcon />
+          <UndoIcon fontSize='large' />
         </div>
         <div>
-          <p className='text-xs'>
+          <p>
             戻る
           </p>
         </div>

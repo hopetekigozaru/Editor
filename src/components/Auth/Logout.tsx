@@ -19,7 +19,7 @@ const Logout = () => {
   }
   return (
     <div>
-      <button onClick={logout} className="mr-10 hover:opacity-75">ログアウト</button>
+      <button onClick={logout} className="mr-10 text-xl hover:opacity-75">ログアウト</button>
     </div>
   )
 }

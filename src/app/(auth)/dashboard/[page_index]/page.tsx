@@ -56,14 +56,14 @@ const DashBoard: React.FC<DashBoardProps> = async ({ params }) => {
         <div className='size-full grid grid-cols-4 grid-rows-2 gap-y-10 gap-x-5 p-5'>
           {keeps &&
             keeps.map((keep) => (
-              <a href={"/edit?keep_id=" + keep.uuid} key={keep.uuid} className='flex justify-centerw-1/4 border-primary border-4 border-solid rounded-2xl hover:opacity-75'>
+              <a href={"/edit?keep_id=" + keep.uuid} key={keep.uuid} className='flex justify-centerw-1/4 border-primary border-4 border-solid rounded-2xl hover:opacity-65'>
                 <div className='h-full w-full flex justify-center'>
                   <div className='w-full h-full'>
                     <div className="flex justify-center h-[20%] border-primary border-b-4 border-solid">
-                    <div className='w-11/12 flex justify-between items-center h-full '>
-                    <div className='w-full text-primary'>{keep.title}</div>
-                    <div className='w-full text-end text-xs text-gray-400'>{keep.width + '×' + keep.height}</div>
-                    </div>
+                      <div className='w-11/12 flex justify-between items-center h-full '>
+                        <div className='w-full text-primary font-bold'>{keep.title}</div>
+                        <div className='w-full text-end text-sm text-gray-400'>{keep.width + '×' + keep.height}</div>
+                      </div>
 
                     </div>
                     <Preview svg={keep.svg} />
@@ -73,7 +73,7 @@ const DashBoard: React.FC<DashBoardProps> = async ({ params }) => {
             ))}
         </div>
       </div>
-      {keeps &&
+      {(keeps && totalKeeps > 8) &&
         <Pagination length={keeps.length} pageSize={PAGE_SIZE} totalKeeps={totalKeeps} />
       }
     </>

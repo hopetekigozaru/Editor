@@ -9,7 +9,7 @@ interface RedoBtnProps {
   maxHistory: number;
 }
 
-const RedoBtn = ({canvas,redoStack,setRedoStack,setUndoStack,maxHistory}:RedoBtnProps) => {
+const RedoBtn = ({ canvas, redoStack, setRedoStack, setUndoStack, maxHistory }: RedoBtnProps) => {
   const handleRedo = () => {
     if (redoStack.length > 0 && canvas) {
       const nextState = redoStack[redoStack.length - 1];
@@ -36,10 +36,10 @@ const RedoBtn = ({canvas,redoStack,setRedoStack,setUndoStack,maxHistory}:RedoBtn
     <div>
       <button type='button' onClick={handleRedo} className='cursor-pointer hover:opacity-75'>
         <div className='flex justify-center'>
-          <RedoIcon />
+          <RedoIcon fontSize='large' />
         </div>
         <div>
-          <p className='text-xs'>
+          <p>
             進む
           </p>
         </div>

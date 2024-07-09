@@ -6,11 +6,11 @@ interface exportPdfBtnProps {
   canvas: fabric.Canvas | null;
   gridLines: fabric.Line[];
   setGridLines: React.Dispatch<React.SetStateAction<fabric.Line[]>>;
-  containerElm:HTMLDivElement | null;
+  containerElm: HTMLDivElement | null;
   drawGrid: (canvas: fabric.Canvas) => void;
-  }
+}
 
-const ExportPdfBtn = ({canvas,gridLines,setGridLines,containerElm,drawGrid}:exportPdfBtnProps) => {
+const ExportPdfBtn = ({ canvas, gridLines, setGridLines, containerElm, drawGrid }: exportPdfBtnProps) => {
 
   const exportAsPDF = () => {
     if (canvas && containerElm) {
@@ -49,10 +49,10 @@ const ExportPdfBtn = ({canvas,gridLines,setGridLines,containerElm,drawGrid}:expo
     <div>
       <button type='button' onClick={exportAsPDF} className='hover:opacity-75'>
         <div>
-          <PictureAsPdfIcon />
+          <PictureAsPdfIcon fontSize='large' />
         </div>
         <div>
-          <p className='text-xs'>
+          <p>
             PDFとして出力
           </p>
         </div>

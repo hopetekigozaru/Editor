@@ -9,12 +9,12 @@ interface PanningBtnProps {
   setIsZoom: Dispatch<SetStateAction<boolean>>
 }
 
-const PanningBtn = ({ canvas ,constrainViewport , isPan,setIsPan,setIsZoom}: PanningBtnProps) => {
+const PanningBtn = ({ canvas, constrainViewport, isPan, setIsPan, setIsZoom }: PanningBtnProps) => {
   const panning = () => {
     if (canvas) {
       const zoom = canvas.getZoom();
       let newZoom = zoom;
-      if(newZoom <= 1.1){
+      if (newZoom <= 1.1) {
         newZoom = 1
         setIsPan(false)
       } else {
@@ -26,8 +26,8 @@ const PanningBtn = ({ canvas ,constrainViewport , isPan,setIsPan,setIsZoom}: Pan
     }
   }
   return (
-    <button className={`block  mt-1 ${isPan ? 'bg-primary hover:opacity-80' : 'bg-gray-500'}`} onClick={panning} >
-      <ZoomOutIcon className="text-white" />
+    <button className={`block p-2  mt-1 ${isPan ? 'bg-primary hover:opacity-80' : 'bg-gray-500'}`} onClick={panning} >
+      <ZoomOutIcon fontSize='large' className="text-white" />
     </button>
   )
 }

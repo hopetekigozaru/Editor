@@ -38,7 +38,7 @@ const Login = () => {
       });
       if (error) throw error;
       console.log('login successful')
-      router.push('/dashboard')
+      router.push('/dashboard/1')
     } catch (error: unknown) { // unknown 型を指定してエラーメッセージを取得
       if (error instanceof Error) {
         alert(error.message);

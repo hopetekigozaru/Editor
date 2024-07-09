@@ -51,8 +51,8 @@ const DeleteBtn = ({ uuid }: { uuid: string }) => {
   return (
     <>
       <button type='button' onClick={handleOpen} className='text-red-500 hover:opacity-75'>
-        <DeleteIcon />
-        <div className='text-xs'>
+        <DeleteIcon fontSize='large' />
+        <div>
           削除
         </div>
       </button>

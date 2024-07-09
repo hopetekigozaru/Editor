@@ -6,9 +6,9 @@ import { useTheme } from '@mui/material';
 interface AddFileProps {
   canvas: fabric.Canvas | null;
   saveState: () => void;
-  clickInput:(e: MouseEvent<HTMLButtonElement>) => void
+  clickInput: (e: MouseEvent<HTMLButtonElement>) => void
 }
-const AddFileBtn = ({canvas,saveState,clickInput}:AddFileProps) => {
+const AddFileBtn = ({ canvas, saveState, clickInput }: AddFileProps) => {
   const theme = useTheme().palette;
   const handleImageUpload: ChangeEventHandler<HTMLInputElement> = (event) => {
     const file = event.target.files?.[0]; // ファイルオブジェクトを取得
@@ -45,12 +45,12 @@ const AddFileBtn = ({canvas,saveState,clickInput}:AddFileProps) => {
     <div>
       <div>
         <input type='file' className='absolute opacity-0 w-0' onChange={handleImageUpload} />
-        <button  type='button' className='cursor-pointer hover:opacity-75' onClick={clickInput}>
+        <button type='button' className='cursor-pointer hover:opacity-75' onClick={clickInput}>
           <div className='flex justify-center'>
-            <AttachFileIcon />
+            <AttachFileIcon fontSize='large' />
           </div>
           <div>
-            <p className='text-xs'>
+            <p>
               ファイルを選択
             </p>
           </div>

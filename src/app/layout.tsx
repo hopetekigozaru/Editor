@@ -31,9 +31,9 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
                   <p className="text-3xl font-bold pl-10 ">
                     Editor
                   </p>
-                  <PageTitle/>
+                  <PageTitle />
                 </div>
-                <div className='w-full h-[5vh] flex justify-end'>
+                <div className='w-full h-[5vh] flex justify-end items-center'>
                   <TopMenuBtn />
                 </div>
               </div>
