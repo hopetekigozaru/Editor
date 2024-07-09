@@ -52,11 +52,15 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
     if (!canvasElm) return;
 
 
+
+
     const canvasInstance = new fabric.Canvas(canvasElm);
     setCanvas(canvasInstance);
 
     // Enable selection
     canvasInstance.selection = true;
+
+
 
 
     // Cleanup on unmount

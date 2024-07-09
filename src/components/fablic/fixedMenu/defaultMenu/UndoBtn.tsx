@@ -37,7 +37,7 @@ const UndoBtn = ({ canvas, undoStack, setUndoStack, continuous, setContinuous, s
   };
   return (
     <div>
-      <button type='button' onClick={handleUndo} className='cursor-pointer'>
+      <button type='button' onClick={handleUndo} className='cursor-pointer hover:opacity-75'>
         <div className='flex justify-center'>
           <UndoIcon />
         </div>

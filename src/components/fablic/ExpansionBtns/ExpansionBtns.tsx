@@ -9,7 +9,7 @@ const ExpansionBtns = ({canvas,constrainViewport}:ExpansionBtnsProps) => {
   const [isZoom,setIsZoom] = useState(true);
   const [isPan,setIsPan] = useState(false);
   return (
-    <div className='h-full flex items-end text-black pl-3'>
+    <div className='h-full flex items-end  pl-3'>
       <div>
         <ZoomBtn canvas={canvas} isZoom={isZoom} setIsZoom={setIsZoom} setIsPan={setIsPan} constrainViewport={constrainViewport}/>
         <PanningBtn canvas={canvas} isPan={isPan} setIsPan={setIsPan} setIsZoom={setIsZoom} constrainViewport={constrainViewport}/>

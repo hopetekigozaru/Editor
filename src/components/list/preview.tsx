@@ -1,22 +1,22 @@
-'use client'
 
 interface PreviewProps {
-  keep: {
-    uuid: string;
-    fabric_object: JSON;
-    width: number;
-    height: number;
-    svg: string;
-    created_at: Date;
-    updated_at: Date;
-  };
+  svg: string;
 }
 
-const Preview: React.FC<PreviewProps> = ({ keep }) => {
+const Preview: React.FC<PreviewProps> = async ({ svg }) => {
+  const response = await fetch(svg);
+  let svgText
+  if (response.ok) {
+    svgText = await response.text();
+  } else {
+    console.error('Failed to load SVG:', response.statusText);
+  }
   return (
-    <a className='svg-container' href={"/edit?keep_id=" + keep.uuid} >
-      <div className='svg-content border border-black border-solid' dangerouslySetInnerHTML={{ __html: keep.svg }} />
-    </a>
+    <div className='svg-container '  >
+      {svgText &&
+        <div className='svg-content' dangerouslySetInnerHTML={{ __html: svgText }} />
+      }
+    </div>
   );
 };
 

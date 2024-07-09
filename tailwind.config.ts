@@ -1,3 +1,4 @@
+import { tailwindTheme } from "./src/lib/theme/mainTheme";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -7,10 +8,10 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {
-      dark: false, // Dark Mode を無効にする
-    },
+    extend: tailwindTheme.extend,
   },
+  // @ts-ignore
+  darkMode: 'media', // ダークモードを無効にする
   plugins: [],
 };
 

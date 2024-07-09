@@ -26,7 +26,7 @@ const ZoomBtn = ({ canvas, constrainViewport, isZoom, setIsZoom ,setIsPan}: Zoom
     }
   }
   return (
-    <button className={`block ${isZoom ? 'bg-gray-800' : 'bg-gray-500'}`} onClick={zoom}>
+    <button className={`block ${isZoom ? 'bg-primary hover:opacity-80' : 'bg-gray-500'}`} onClick={zoom}>
       <ZoomInIcon className="text-white" />
     </button>
   )

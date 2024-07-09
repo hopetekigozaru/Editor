@@ -116,6 +116,9 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
         body: JSON.stringify(deleteBody),
       });
 
+
+
+
       // 削除が成功したかどうかを確認
       if (deleteImgResponse.ok) {
         console.log('Images deleted successfully:', pathArray);
@@ -124,8 +127,25 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
         return;
       }
       const json = canvas.toJSON()
-      console.log(json)
       const svg = canvas.toSVG();
+
+      const svgBody = {
+        svg,
+        uuid
+      }
+
+      console.log(svgBody)
+
+      const registerSVG = await fetch('api/svg/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(svgBody),
+      });
+
+      const svgResponse = await registerSVG.json()
+      const svgUrl = svgResponse.publicURL;
 
       if (json.objects.length > 0) {
         let res = null;
@@ -137,7 +157,7 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
             json: json,
             width: keep.width,
             height: keep.height,
-            svg: svg
+            svg: svgUrl
           });
 
           res = await fetch('/api/update', {
@@ -153,7 +173,7 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
             json: json,
             width: width,
             height: height,
-            svg: svg,
+            svg: svgUrl,
             title: title
           });
 
@@ -167,7 +187,7 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
         }
         console.log(res.status)
         if (res && res.status == 200) {
-          router.push('/dashboard');
+          router.push('/dashboard/1');
         }
       }
       drawGrid(canvas)
@@ -175,13 +195,13 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
   }
   return (
     <div>
-      <button type='button' className='cursor-pointer' onClick={handleOpen} >
+      <button type='button' className='cursor-pointer hover:opacity-75' onClick={handleOpen} >
         <div className='flex justify-center'>
           <SaveAltIcon />
         </div>
         <div>
           <p className='text-xs'>
-            保存
+            一時保存
           </p>
         </div>
       </button>
@@ -195,10 +215,10 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
           <div className="w-full flex flex-col justify-center my-10">
             <form onSubmit={saveCanvas}>
               <div className='flex justify-center'>
-                <TextField variant='outlined' value={title} onChange={(e) => setTitle(e.target.value)} label="タイトル" required />
+                <TextField variant='outlined' color='secondary' value={title} onChange={(e) => setTitle(e.target.value)} label="タイトル" required />
               </div>
               <div className="flex justify-center mt-5">
-                <Button type='submit' variant="outlined">保存する</Button>
+                <Button type='submit' variant="contained" color='secondary'>保存する</Button>
               </div>
 
             </form>

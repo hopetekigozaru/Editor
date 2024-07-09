@@ -7,9 +7,10 @@ import Logout from "./Auth/Logout"
 
 const TopMenuBtn = () => {
   const pathName = usePathname()
+  console.log(pathName)
   return (
     <>
-      {pathName === '/dashboard' &&
+      {pathName.includes('/dashboard') &&
         <>
           <RegisterButton />
           <Logout />

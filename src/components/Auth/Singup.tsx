@@ -1,5 +1,5 @@
 'use client'
-import { Button, TextField } from "@mui/material"
+import { Button, Link, TextField } from "@mui/material"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 
@@ -33,38 +33,39 @@ const Singup = () => {
       setIsLoading(false);
     }
   };
-return(
-  <div className="w-full h-[90vh] flex justify-center items-center">
-  <div>
-    <div className="flex justify-center">
-      <p className="text-2xl text-black">アカウント登録</p>
-    </div>
-    <div className=" mt-5">
-      <TextField
-        className="text-black"
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-    </div>
-    <div className="mt-5">
-      <TextField
-        className="text-black"
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-    </div>
-    <div className="flex justify-center mt-10">
-      <Button type="button" variant="outlined" onClick={handleSignUp} disabled={isLoading}>
-        登録
-      </Button>
-    </div>
-  </div>
-</div>
-)
+  return (
+    <>
+      <div className="mt-5 flex justify-center">
+        <TextField
+          fullWidth
+          type="email"
+          color="secondary"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className="mt-5 flex justify-center">
+        <TextField
+          fullWidth
+          color="secondary"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      <div className="mt-5 flex justify-center w-full">
+        <Link color="secondary" href='/'>すでにアカウントをお持ちの方はこちら ＞</Link>
+      </div>
+      <div className="flex justify-center mt-10">
+        <Button type="button" variant="contained" color="accent" onClick={handleSignUp} disabled={isLoading}>
+          サインアップ
+        </Button>
+      </div>
+    </>
+
+  )
 }
 
 export default Singup

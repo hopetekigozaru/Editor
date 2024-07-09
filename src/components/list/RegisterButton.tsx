@@ -37,7 +37,7 @@ const RegisterButton = () => {
 
   return (
     <Fragment>
-      <button onClick={handleOpen} className="mr-10">新規作成</button>
+      <button onClick={handleOpen} className="mr-10 hover:opacity-75">新規作成</button>
       <Modal
         open={open}
         onClose={handleClose}

@@ -33,7 +33,7 @@ const ExportImageBtn = ({canvas,gridLines,setGridLines,drawGrid}:exportImageBtnP
   };
   return (
     <div>
-      <button type='button' onClick={exportAsImage}>
+      <button type='button' onClick={exportAsImage}className='hover:opacity-75'>
         <div>
           <ImageIcon />
         </div>

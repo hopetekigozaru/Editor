@@ -1,4 +1,6 @@
+
 import TitleIcon from '@mui/icons-material/Title';
+import { useTheme } from '@mui/material';
 import { fabric } from 'fabric';
 
 interface AddTextProps {
@@ -6,7 +8,8 @@ interface AddTextProps {
   saveState: () => void;
 }
 
-const AddTextBtn = ({canvas,saveState}:AddTextProps) => {
+const AddTextBtn = ({ canvas, saveState }: AddTextProps) => {
+  const theme = useTheme().palette;
   const addText = (
     text: string,
     x: number,
@@ -23,6 +26,11 @@ const AddTextBtn = ({canvas,saveState}:AddTextProps) => {
         angle: rotation,
         fill: '#000000',
         fontFamily: 'Arial',
+        textAlign: 'center',
+        borderColor: theme.secondary.main,  // 枠線の色
+        cornerColor: theme.secondary.main,  // コーナーの色
+        cornerStyle: 'circle',
+        cornerSize: 9,
       });
       canvas.add(textObject);
       saveState();
@@ -30,7 +38,7 @@ const AddTextBtn = ({canvas,saveState}:AddTextProps) => {
   };
   return (
     <div>
-      <button type='button' onClick={() => addText('New Text', 50, 50, 24, 0, canvas)}>
+      <button className='hover:opacity-75' type='button' onClick={() => addText('新しいテキスト', 50, 50, 24, 0, canvas)}>
         <div>
           <TitleIcon />
         </div>

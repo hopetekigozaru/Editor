@@ -34,7 +34,7 @@ const RedoBtn = ({canvas,redoStack,setRedoStack,setUndoStack,maxHistory}:RedoBtn
   };
   return (
     <div>
-      <button type='button' onClick={handleRedo} className='cursor-pointer'>
+      <button type='button' onClick={handleRedo} className='cursor-pointer hover:opacity-75'>
         <div className='flex justify-center'>
           <RedoIcon />
         </div>

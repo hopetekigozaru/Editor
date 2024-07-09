@@ -29,7 +29,7 @@ const ChangeFontBtn = ({canvas,activeObj,saveState}:ChangeFontBtnProps) => {
   };
   return (
     <div className='relative'>
-      <button type='button' onClick={() => { setOpen(true) }} >
+      <button type='button' onClick={() => { setOpen(true) }} className='hover:opacity-75' >
         <div>
           <FontDownloadIcon />
         </div>

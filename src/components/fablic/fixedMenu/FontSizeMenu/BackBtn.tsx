@@ -5,7 +5,7 @@ interface BackBtnProps {
 const BackBtn = ({setIsFontSize}:BackBtnProps) => {
   return (
     <div className='mr-5'>
-      <button type='button' onClick={() => { setIsFontSize(false) }}>
+      <button type='button' onClick={() => { setIsFontSize(false) }} className='hover:opacity-75'>
         <div className='flex justify-center'>
           <ArrowBackIcon />
         </div>

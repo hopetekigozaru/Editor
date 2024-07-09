@@ -14,7 +14,7 @@ const BackBtn = ({ canvas }: BackBtnProps) => {
   }
 
   return (
-    <button type='button' onClick={focusOut}>
+    <button type='button' onClick={focusOut} className='hover:opacity-75'>
       <div className='flex justify-center'>
         <ArrowBackIcon />
       </div>

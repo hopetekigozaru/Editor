@@ -37,7 +37,7 @@ const DeleteBtn = ({ canvas, activeObj, saveState }: DeleteBtnProps) => {
   };
 
   return (
-    <button type='button' onClick={deleteSelectedObject} ><DeleteIcon className='text-black' /></button>
+    <button type='button' onClick={deleteSelectedObject} className='hover:opacity-75' ><DeleteIcon className='text-black' color='error' /></button>
   )
 }
 

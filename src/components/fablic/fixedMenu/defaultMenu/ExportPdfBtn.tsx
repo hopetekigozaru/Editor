@@ -47,13 +47,13 @@ const ExportPdfBtn = ({canvas,gridLines,setGridLines,containerElm,drawGrid}:expo
 
   return (
     <div>
-      <button type='button' onClick={exportAsPDF}>
+      <button type='button' onClick={exportAsPDF} className='hover:opacity-75'>
         <div>
           <PictureAsPdfIcon />
         </div>
         <div>
           <p className='text-xs'>
-            PDFを出力
+            PDFとして出力
           </p>
         </div>
       </button>

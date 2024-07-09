@@ -54,8 +54,8 @@ const GroupBtn = ({canvas,saveState }: GroupBtnProps) => {
   };
 
   return (
-    <div>
-      <Button onClick={groupSelectedObjects}>グループ化</Button>
+    <div className='hover:opacity-75'>
+      <Button onClick={groupSelectedObjects} color="secondary">グループ化</Button>
     </div>
   )
 }
