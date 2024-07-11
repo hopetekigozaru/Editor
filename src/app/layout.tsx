@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import TopMenuBtn from "@/components/TopMenuBtn";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import ThemeRegistry from "./ThemeRegistry";
 import PageTitle from "@/components/PageTitle";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,7 +34,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
                   </p>
                   <PageTitle />
                 </div>
-                <div className='w-full h-[5vh] flex justify-end items-center'>
+                <div className='w-1/2 h-[5vh] flex justify-end items-center'>
                   <TopMenuBtn />
                 </div>
               </div>

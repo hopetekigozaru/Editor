@@ -10,7 +10,6 @@ interface SaveBtnProps {
   height: number;
   gridLines: fabric.Line[];
   setGridLines: React.Dispatch<React.SetStateAction<fabric.Line[]>>;
-  drawGrid: (canvas: fabric.Canvas) => void;
   keep: {
     uuid: string;
     title: string
@@ -34,7 +33,7 @@ const style = {
   pb: 3,
 };
 
-const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, keep }: SaveBtnProps) => {
+const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, keep }: SaveBtnProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(keep?.title ? keep!.title : "無題")
@@ -51,7 +50,6 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
     event.preventDefault();
     if (canvas) {
       canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
-
       gridLines.forEach((line) => {
         canvas.remove(line);
       });
@@ -185,8 +183,6 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
             throw new Error(`Failed to save canvas data: ${res ? res.status : 'unknown error'}`);
           }
         }
-
-        drawGrid(canvas);
       } catch (error) {
         console.error('Error saving canvas:', error);
       }

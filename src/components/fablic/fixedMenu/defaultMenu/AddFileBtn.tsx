@@ -32,6 +32,7 @@ const AddFileBtn = ({ canvas, saveState, clickInput }: AddFileProps) => {
             cornerColor: theme.secondary.main,  // コーナーの色
             cornerStyle: 'circle',
             cornerSize: 9,
+            selectable: false
           });
           canvas.add(fabricImg);
         };

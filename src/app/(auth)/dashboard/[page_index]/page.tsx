@@ -1,5 +1,6 @@
 import Pagination from "@/components/list/Pagination";
 import Preview from "@/components/list/preview";
+import RegisterButtonSp from "@/components/list/RegisterButtonSp";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
@@ -52,8 +53,8 @@ const DashBoard: React.FC<DashBoardProps> = async ({ params }) => {
 
   return (
     <>
-      <div className='w-full h-[85vh] flex items-center justify-center'>
-        <div className='size-full grid grid-cols-4 grid-rows-2 gap-y-10 gap-x-5 p-5'>
+      <div className='w-full md:h-[85vh] flex items-center justify-center'>
+        <div className='size-full grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-y-10 gap-x-5 p-5'>
           {keeps &&
             keeps.map((keep) => (
               <a href={"/edit?keep_id=" + keep.uuid} key={keep.uuid} className='flex justify-centerw-1/4 border-primary border-4 border-solid rounded-2xl hover:opacity-65'>
@@ -76,6 +77,7 @@ const DashBoard: React.FC<DashBoardProps> = async ({ params }) => {
       {(keeps && totalKeeps > 8) &&
         <Pagination length={keeps.length} pageSize={PAGE_SIZE} totalKeeps={totalKeeps} />
       }
+      <RegisterButtonSp/>
     </>
   );
 };

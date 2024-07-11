@@ -11,16 +11,12 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClientComponentClient()
   const router = useRouter();
-  const theme = useTheme()
-
-
-
 
   const sessionRedirect = async () => {
     const { data } = await supabase.auth.getSession();
 
     if (data.session) {
-      router.push("/dashboard"); // ダッシュボードページにリダイレクト
+      router.push("/dashboard/1"); // ダッシュボードページにリダイレクト
     }
   }
 
@@ -52,6 +48,9 @@ const Login = () => {
 
   return (
     <>
+      <div className="flex justify-center md:hidden">
+        <p className="text-primary text-2xl font-bold">ログイン</p>
+      </div>
       <div className=" mt-5 w-full flex justify-center">
         <TextField
           fullWidth
@@ -72,7 +71,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <div className="mt-5 flex justify-center w-full">
+      <div className="mt-5 flex justify-center w-full text-sm md:text-base">
         <Link color="secondary" href='/signup'>アカウントをお持ちでない方はこちら ＞</Link>
       </div>
       <div className="flex justify-center mt-10">
