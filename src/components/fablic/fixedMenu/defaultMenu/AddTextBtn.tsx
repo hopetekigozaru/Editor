@@ -34,17 +34,18 @@ const AddTextBtn = ({ canvas, saveState }: AddTextProps) => {
         selectable: false,
       });
       canvas.add(textObject);
+      canvas.setActiveObject(textObject)
       saveState();
     }
   };
   return (
-    <div>
+    <div className='flex justify-center'>
       <button className='hover:opacity-75' type='button' onClick={() => addText('新しいテキスト', 50, 50, 24, 0, canvas)}>
         <div>
-          <TitleIcon fontSize='large' />
+          <TitleIcon />
         </div>
         <div>
-          <p>
+          <p className='text-sm'>
             テキストを追加
           </p>
         </div>

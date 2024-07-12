@@ -35,6 +35,7 @@ const AddFileBtn = ({ canvas, saveState, clickInput }: AddFileProps) => {
             selectable: false
           });
           canvas.add(fabricImg);
+          canvas.setActiveObject(fabricImg)
         };
         img.src = event.target?.result as string;
       };
@@ -43,20 +44,18 @@ const AddFileBtn = ({ canvas, saveState, clickInput }: AddFileProps) => {
     }
   };
   return (
-    <div>
-      <div>
-        <input type='file' className='absolute opacity-0 w-0' onChange={handleImageUpload} />
-        <button type='button' className='cursor-pointer hover:opacity-75' onClick={clickInput}>
-          <div className='flex justify-center'>
-            <AttachFileIcon fontSize='large' />
-          </div>
-          <div>
-            <p>
-              ファイルを選択
-            </p>
-          </div>
-        </button>
-      </div>
+    <div className='flex justify-center'>
+      <input type='file' className='absolute opacity-0 w-0' onChange={handleImageUpload} />
+      <button type='button' className='cursor-pointer hover:opacity-75' onClick={clickInput}>
+        <div className='flex justify-center'>
+          <AttachFileIcon />
+        </div>
+        <div>
+          <p className='text-sm'>
+            ファイルを選択
+          </p>
+        </div>
+      </button>
     </div>
   )
 }

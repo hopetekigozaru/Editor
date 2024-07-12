@@ -4,13 +4,13 @@ interface BackBtnProps {
 }
 const BackBtn = ({ setIsFontSize }: BackBtnProps) => {
   return (
-    <div className='mr-5'>
+    <div className='mr-5 flex items-center'>
       <button type='button' onClick={() => { setIsFontSize(false) }} className='hover:opacity-75'>
         <div className='flex justify-center'>
-          <ArrowBackIcon fontSize='large' />
+          <ArrowBackIcon color='primary'/>
         </div>
         <div>
-          <p >
+          <p className='text-primary'>
             戻る
           </p>
         </div>

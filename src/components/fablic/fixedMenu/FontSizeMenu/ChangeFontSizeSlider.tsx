@@ -26,8 +26,8 @@ const ChangeFontSizeSlider = ({ canvas, activeObj, saveState }: ChangeFontSizeSl
   };
   return (
     <>
-      <div className='w-1/3'>
-        <Slider defaultValue={fontSize} aria-label="Default" onChange={handleFontSizeChange} valueLabelDisplay="auto" color="secondary" />
+      <div className='w-1/3 flex items-center'>
+        <Slider defaultValue={fontSize} size="medium" onChange={handleFontSizeChange}  color="secondary" />
       </div>
       <p className='text-white ml-5'>{fontSize}</p>
     </>

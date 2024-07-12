@@ -1,9 +1,12 @@
-import React, { useEffect, useState, MouseEvent } from 'react';
+import React, { useEffect, useState, MouseEvent, useRef } from 'react';
 import { fabric } from 'fabric';
 import { Object } from 'fabric/fabric-impl';
 import DefaultMenu from './defaultMenu/DefaultMenu';
 import TextMenu from './textMenu/TextMenu';
 import FontSizeMenu from './FontSizeMenu/FontSizeMenu';
+import { Box, Button, CssBaseline, Skeleton, styled, SwipeableDrawer, Typography, useTheme } from '@mui/material';
+import { grey } from '@mui/material/colors';
+import { Global } from '@emotion/react';
 
 
 interface MenuProps {
@@ -38,7 +41,16 @@ interface MenuProps {
     width: number;
     height: number;
   } | null;
+  isMobail: boolean
+  maxHistory: number
 }
+
+
+const Root = styled('div')(({ theme }) => ({
+  // height: '50%',
+  backgroundColor:
+    theme.palette.mode === 'light' ? grey[100] : theme.palette.background.default,
+}));
 
 const Menu = ({
   canvas,
@@ -62,11 +74,22 @@ const Menu = ({
   drawGrid,
   width,
   height,
-  keep
+  keep,
+  isMobail,
+  maxHistory,
 }: MenuProps) => {
   const [isFontSize, setIsFontSize] = useState<boolean>(false)
   const [isTextMenu, setIsTextMenu] = useState<boolean>(false)
-  const maxHistory = 10;
+  const [open, setOpen] = React.useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const theme = useTheme();
+
+
+
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
+
 
 
   useEffect(() => {
@@ -112,11 +135,13 @@ const Menu = ({
     setIsTextMenu(false)
     setIsFontSize(false)
     setSelectObject(false);
+    setOpen(false)
   };
 
   const handleSelectionCreatedOrUpdated = (e: fabric.IEvent) => {
     if (canvas) {
 
+    console.log(containerRef)
       let selectedObject = null;
       const activeObj = canvas.getActiveObject()
       setActiveObj(activeObj)
@@ -132,6 +157,7 @@ const Menu = ({
       }
       if (selectedObject) {
         showBubbleMenu(selectedObject);
+        setOpen(true)
       }
     }
   };
@@ -156,42 +182,86 @@ const Menu = ({
 
 
   return (
-    <div className='fixed bottom-0 left-0 w-screen h-[15vh] bg-primary flex justify-center items-center rounded-tl-[5em] rounded-tr-[5rem]'>
-      {(!isTextMenu && !isFontSize) &&
-        <DefaultMenu
-          canvas={canvas}
-          gridLines={gridLines}
-          setGridLines={setGridLines}
-          containerElm={containerElm}
-          drawGrid={drawGrid}
-          undoStack={undoStack}
-          setUndoStack={setUndoStack}
-          saveState={saveState}
-          setRedoStack={setRedoStack}
-          maxHistory={maxHistory}
-          setContinuous={setContinuous}
-          clickInput={clickInput}
-          continuous={continuous}
-          redoStack={redoStack}
-          width={width}
-          height={height}
-          keep={keep}
+    <div ref={containerRef} className={`fixed bottom-0 left-0 w-screen ${isMobail ? 'h-[40vh]':'h-[15vh]'} bg-primary flex justify-center items-center rounded-tl-[5rem] rounded-tr-[5rem]`}>
+      <DefaultMenu
+        canvas={canvas}
+        gridLines={gridLines}
+        setGridLines={setGridLines}
+        containerElm={containerElm}
+        drawGrid={drawGrid}
+        undoStack={undoStack}
+        setUndoStack={setUndoStack}
+        saveState={saveState}
+        setRedoStack={setRedoStack}
+        maxHistory={maxHistory}
+        setContinuous={setContinuous}
+        clickInput={clickInput}
+        continuous={continuous}
+        redoStack={redoStack}
+        width={width}
+        height={height}
+        keep={keep}
+        isMobail={isMobail}
+      />
+      <Root>
+        <CssBaseline />
+        <Global
+          styles={{
+            '.MuiDrawer-root > .MuiPaper-root': {
+              height: isMobail ?`37vh`: '17vh',
+              overflow: 'visible',
+              borderTopLeftRadius: '5rem',
+              borderTopRightRadius: '5rem',
+              border: `2 solid ${theme.palette.primary.main}`
+
+            },
+            '.MuiModal-root': {
+              height: '17vh'
+            },
+          }}
         />
-      }
-      {
-        (isTextMenu && !isFontSize) &&
-        <TextMenu
-          canvas={canvas}
-          activeObj={activeObj}
-          saveState={saveState}
-          clickInput={clickInput}
-          setIsFontSize={setIsFontSize}
-        />
-      }
-      {
-        isFontSize &&
-        <FontSizeMenu canvas={canvas} activeObj={activeObj as fabric.Textbox} saveState={saveState} setIsFontSize={setIsFontSize} />
-      }
+        <SwipeableDrawer
+          container={containerRef.current}
+          anchor="bottom"
+          open={open}
+          onClose={toggleDrawer(false)}
+          onOpen={toggleDrawer(true)}
+          swipeAreaWidth={0}
+          disableSwipeToOpen={false}
+          ModalProps={{
+            keepMounted: true,
+            hideBackdrop: true,  // バックドロップを完全に無効にする
+          }}
+        >
+          <Box
+            sx={{
+              height: '100%',
+              overflow: 'auto',
+              backgroundColor: 'white',
+              borderTopLeftRadius: '5rem',
+              borderTopRightRadius: '5rem',
+              border: `2 solid ${theme.palette.primary.main}`
+            }}
+          >
+            <div className='flex justify-center items-center h-full'>
+              {(!isFontSize && isTextMenu) &&
+                <TextMenu
+                  canvas={canvas}
+                  activeObj={activeObj}
+                  saveState={saveState}
+                  clickInput={clickInput}
+                  setIsFontSize={setIsFontSize}
+                />
+              }
+              {
+                isFontSize &&
+                <FontSizeMenu canvas={canvas} activeObj={activeObj as fabric.Textbox} saveState={saveState} setIsFontSize={setIsFontSize} />
+              }
+            </div>
+          </Box>
+        </SwipeableDrawer>
+      </Root>
+
     </div>
   )
 }

@@ -32,13 +32,13 @@ const ExportImageBtn = ({ canvas, gridLines, setGridLines, drawGrid }: exportIma
     }
   };
   return (
-    <div>
+    <div className='flex justify-center'>
       <button type='button' onClick={exportAsImage} className='hover:opacity-75'>
         <div>
-          <ImageIcon fontSize='large' />
+          <ImageIcon />
         </div>
         <div>
-          <p>
+          <p className='text-sm'>
             画像として出力
           </p>
         </div>

@@ -31,17 +31,22 @@ interface DefaultMenuProps {
     width: number;
     height: number;
   } | null;
+  isMobail: boolean
 }
-const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, undoStack, setUndoStack, saveState, setRedoStack, maxHistory, setContinuous, clickInput, continuous, redoStack, width, height, keep }: DefaultMenuProps) => {
+const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, undoStack, setUndoStack, saveState, setRedoStack, maxHistory, setContinuous, clickInput, continuous, redoStack, width, height, keep, isMobail }: DefaultMenuProps) => {
   return (
-    <div className='flex justify-between w-2/3'>
+    <div className={`grid ${isMobail ? 'grid-cols-2 w-11/12 gap-y-10' : 'grid-cols-8 w-2/3'}`}>
       <AddTextBtn canvas={canvas} saveState={saveState} />
       <AddFileBtn canvas={canvas} saveState={saveState} clickInput={clickInput} />
-      <UndoBtn canvas={canvas} undoStack={undoStack} setUndoStack={setUndoStack} continuous={continuous} setContinuous={setContinuous} setRedoStack={setRedoStack} maxHistory={maxHistory} />
-      <RedoBtn canvas={canvas} redoStack={redoStack} setRedoStack={setRedoStack} setUndoStack={setUndoStack} maxHistory={maxHistory} />
+      {!isMobail &&
+        <>
+          <UndoBtn canvas={canvas} undoStack={undoStack} setUndoStack={setUndoStack} continuous={continuous} setContinuous={setContinuous} setRedoStack={setRedoStack} maxHistory={maxHistory} isMobaile={isMobail} />
+          <RedoBtn canvas={canvas} redoStack={redoStack} setRedoStack={setRedoStack} setUndoStack={setUndoStack} maxHistory={maxHistory} isMobaile={isMobail} />
+        </>
+      }
       <ExportImageBtn canvas={canvas} gridLines={gridLines} setGridLines={setGridLines} drawGrid={drawGrid} />
       <ExportPdfBtn canvas={canvas} gridLines={gridLines} setGridLines={setGridLines} containerElm={containerElm} drawGrid={drawGrid} />
-      <SaveBtn canvas={canvas} width={width} height={height} setGridLines={setGridLines} gridLines={gridLines} drawGrid={drawGrid} keep={keep} />
+      <SaveBtn canvas={canvas} width={width} height={height} setGridLines={setGridLines} gridLines={gridLines} keep={keep} />
       {keep &&
         <DeleteBtn uuid={keep.uuid} />
       }

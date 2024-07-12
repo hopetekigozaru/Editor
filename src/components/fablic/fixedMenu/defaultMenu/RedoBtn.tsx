@@ -7,9 +7,10 @@ interface RedoBtnProps {
   setUndoStack: React.Dispatch<React.SetStateAction<string[]>>;
   setRedoStack: React.Dispatch<React.SetStateAction<string[]>>;
   maxHistory: number;
+  isMobaile: boolean
 }
 
-const RedoBtn = ({ canvas, redoStack, setRedoStack, setUndoStack, maxHistory }: RedoBtnProps) => {
+const RedoBtn = ({ canvas, redoStack, setRedoStack, setUndoStack, maxHistory, isMobaile }: RedoBtnProps) => {
   const handleRedo = () => {
     if (redoStack.length > 0 && canvas) {
       const nextState = redoStack[redoStack.length - 1];
@@ -33,15 +34,17 @@ const RedoBtn = ({ canvas, redoStack, setRedoStack, setUndoStack, maxHistory }: 
     }
   };
   return (
-    <div>
-      <button type='button' onClick={handleRedo} className='cursor-pointer hover:opacity-75'>
+    <div className='flex justify-center'>
+      <button type='button' onClick={handleRedo} className={`cursor-pointer hover:opacity-75`}>
         <div className='flex justify-center'>
-          <RedoIcon fontSize='large' />
+          <RedoIcon />
         </div>
         <div>
-          <p>
-            進む
-          </p>
+          {!isMobaile &&
+            <p className={`text-sm`}>
+              進む
+            </p>
+          }
         </div>
       </button>
     </div>

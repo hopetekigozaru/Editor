@@ -7,8 +7,9 @@ interface UndoBtnProps {
   setContinuous: React.Dispatch<React.SetStateAction<boolean>>;
   setRedoStack: React.Dispatch<React.SetStateAction<string[]>>;
   maxHistory: number;
+  isMobaile: boolean
 }
-const UndoBtn = ({ canvas, undoStack, setUndoStack, continuous, setContinuous, setRedoStack, maxHistory }: UndoBtnProps) => {
+const UndoBtn = ({ canvas, undoStack, setUndoStack, continuous, setContinuous, setRedoStack, maxHistory, isMobaile }: UndoBtnProps) => {
   const handleUndo = () => {
     if (undoStack.length > 0 && canvas) {
       let previousState = undoStack[undoStack.length - 1];
@@ -36,15 +37,17 @@ const UndoBtn = ({ canvas, undoStack, setUndoStack, continuous, setContinuous, s
     }
   };
   return (
-    <div>
+    <div className='flex justify-center'>
       <button type='button' onClick={handleUndo} className='cursor-pointer hover:opacity-75'>
         <div className='flex justify-center'>
-          <UndoIcon fontSize='large' />
+          <UndoIcon />
         </div>
         <div>
-          <p>
-            戻る
-          </p>
+          {!isMobaile &&
+            <p className={`text-sm`}>
+              戻る
+            </p>
+          }
         </div>
       </button>
     </div>

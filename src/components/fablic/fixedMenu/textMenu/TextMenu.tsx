@@ -2,7 +2,6 @@
 import React, { MouseEvent } from 'react';
 import { fabric } from 'fabric';
 import { Object } from 'fabric/fabric-impl';
-import BackBtn from './BackBtn';
 import ChangeColorBtn from './ChangeColorBtn';
 import ChangeFontSizeBtn from './ChangeFontSizeBtn';
 import ChangeFontBtn from './ChangeFontBtn';
@@ -18,8 +17,7 @@ interface TextMenuProps {
 const TextMenu = ({ canvas, activeObj, saveState, clickInput, setIsFontSize }: TextMenuProps) => {
 
   return (
-    <div className='w-1/3 flex justify-between'>
-      <BackBtn canvas={canvas} />
+    <div className='w-1/3 flex justify-between h-fit'>
       <ChangeColorBtn canvas={canvas} activeObj={activeObj as fabric.Textbox | undefined} clickInput={clickInput} saveState={saveState} />
       <ChangeFontSizeBtn setIsFontSize={setIsFontSize} />
       <ChangeFontBtn canvas={canvas} activeObj={activeObj} saveState={saveState} />

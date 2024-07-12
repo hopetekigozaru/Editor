@@ -6,10 +6,10 @@ const ChangeFontSizeBtn = ({ setIsFontSize }: ChangeFontSizeBtnProps) => {
   return (
     <button type='button' onClick={() => { setIsFontSize((prev) => !prev) }} className='hover:opacity-75' >
       <div>
-        <FormatSizeIcon fontSize='large' />
+        <FormatSizeIcon color='primary' />
       </div>
       <div>
-        <p>
+        <p className='text-primary'>
           テキストサイズ
         </p>
       </div>

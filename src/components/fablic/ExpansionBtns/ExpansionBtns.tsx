@@ -4,8 +4,9 @@ import ZoomBtn from "./ZoomBtns"
 interface ExpansionBtnsProps {
   canvas: fabric.Canvas | null
   constrainViewport: () => void
+  isMobaile: boolean
 }
-const ExpansionBtns = ({ canvas, constrainViewport }: ExpansionBtnsProps) => {
+const ExpansionBtns = ({ canvas, constrainViewport,isMobaile }: ExpansionBtnsProps) => {
   const [isZoom, setIsZoom] = useState(true);
   const [isPan, setIsPan] = useState(false);
 
@@ -40,12 +41,10 @@ const ExpansionBtns = ({ canvas, constrainViewport }: ExpansionBtnsProps) => {
     }
   }, [canvas])
   return (
-    <div className='h-full flex items-end  pl-3'>
-      <div>
-        <ZoomBtn canvas={canvas} isZoom={isZoom} setIsZoom={setIsZoom} setIsPan={setIsPan} constrainViewport={constrainViewport} />
-        <PanningBtn canvas={canvas} isPan={isPan} setIsPan={setIsPan} setIsZoom={setIsZoom} constrainViewport={constrainViewport} />
+      <div className={`${isMobaile ? 'flex':'block'}`}>
+        <ZoomBtn canvas={canvas} isZoom={isZoom} setIsZoom={setIsZoom} setIsPan={setIsPan} constrainViewport={constrainViewport} isMobaile={isMobaile} />
+        <PanningBtn canvas={canvas} isPan={isPan} setIsPan={setIsPan} setIsZoom={setIsZoom} constrainViewport={constrainViewport} isMobaile={isMobaile} />
       </div>
-    </div>
   )
 }
 

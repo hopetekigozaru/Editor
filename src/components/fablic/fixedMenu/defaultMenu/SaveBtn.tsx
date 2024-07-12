@@ -192,13 +192,13 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, keep }: SaveB
 
 
   return (
-    <div>
+    <div className='flex justify-center'>
       <button type='button' className='cursor-pointer hover:opacity-75' onClick={handleOpen} >
         <div className='flex justify-center'>
-          <SaveAltIcon fontSize='large' />
+          <SaveAltIcon />
         </div>
         <div>
-          <p>
+          <p className='text-sm'>
             一時保存
           </p>
         </div>

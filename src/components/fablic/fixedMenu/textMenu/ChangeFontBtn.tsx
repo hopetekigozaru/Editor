@@ -31,10 +31,10 @@ const ChangeFontBtn = ({ canvas, activeObj, saveState }: ChangeFontBtnProps) => 
     <div className='relative'>
       <button type='button' onClick={() => { setOpen(true) }} className='hover:opacity-75' >
         <div>
-          <FontDownloadIcon fontSize='large' />
+          <FontDownloadIcon color='primary' />
         </div>
         <div>
-          <p>
+          <p className='text-primary'>
             フォント
           </p>
         </div>

@@ -5,6 +5,8 @@ import BubbleMenu from '@/components/fablic/BubbleMenu/BubbleMenu';
 import Menu from '@/components/fablic/fixedMenu/Menu';
 import ExpansionBtns from './ExpansionBtns/ExpansionBtns';
 import { useTheme } from '@mui/material';
+import RedoBtn from './fixedMenu/defaultMenu/RedoBtn';
+import UndoBtn from './fixedMenu/defaultMenu/UndoBtn';
 
 interface CustomLineOptions extends fabric.ILineOptions {
   isGrid?: boolean;
@@ -39,6 +41,34 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
   const lastPosXRef = useRef(0);
   const lastPosYRef = useRef(0);
   const theme = useTheme()
+  const [windowSize, setWindowSize] = useState<{ WindowWidth: number | undefined, WindowHeight: number | undefined }>({
+    WindowWidth: undefined,
+    WindowHeight: undefined,
+  });
+  const [isMobail, setIsMobail] = useState(true)
+  const maxHistory = 10;
+
+  useEffect(() => {
+    // ウィンドウのサイズを取得する関数
+    const handleResize = () => {
+      setWindowSize({
+        WindowWidth: window.innerWidth,
+        WindowHeight: window.innerHeight,
+      });
+    };
+
+    setIsMobail(window.innerWidth < window.innerHeight)
+
+    // リサイズイベントを設定
+    window.addEventListener('resize', handleResize);
+
+    // 初期サイズを設定
+    handleResize();
+
+    // クリーンアップ関数
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   const saveState = useCallback(() => {
     if (canvas) {
@@ -50,15 +80,23 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
   }, [canvas, setUndoStack, setContinuous, setRedoStack]);
 
   useEffect(() => {
-    if (containerRef.current) {
-      const offsetWidth = containerRef.current.clientWidth;
-      console.log(offsetWidth)
-      const offsetHeight = offsetWidth / aspectRatio;
-      console.log(offsetHeight)
-      setCanvasHeight(offsetHeight);
-      setCanvasWidth(offsetWidth);
+    if (containerRef.current && windowSize.WindowWidth && windowSize.WindowHeight) {
+
+      if (windowSize.WindowWidth < windowSize.WindowHeight) {
+        const offsetWidth = containerRef.current.clientWidth;
+        const offsetHeight = offsetWidth / aspectRatio;
+
+        setCanvasHeight(offsetHeight);
+        setCanvasWidth(offsetWidth);
+      } else {
+        const offsetHeight = containerRef.current.offsetHeight;
+        const offsetWidth = offsetHeight * aspectRatio;
+
+        setCanvasHeight(offsetHeight);
+        setCanvasWidth(offsetWidth);
+      }
     }
-  }, [containerRef])
+  }, [containerRef, windowSize, isMobail])
 
 
   useEffect(() => {
@@ -95,15 +133,15 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
           canvas.forEachObject(obj => {
             if (obj.type === 'textbox') {
               obj as fabric.Textbox
-                obj.set({
-                  borderColor: theme.palette.secondary.main,  // 枠線の色
-                  cornerColor: theme.palette.secondary.main,  // コーナーの色
-                  cornerStyle: 'circle',
-                  cornerSize: 9,
-                  selectable: false,
-                });
+              obj.set({
+                borderColor: theme.palette.secondary.main,  // 枠線の色
+                cornerColor: theme.palette.secondary.main,  // コーナーの色
+                cornerStyle: 'circle',
+                cornerSize: 9,
+                selectable: false,
+              });
             }
-        });
+          });
           drawGrid(canvas);
           canvas.renderAll.bind(canvas)
         })
@@ -146,9 +184,9 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
         })
       }
 
-      const handleMouseDown = (opt:fabric.IEvent) => {
+      const handleMouseDown = (opt: fabric.IEvent) => {
         const activeObj = canvas.getActiveObject()
-        if(!activeObj){
+        if (!activeObj) {
           isDraggingRef.current = true
           const e = opt.e as MouseEvent
           lastPosXRef.current = e.clientX;
@@ -228,8 +266,8 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
 
   return (
     <>
-      <div className="w-full h-[75vh] flex justify-center items-center">
-        <div className="md:flex h-fit w-full">
+      <div className={`w-full ${isMobail ? 'h-[50vh]':'h-[75vh]'} flex justify-center items-center`}>
+        <div className={`${isMobail ? 'h-fit w-full' : 'h-[90%] w-fit flex'}`}>
 
           <div ref={containerRef} className="size-full border border-solid border-black">
             <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
@@ -265,11 +303,24 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
             width={canvasWidth}
             height={canvasHeight}
             keep={keep}
+            isMobail={isMobail}
+            maxHistory={maxHistory}
           />
-          <ExpansionBtns canvas={canvas} constrainViewport={constrainViewport} />
+          <div className={`${isMobail ? 'mt-3 justify-between' : 'h-full items-end'} flex pl-1`}>
+            {isMobail &&
+              <div className='flex'>
+                <div className={`${undoStack.length === 0 ? 'bg-gray-500' :'bg-primary'} p-2`}>
+                  <UndoBtn canvas={canvas} undoStack={undoStack} continuous={continuous} setContinuous={setContinuous}  setUndoStack={setUndoStack} setRedoStack={setRedoStack} maxHistory={maxHistory} isMobaile={isMobail} />
+                </div>
+                <div className={` ${redoStack.length === 0 ? 'bg-gray-500' : 'bg-primary'} p-2 ml-2`}>
+                  <RedoBtn canvas={canvas} redoStack={redoStack} setUndoStack={setUndoStack} setRedoStack={setRedoStack} maxHistory={maxHistory} isMobaile={isMobail} />
+                </div>
+              </div>
+            }
+            <ExpansionBtns canvas={canvas} constrainViewport={constrainViewport} isMobaile={isMobail} />
+          </div>
         </div>
       </div>
-      <div className="w-screen h-[12vh]"></div>
     </>
   );
 };
