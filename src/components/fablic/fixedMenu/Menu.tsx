@@ -141,7 +141,7 @@ const Menu = ({
   const handleSelectionCreatedOrUpdated = (e: fabric.IEvent) => {
     if (canvas) {
 
-    console.log(containerRef)
+      console.log(containerRef)
       let selectedObject = null;
       const activeObj = canvas.getActiveObject()
       setActiveObj(activeObj)
@@ -182,7 +182,7 @@ const Menu = ({
 
 
   return (
-    <div ref={containerRef} className={`fixed bottom-0 left-0 w-screen ${isMobail ? 'h-[40vh]':'h-[15vh]'} bg-primary flex justify-center items-center rounded-tl-[5rem] rounded-tr-[5rem]`}>
+    <div ref={containerRef} className={`fixed bottom-0 left-0 w-screen ${isMobail ? 'h-[40vh]' : 'h-[15vh]'} bg-primary flex justify-center items-center rounded-tl-[5rem] rounded-tr-[5rem]`}>
       <DefaultMenu
         canvas={canvas}
         gridLines={gridLines}
@@ -208,7 +208,7 @@ const Menu = ({
         <Global
           styles={{
             '.MuiDrawer-root > .MuiPaper-root': {
-              height: isMobail ?`37vh`: '17vh',
+              height: isMobail ? `42vh` : '17vh',
               overflow: 'visible',
               borderTopLeftRadius: '5rem',
               borderTopRightRadius: '5rem',
@@ -251,10 +251,11 @@ const Menu = ({
                   saveState={saveState}
                   clickInput={clickInput}
                   setIsFontSize={setIsFontSize}
+                  isMobail={isMobail}
                 />
               }
               {
-                isFontSize &&
+                (isFontSize && !isMobail) &&
                 <FontSizeMenu canvas={canvas} activeObj={activeObj as fabric.Textbox} saveState={saveState} setIsFontSize={setIsFontSize} />
               }
             </div>
