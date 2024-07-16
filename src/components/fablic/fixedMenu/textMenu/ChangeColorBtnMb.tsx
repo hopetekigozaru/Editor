@@ -11,7 +11,7 @@ interface ChangeColorBtnMbProps {
 
 const ChangeColorBtnMb = ({ canvas, activeObj, clickInput, saveState }: ChangeColorBtnMbProps) => {
   const [color, setColor] = useState('#000000');
-  const [paretColor, setParetColor] = useState('bg-gradient-to-r from-red-500 via-violet-500 to-blue-500');
+  const [paretColor, setParetColor] = useState('linear-gradient(to right, #f56565, #a78bfa, #3b82f6)');
 
   const debouncedColorState = debounce((color: string) => {
     if (!canvas) return;
@@ -19,7 +19,7 @@ const ChangeColorBtnMb = ({ canvas, activeObj, clickInput, saveState }: ChangeCo
       activeObj.set({ fill: color });
       canvas.renderAll();
       setColor(color);
-      setParetColor(`bg-[${color}]`)
+      setParetColor(color)
       saveState();
     }
   }, 100); // 1秒のデバウンス時間
@@ -56,7 +56,7 @@ const ChangeColorBtnMb = ({ canvas, activeObj, clickInput, saveState }: ChangeCo
         <div>
           <input type="color" className='absolute opacity-0 w-0 -top-[10%] left-[25%]' value={color} onChange={(value) => handleColorChange(value.target.value)} />
           <button type='button' onClick={clickInput} className='w-[1.5rem] h-[1.5rem] rounded-full border-2 border-solid border-gray-300'>
-            <div className={`w-full h-full rounded-full ${paretColor}`} ></div>
+            <div className={`w-full h-full rounded-full`} style={{background: paretColor}} ></div>
           </button>
         </div>
       </div>

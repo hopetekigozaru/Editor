@@ -15,6 +15,8 @@ const ChangeFontSizeSliderMb = ({ canvas, activeObj, saveState }: ChangeFontSize
       const activeObject = activeObj
       setFontSize(fontSize);
       activeObject.set({ fontSize });
+      activeObj.set('width', activeObj.minWidth); // 幅をリセット
+      activeObj.setCoords(); // 座標を更新
       canvas.renderAll();
       saveState();
     }

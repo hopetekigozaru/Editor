@@ -7,6 +7,7 @@ import ChangeFontSizeBtn from './ChangeFontSizeBtn';
 import ChangeFontBtn from './ChangeFontBtn';
 import ChangeColorBtnMb from './ChangeColorBtnMb';
 import ChangeFontSizeSliderMb from '../FontSizeMenu/FontSizeSliderMb';
+import ChangeFontBtnMb from './ChangeFontBtnMb';
 
 interface TextMenuProps {
   canvas: fabric.Canvas | null;
@@ -21,7 +22,7 @@ const TextMenu = ({ canvas, activeObj, saveState, clickInput, setIsFontSize, isM
 
   return (
     <div className={isMobail ? 'w-full' : 'w-full'}>
-      <div className='flex justify-center text-primary text-xl font-bold '>
+      <div className={`flex justify-center text-primary ${isMobail? 'text-xl':'hidden'}  font-bold`} >
         <div>
           <p>テキストメニュー</p>
         </div>
@@ -40,6 +41,7 @@ const TextMenu = ({ canvas, activeObj, saveState, clickInput, setIsFontSize, isM
           <div className='w-2/3'>
             <ChangeColorBtnMb canvas={canvas} activeObj={activeObj as fabric.Textbox | undefined} clickInput={clickInput} saveState={saveState} />
             <ChangeFontSizeSliderMb canvas={canvas} activeObj={activeObj as fabric.Textbox} saveState={saveState} />
+            <ChangeFontBtnMb canvas={canvas} activeObj={activeObj} saveState={saveState}/>
           </div>
         </div>
       }

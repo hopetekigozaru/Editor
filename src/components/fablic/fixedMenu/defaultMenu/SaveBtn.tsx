@@ -208,6 +208,7 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, keep }: SaveB
         onClose={handleClose}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
+        style={{height: '100vh'}}
       >
         <Box sx={{ ...style, width: '50vw' }}>
           <div className="w-full flex flex-col justify-center my-10">

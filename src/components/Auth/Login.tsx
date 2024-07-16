@@ -23,7 +23,7 @@ const Login = () => {
   useEffect(() => {
     // ログイン状態を確認し、ログインしていればダッシュボードにリダイレクト
     sessionRedirect()
-  }, []);
+  }, [sessionRedirect]);
 
   const handleLogin = async () => {
     try {

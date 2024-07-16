@@ -4,7 +4,7 @@ import { Object } from 'fabric/fabric-impl';
 import DefaultMenu from './defaultMenu/DefaultMenu';
 import TextMenu from './textMenu/TextMenu';
 import FontSizeMenu from './FontSizeMenu/FontSizeMenu';
-import { Box, Button, CssBaseline, Skeleton, styled, SwipeableDrawer, Typography, useTheme } from '@mui/material';
+import { Box, CssBaseline, styled, SwipeableDrawer, useTheme } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { Global } from '@emotion/react';
 
@@ -83,7 +83,10 @@ const Menu = ({
   const [open, setOpen] = React.useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null)
   const theme = useTheme();
-
+  const drawwerHeightRef = useRef<string>('')
+  useEffect(() => {
+    drawwerHeightRef.current = isMobail ? '42vh' : '17vh'
+  }, [isMobail])
 
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -108,18 +111,26 @@ const Menu = ({
   };
 
   const showBubbleMenu = (selectedObject: fabric.Object) => {
-    const activeObj = canvas?.getActiveObject()
+    const activeObj = canvas?.getActiveObject();
     if (canvasElm && bubbleElm && activeObj) {
       const canvasRect = canvasElm.getBoundingClientRect();
       const bubbleMenuHeight = bubbleElm ? bubbleElm.offsetHeight : 0;
+      const bubbleMenuWidth = bubbleElm ? bubbleElm.offsetWidth : 0;
 
       const boundingRect = selectedObject.getBoundingRect();
       let left = boundingRect.left + boundingRect.width + 10;
       let top = boundingRect.top + canvasRect.top - bubbleMenuHeight; // デフォルトの位置計算
 
-      // 画面外に出た場合の調整
+      // 上に出る場合の調整
       if (top < 0) {
-        top = boundingRect.top + canvasRect.top + boundingRect.height + 50; // 下に表示する
+        top = boundingRect.top + canvasRect.top + boundingRect.height + 10; // 下に表示する
+      }
+
+      // 左右の画面外に出た場合の調整
+      if (left + bubbleMenuWidth > canvasRect.right) {
+        left = canvasRect.right - bubbleMenuWidth - 10; // 画面右端に合わせる
+      } else if (left < canvasRect.left) {
+        left = canvasRect.left + 10; // 画面左端に合わせる
       }
 
       setBubbleMenuPosition({
@@ -140,8 +151,6 @@ const Menu = ({
 
   const handleSelectionCreatedOrUpdated = (e: fabric.IEvent) => {
     if (canvas) {
-
-      console.log(containerRef)
       let selectedObject = null;
       const activeObj = canvas.getActiveObject()
       setActiveObj(activeObj)
@@ -203,65 +212,71 @@ const Menu = ({
         keep={keep}
         isMobail={isMobail}
       />
-      <Root>
-        <CssBaseline />
-        <Global
-          styles={{
-            '.MuiDrawer-root > .MuiPaper-root': {
-              height: isMobail ? `42vh` : '17vh',
-              overflow: 'visible',
-              borderTopLeftRadius: '5rem',
-              borderTopRightRadius: '5rem',
-              border: `2 solid ${theme.palette.primary.main}`
+      {containerRef.current &&
+        <Root>
+          <CssBaseline />
+          <Global
+            styles={{
+              '.MuiDrawer-root > .MuiPaper-root': {
+                height: drawwerHeightRef.current,
+                overflow: 'visible',
+                borderTopLeftRadius: '5rem',
+                borderTopRightRadius: '5rem',
+                border: `2 solid ${theme.palette.primary.main}`
 
-            },
-            '.MuiModal-root': {
-              height: '17vh'
-            },
-          }}
-        />
-        <SwipeableDrawer
-          container={containerRef.current}
-          anchor="bottom"
-          open={open}
-          onClose={toggleDrawer(false)}
-          onOpen={toggleDrawer(true)}
-          swipeAreaWidth={0}
-          disableSwipeToOpen={false}
-          ModalProps={{
-            keepMounted: true,
-            hideBackdrop: true,  // バックドロップを完全に無効にする
-          }}
-        >
-          <Box
-            sx={{
-              height: '100%',
-              overflow: 'auto',
-              backgroundColor: 'white',
-              borderTopLeftRadius: '5rem',
-              borderTopRightRadius: '5rem',
-              border: `2 solid ${theme.palette.primary.main}`
+              },
+              '.MuiModal-root': {
+                height: '17vh'
+              },
             }}
-          >
-            <div className='flex justify-center items-center h-full'>
-              {(!isFontSize && isTextMenu) &&
-                <TextMenu
-                  canvas={canvas}
-                  activeObj={activeObj}
-                  saveState={saveState}
-                  clickInput={clickInput}
-                  setIsFontSize={setIsFontSize}
-                  isMobail={isMobail}
-                />
-              }
-              {
-                (isFontSize && !isMobail) &&
-                <FontSizeMenu canvas={canvas} activeObj={activeObj as fabric.Textbox} saveState={saveState} setIsFontSize={setIsFontSize} />
-              }
-            </div>
-          </Box>
-        </SwipeableDrawer>
-      </Root>
+          />
+          {containerRef.current && ( // containerRef.current が初期化されていることを確認
+            <SwipeableDrawer
+              // container={containerRef.current}
+              anchor="bottom"
+              open={open}
+              onClose={toggleDrawer(false)}
+              onOpen={toggleDrawer(true)}
+              swipeAreaWidth={0}
+              disableSwipeToOpen={false}
+              disableBackdropTransition={true}
+              hideBackdrop={true}
+              ModalProps={{
+                hideBackdrop: true,  // バックドロップを完全に無効にする
+              }}
+
+            >
+              <Box
+                sx={{
+                  height: '100%',
+                  overflow: 'auto',
+                  backgroundColor: 'white',
+                  borderTopLeftRadius: '5rem',
+                  borderTopRightRadius: '5rem',
+                  border: `2 solid ${theme.palette.primary.main}`
+                }}
+              >
+                <div className='flex justify-center items-center h-full'>
+                  {(!isFontSize && isTextMenu) &&
+                    <TextMenu
+                      canvas={canvas}
+                      activeObj={activeObj}
+                      saveState={saveState}
+                      clickInput={clickInput}
+                      setIsFontSize={setIsFontSize}
+                      isMobail={isMobail}
+                    />
+                  }
+                  {
+                    (isFontSize && !isMobail) &&
+                    <FontSizeMenu canvas={canvas} activeObj={activeObj as fabric.Textbox} saveState={saveState} setIsFontSize={setIsFontSize} />
+                  }
+                </div>
+              </Box>
+            </SwipeableDrawer>
+          )}
+        </Root>
+      }
 
     </div>
   )
