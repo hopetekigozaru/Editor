@@ -10,6 +10,8 @@ interface keepProps {
   height: number;
 }
 
+export const dynamic = 'force-dynamic'
+
 const Register = async ({
   searchParams,
 }: {
@@ -34,7 +36,7 @@ const Register = async ({
   const keep = keeps[0] as keepProps; // 最初の要素にアクセス
 
   return (
-    <Editor width={Number(keep.width)} height={Number(keep.height)} keep={keep} />
+    <Editor aspectRatio={Number(keep.width) / Number(keep.height)} keep={keep} />
   );
 };
 

@@ -7,9 +7,10 @@ interface PanningBtnProps {
   isPan: boolean
   setIsPan: Dispatch<SetStateAction<boolean>>
   setIsZoom: Dispatch<SetStateAction<boolean>>
+  isMobaile:boolean
 }
 
-const PanningBtn = ({ canvas, constrainViewport, isPan, setIsPan, setIsZoom }: PanningBtnProps) => {
+const PanningBtn = ({ canvas, constrainViewport, isPan, setIsPan, setIsZoom,isMobaile }: PanningBtnProps) => {
   const panning = () => {
     if (canvas) {
       const zoom = canvas.getZoom();
@@ -26,8 +27,8 @@ const PanningBtn = ({ canvas, constrainViewport, isPan, setIsPan, setIsZoom }: P
     }
   }
   return (
-    <button className={`block p-2  mt-1 ${isPan ? 'bg-primary hover:opacity-80' : 'bg-gray-500'}`} onClick={panning} >
-      <ZoomOutIcon fontSize='large' className="text-white" />
+    <button className={`block p-2 ${isMobaile ? 'ml-2':'ml-0 mt-1'} ${isPan ? 'bg-primary hover:opacity-80' : 'bg-gray-500'}`} onClick={panning} >
+      <ZoomOutIcon fontSize={isMobaile ? 'medium' : 'large'} className="text-white" />
     </button>
   )
 }

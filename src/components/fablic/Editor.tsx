@@ -1,17 +1,18 @@
 'use client';
-import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { fabric } from 'fabric';
+import React, { useEffect, useState } from 'react';
+import { fabric } from 'fabric-with-gestures';
 import BubbleMenu from '@/components/fablic/BubbleMenu/BubbleMenu';
 import Menu from '@/components/fablic/fixedMenu/Menu';
 import ExpansionBtns from './ExpansionBtns/ExpansionBtns';
+import RedoBtn from './fixedMenu/defaultMenu/RedoBtn';
+import UndoBtn from './fixedMenu/defaultMenu/UndoBtn';
+import { useEditor } from '@/hooks/fabric/useEditor';
 
-interface CustomLineOptions extends fabric.ILineOptions {
-  isGrid?: boolean;
-}
+
+
 
 interface EditorProps {
-  width: number;
-  height: number;
+  aspectRatio: number;
   keep: {
     uuid: string;
     title: string;
@@ -21,189 +22,44 @@ interface EditorProps {
   } | null;
 }
 
-const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const bubbleRef = useRef<HTMLDivElement>(null);
-  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-  const [bubbleMenuPosition, setBubbleMenuPosition] = useState<{ left: number | undefined; top: number | undefined }>({ left: 0, top: 0 });
-  const [selectObject, setSelectObject] = useState<boolean>(false);
-  const [gridLines, setGridLines] = useState<fabric.Line[]>([]);
-  const [activeObj, setActiveObj] = useState<fabric.Object | null>(null);
-  const [undoStack, setUndoStack] = useState<string[]>([]);
-  const [redoStack, setRedoStack] = useState<string[]>([]);
-  const [continuous, setContinuous] = useState<boolean>(false);
-  const isDraggingRef = useRef(false);
-  const lastPosXRef = useRef(0);
-  const lastPosYRef = useRef(0);
-
-  const saveState = useCallback(() => {
-    if (canvas) {
-      const json = canvas.toJSON(['isGrid']);
-      setUndoStack(prevUndoStack => [...prevUndoStack, JSON.stringify(json)]);
-      setContinuous(false);
-      setRedoStack([]);
-    }
-  }, [canvas, setUndoStack, setContinuous, setRedoStack]);
-
-
-  useEffect(() => {
-    const canvasElm = canvasRef.current;
-    if (!canvasElm) return;
-
-    const canvasInstance = new fabric.Canvas(canvasElm);
-    setCanvas(canvasInstance);
-
-    // Enable selection
-    canvasInstance.selection = true;
-
-    // Cleanup on unmount
-    return () => {
-      if (canvasInstance) {
-        canvasInstance.dispose();
-      }
-    };
-  }, [keep]);
-
-
-
-  useEffect(() => {
-    // Setup object:modified event listener
-    if (canvas) {
-      // Draw grid
-      // Load JSON data if available
-      // 画像オブジェクトをFabric.jsの形式に変換する関数
-      if (keep && canvas) {
-        canvas.clear();
-        canvas.loadFromJSON(keep!.fabric_object, () => {
-          drawGrid(canvas);
-          canvas.renderAll.bind(canvas)
-        })
-      } else {
-        drawGrid(canvas)
-      }
-      saveState(); // Save initial state
-      canvas.on('object:modified', saveState);
-
-      // Function to constrain viewport within canvas boundaries
-      const handleMouseDown = (opt: fabric.IEvent) => {
-        const evt = opt.e as MouseEvent;
-        if (evt.shiftKey) {
-          canvas._objects.map((obj) => {
-            obj.lockMovementX = true
-            obj.lockMovementY = true
-          })
-          canvas.discardActiveObject();
-          canvas.selection = false;
-          isDraggingRef.current = true;
-          lastPosXRef.current = evt.clientX;
-          lastPosYRef.current = evt.clientY;
-        } else {
-          isDraggingRef.current = false;
-          canvas.selection = true;
-          const activeObj = canvas.getActiveObject();
-          if (activeObj) {
-            const length = canvas._objects.length;
-            activeObj.moveTo(length - 1)
-          }
-        }
-      };
-
-      const handleMouseMove = (opt: fabric.IEvent) => {
-        if (isDraggingRef.current) {
-          const e = opt.e as MouseEvent;
-          const vpt = canvas.viewportTransform;
-          if (vpt && lastPosXRef.current !== undefined && lastPosYRef.current !== undefined) {
-            vpt[4] += e.clientX - lastPosXRef.current;
-            vpt[5] += e.clientY - lastPosYRef.current;
-            constrainViewport();
-            canvas.requestRenderAll();
-            lastPosXRef.current = e.clientX;
-            lastPosYRef.current = e.clientY;
-          }
-        }
-      };
-
-      const handleMouseUp = () => {
-        isDraggingRef.current = false;
-        canvas.selection = true;
-        canvas._objects.map((obj) => {
-          obj.lockMovementX = false
-          obj.lockMovementY = false
-        })
-      };
-
-
-      canvas.on('mouse:down', handleMouseDown);
-      canvas.on('mouse:move', handleMouseMove);
-      canvas.on('mouse:up', handleMouseUp);
-
-      return () => {
-        canvas.off('object:modified', saveState); // Cleanup
-        canvas.off('mouse:down', handleMouseDown);
-        canvas.off('mouse:move', handleMouseMove);
-        canvas.off('mouse:up', handleMouseUp);
-      };
-    }
-  }, [canvas, saveState, isDraggingRef.current, lastPosXRef.current, lastPosYRef.current]);
-
-  const constrainViewport = () => {
-    if (canvas) {
-      const vpt = canvas.viewportTransform;
-      if (vpt) {
-        // X方向の制限
-        if (vpt[4] > 0) vpt[4] = 0;  // 左端
-        const maxX = canvas.width! - canvas.getWidth() * vpt[0];
-        if (vpt[4] < maxX) vpt[4] = maxX;  // 右端
-
-        // Y方向の制限
-        if (vpt[5] > 0) vpt[5] = 0;  // 上端
-        const maxY = canvas.height! - canvas.getHeight() * vpt[3];
-        if (vpt[5] < maxY) vpt[5] = maxY;  // 下端
-
-        // Canvasに変更を反映
-        canvas.setViewportTransform(vpt);
-      }
-    }
-  };
-
-  const drawGrid = (canvas: fabric.Canvas) => {
-    const gridSize = 100;
-    const lines: fabric.Line[] = [];
-
-    for (let i = 0; i <= (canvas.width ?? 0) / gridSize; i++) {
-      const vertical = new fabric.Line(
-        [i * gridSize, 0, i * gridSize, canvas.height ?? 0],
-        { stroke: '#ccc', selectable: false, evented: false, isGrid: true } as CustomLineOptions
-      );
-      lines.push(vertical);
-      canvas.add(vertical);
-      vertical.moveTo(0)
-    }
-
-    for (let i = 0; i <= (canvas.height ?? 0) / gridSize; i++) {
-      const horizontal = new fabric.Line(
-        [0, i * gridSize, canvas.width ?? 0, i * gridSize],
-        { stroke: '#ccc', selectable: false, evented: false, isGrid: true } as CustomLineOptions
-      );
-      lines.push(horizontal);
-      canvas.add(horizontal);
-      horizontal.moveTo(0)
-    }
-
-
-    setGridLines(lines);
-  };
-
-
+const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
+  const {
+    bubbleRef,
+    bubbleMenuPosition,
+    setBubbleMenuPosition,
+    selectObject,
+    setSelectObject,
+    activeObj,
+    setActiveObj,
+    undoStack,
+    setUndoStack,
+    redoStack,
+    setRedoStack,
+    continuous,
+    setContinuous,
+    isMobail,
+    MAX_HISTORY,
+    saveState,
+    constrainViewport,
+    containerRef,
+    canvasWidth,
+    canvasHeight,
+    canvas,
+    gridLines,
+    setGridLines,
+    drawGrid,
+    canvasRef,
+    addToStack,
+    restoreGridProperties
+  } = useEditor(keep,aspectRatio)
 
   return (
     <>
-      <div className="w-full h-[78vh] flex justify-center items-center">
-        <div className="flex">
+      <div className={`w-full ${isMobail ? 'h-[50vh]' : 'h-[75vh]'} flex justify-center items-center`}>
+        <div className={`${isMobail ? 'h-fit w-full' : 'h-[90%] w-fit flex'}`}>
 
-          <div ref={containerRef} className="size-fit border border-solid border-black">
-            <canvas ref={canvasRef} width={width} height={height} />
+          <div ref={containerRef} className="size-full border border-solid border-black">
+            <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
           </div>
           <BubbleMenu
             canvas={canvas}
@@ -233,14 +89,29 @@ const Editor: React.FC<EditorProps> = ({ width, height, keep }) => {
             gridLines={gridLines}
             setGridLines={setGridLines}
             drawGrid={drawGrid}
-            width={width}
-            height={height}
+            width={canvasWidth}
+            height={canvasHeight}
             keep={keep}
+            isMobail={isMobail}
+            MAX_HISTORY={MAX_HISTORY}
+            addToStack={addToStack}
+            restoreGridProperties={restoreGridProperties}
           />
-          <ExpansionBtns canvas={canvas} constrainViewport={constrainViewport} />
+          <div className={`${isMobail ? 'mt-3 justify-between' : 'h-full items-end'} flex pl-1`}>
+            {isMobail &&
+              <div className='flex'>
+                <div className={`${undoStack.length === 0 ? 'bg-gray-500' : 'bg-primary'} p-2`}>
+                  <UndoBtn canvas={canvas} undoStack={undoStack} continuous={continuous} setContinuous={setContinuous} setUndoStack={setUndoStack} setRedoStack={setRedoStack} isMobaile={isMobail} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
+                </div>
+                <div className={` ${redoStack.length === 0 ? 'bg-gray-500' : 'bg-primary'} p-2 ml-2`}>
+                  <RedoBtn canvas={canvas} redoStack={redoStack} setUndoStack={setUndoStack} setRedoStack={setRedoStack} isMobaile={isMobail} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
+                </div>
+              </div>
+            }
+            <ExpansionBtns canvas={canvas} constrainViewport={constrainViewport} isMobaile={isMobail} />
+          </div>
         </div>
       </div>
-      <div className="w-screen h-[12vh]"></div>
     </>
   );
 };

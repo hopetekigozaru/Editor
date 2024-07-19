@@ -28,20 +28,35 @@ const ChangeFontBtn = ({ canvas, activeObj, saveState }: ChangeFontBtnProps) => 
 
   };
   return (
-    <div className='relative'>
+    <div className='h-full'>
       <button type='button' onClick={() => { setOpen(true) }} className='hover:opacity-75' >
         <div>
-          <FontDownloadIcon fontSize='large' />
+          <FontDownloadIcon color='primary' />
         </div>
         <div>
-          <p>
+          <p className='text-primary'>
             フォント
           </p>
         </div>
       </button>
       {open &&
-        <Select className='absolute left-0 top-[-100px] ' value={fontFamily} onChange={handleFontFamilyChange} open={open}
-          onClose={() => setOpen(false)}>
+        <Select className='absolute' value={fontFamily} onChange={handleFontFamilyChange} open={open}
+          onClose={() => setOpen(false)}
+          MenuProps={{
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left',
+            },
+            transformOrigin: {
+              vertical: 'top',
+              horizontal: 'left',
+            },
+            PaperProps: {
+              style: {
+                maxHeight: 200, // メニューの最大高さを設定
+              },
+            },
+          }}>
           <MenuItem value="Arial">Arial</MenuItem>
           <MenuItem value="Helvetica">Helvetica</MenuItem>
           <MenuItem value="Times New Roman">Times New Roman</MenuItem>

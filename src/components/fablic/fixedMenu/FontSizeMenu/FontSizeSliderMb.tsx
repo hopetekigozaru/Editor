@@ -1,12 +1,12 @@
 import { Slider } from "@mui/material"
 import { debounce } from "lodash";
 import { useState } from "react";
-interface ChangeFontSizeSliderProps {
+interface ChangeFontSizeSliderMbProps {
   canvas: fabric.Canvas | null;
   activeObj: fabric.Textbox | undefined;
   saveState: () => void;
 }
-const ChangeFontSizeSlider = ({ canvas, activeObj, saveState }: ChangeFontSizeSliderProps) => {
+const ChangeFontSizeSliderMb = ({ canvas, activeObj, saveState }: ChangeFontSizeSliderMbProps) => {
   const [fontSize, setFontSize] = useState<number>(24);
 
   const debouncedFontSizeChange = debounce((fontSize: number) => {
@@ -28,11 +28,16 @@ const ChangeFontSizeSlider = ({ canvas, activeObj, saveState }: ChangeFontSizeSl
   };
   return (
     <>
-      <div className='w-1/3 flex items-center'>
-        <Slider defaultValue={fontSize} size="medium" onChange={handleFontSizeChange}  color="secondary" />
+      <div className="text-primary">
+        フォントサイズ
       </div>
-      <p className='text-white ml-5'>{fontSize}</p>
+      <div className="flex items-center">
+        <div className='w-full flex items-center'>
+          <Slider defaultValue={fontSize} size="medium" onChange={handleFontSizeChange} color="secondary" />
+        </div>
+        <p className='text-primary ml-5'>{fontSize}</p>
+      </div>
     </>
   )
 }
-export default ChangeFontSizeSlider
+export default ChangeFontSizeSliderMb

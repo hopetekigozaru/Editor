@@ -50,12 +50,14 @@ const DeleteBtn = ({ uuid }: { uuid: string }) => {
 
   return (
     <>
+    <div className='flex justify-center'>
       <button type='button' onClick={handleOpen} className='text-red-500 hover:opacity-75'>
-        <DeleteIcon fontSize='large' />
-        <div>
+        <DeleteIcon />
+        <div className='text-sm'>
           削除
         </div>
       </button>
+    </div>
       <Modal
         open={open}
         onClose={handleClose}

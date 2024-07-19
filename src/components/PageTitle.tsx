@@ -38,7 +38,7 @@ const PageTitle = () => {
     }
   }, [pathName])
   return (
-    <div className="ml-10 text-xl font-bold flex items-center h-full">
+    <div className="ml-10 text-xl font-bold hidden md:flex items-center h-full">
       <div className="flex items-center size-full">
         <p>{title}</p>
       </div>

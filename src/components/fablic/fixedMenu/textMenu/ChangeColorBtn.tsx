@@ -32,10 +32,10 @@ const ChangeColorBtn = ({ canvas, activeObj, clickInput, saveState }: ChangeColo
       <input type="color" className='absolute opacity-0 w-0' value={color} onChange={(value) => handleColorChange(value)} />
       <button type='button' onClick={clickInput} className='hover:opacity-75'>
         <div>
-          <ColorLensIcon fontSize='large' />
+          <ColorLensIcon color='primary' />
         </div>
         <div>
-          <p>
+          <p className='text-primary'>
             色
           </p>
         </div>

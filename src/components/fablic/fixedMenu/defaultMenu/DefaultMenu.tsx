@@ -19,7 +19,7 @@ interface DefaultMenuProps {
   setContinuous: React.Dispatch<React.SetStateAction<boolean>>;
   redoStack: string[];
   setRedoStack: React.Dispatch<React.SetStateAction<string[]>>;
-  maxHistory: number;
+  MAX_HISTORY: number;
   saveState: () => void;
   clickInput: (e: MouseEvent<HTMLButtonElement>) => void;
   width: number;
@@ -31,17 +31,24 @@ interface DefaultMenuProps {
     width: number;
     height: number;
   } | null;
+  isMobail: boolean
+  addToStack: (stack: string[], item: string) => string[]
+  restoreGridProperties: (canvas: fabric.Canvas) => void
 }
-const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, undoStack, setUndoStack, saveState, setRedoStack, maxHistory, setContinuous, clickInput, continuous, redoStack, width, height, keep }: DefaultMenuProps) => {
+const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, undoStack, setUndoStack, saveState, setRedoStack, MAX_HISTORY, setContinuous, clickInput, continuous, redoStack, width, height, keep, isMobail, addToStack, restoreGridProperties }: DefaultMenuProps) => {
   return (
-    <div className='flex justify-between w-2/3'>
+    <div className={`grid ${isMobail ? 'grid-cols-2 w-11/12 gap-y-10' : 'grid-cols-8 w-2/3'}`}>
       <AddTextBtn canvas={canvas} saveState={saveState} />
       <AddFileBtn canvas={canvas} saveState={saveState} clickInput={clickInput} />
-      <UndoBtn canvas={canvas} undoStack={undoStack} setUndoStack={setUndoStack} continuous={continuous} setContinuous={setContinuous} setRedoStack={setRedoStack} maxHistory={maxHistory} />
-      <RedoBtn canvas={canvas} redoStack={redoStack} setRedoStack={setRedoStack} setUndoStack={setUndoStack} maxHistory={maxHistory} />
+      {!isMobail &&
+        <>
+          <UndoBtn canvas={canvas} undoStack={undoStack} setUndoStack={setUndoStack} continuous={continuous} setContinuous={setContinuous} setRedoStack={setRedoStack} isMobaile={isMobail} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
+          <RedoBtn canvas={canvas} redoStack={redoStack} setRedoStack={setRedoStack} setUndoStack={setUndoStack} isMobaile={isMobail} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
+        </>
+      }
       <ExportImageBtn canvas={canvas} gridLines={gridLines} setGridLines={setGridLines} drawGrid={drawGrid} />
       <ExportPdfBtn canvas={canvas} gridLines={gridLines} setGridLines={setGridLines} containerElm={containerElm} drawGrid={drawGrid} />
-      <SaveBtn canvas={canvas} width={width} height={height} setGridLines={setGridLines} gridLines={gridLines} drawGrid={drawGrid} keep={keep} />
+      <SaveBtn canvas={canvas} width={width} height={height} setGridLines={setGridLines} gridLines={gridLines} keep={keep} />
       {keep &&
         <DeleteBtn uuid={keep.uuid} />
       }

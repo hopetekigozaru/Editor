@@ -46,13 +46,13 @@ const ExportPdfBtn = ({ canvas, gridLines, setGridLines, containerElm, drawGrid 
   };
 
   return (
-    <div>
+    <div className='flex justify-center'>
       <button type='button' onClick={exportAsPDF} className='hover:opacity-75'>
         <div>
-          <PictureAsPdfIcon fontSize='large' />
+          <PictureAsPdfIcon/>
         </div>
         <div>
-          <p>
+          <p className='text-sm'>
             PDFとして出力
           </p>
         </div>

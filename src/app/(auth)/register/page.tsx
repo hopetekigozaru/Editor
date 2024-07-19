@@ -6,7 +6,7 @@ const Register = ({
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
   return (
-    <Editor width={Number(searchParams.width)} height={Number(searchParams.height)} keep={null} />
+    <Editor aspectRatio={Number(searchParams.width) / Number(searchParams.height) } keep={null} />
   )
 };
 

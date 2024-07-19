@@ -10,7 +10,6 @@ interface SaveBtnProps {
   height: number;
   gridLines: fabric.Line[];
   setGridLines: React.Dispatch<React.SetStateAction<fabric.Line[]>>;
-  drawGrid: (canvas: fabric.Canvas) => void;
   keep: {
     uuid: string;
     title: string
@@ -34,7 +33,7 @@ const style = {
   pb: 3,
 };
 
-const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, keep }: SaveBtnProps) => {
+const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, keep }: SaveBtnProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(keep?.title ? keep!.title : "無題")
@@ -51,7 +50,6 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
     event.preventDefault();
     if (canvas) {
       canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
-
       gridLines.forEach((line) => {
         canvas.remove(line);
       });
@@ -185,8 +183,6 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
             throw new Error(`Failed to save canvas data: ${res ? res.status : 'unknown error'}`);
           }
         }
-
-        drawGrid(canvas);
       } catch (error) {
         console.error('Error saving canvas:', error);
       }
@@ -196,13 +192,13 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
 
 
   return (
-    <div>
+    <div className='flex justify-center'>
       <button type='button' className='cursor-pointer hover:opacity-75' onClick={handleOpen} >
         <div className='flex justify-center'>
-          <SaveAltIcon fontSize='large' />
+          <SaveAltIcon />
         </div>
         <div>
-          <p>
+          <p className='text-sm'>
             一時保存
           </p>
         </div>
@@ -212,6 +208,7 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, drawGrid, kee
         onClose={handleClose}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
+        style={{height: '100vh'}}
       >
         <Box sx={{ ...style, width: '50vw' }}>
           <div className="w-full flex flex-col justify-center my-10">

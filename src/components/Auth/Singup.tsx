@@ -20,7 +20,6 @@ const Singup = () => {
         password,
       });
       if (error) throw error;
-      console.log('signup successful')
       router.push('/signup/pre_register')
     } catch (error: unknown) { // unknown 型を指定してエラーメッセージを取得
       if (error instanceof Error) {
@@ -35,6 +34,9 @@ const Singup = () => {
   };
   return (
     <>
+      <div className="flex justify-center md:hidden">
+        <p className="text-primary text-2xl font-bold">サインアップ</p>
+      </div>
       <div className="mt-5 flex justify-center">
         <TextField
           fullWidth
@@ -55,7 +57,7 @@ const Singup = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <div className="mt-5 flex justify-center w-full">
+      <div className="mt-5 flex justify-center w-full md:text-base text-[0.8rem]">
         <Link color="secondary" href='/'>すでにアカウントをお持ちの方はこちら ＞</Link>
       </div>
       <div className="flex justify-center mt-10">
