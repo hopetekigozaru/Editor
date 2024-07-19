@@ -6,36 +6,26 @@ interface UndoBtnProps {
   continuous: boolean;
   setContinuous: React.Dispatch<React.SetStateAction<boolean>>;
   setRedoStack: React.Dispatch<React.SetStateAction<string[]>>;
-  maxHistory: number;
   isMobaile: boolean
+  addToStack: (stack: string[], item: string) => string[]
+  restoreGridProperties: (canvas: fabric.Canvas) => void
 }
-const UndoBtn = ({ canvas, undoStack, setUndoStack, continuous, setContinuous, setRedoStack, maxHistory, isMobaile }: UndoBtnProps) => {
+const UndoBtn = ({ canvas, undoStack, setUndoStack, setRedoStack, isMobaile, addToStack, restoreGridProperties }: UndoBtnProps) => {
   const handleUndo = () => {
-    if (undoStack.length > 0 && canvas) {
-      let previousState = undoStack[undoStack.length - 1];
-      if (!continuous) {
-        previousState = undoStack[undoStack.length - 2];
-        setContinuous(true)
-      }
-      setRedoStack(prevRedoStack => {
-        const newRedoStack = [...prevRedoStack, JSON.stringify(canvas.toJSON(['isGrid']))];
-        if (newRedoStack.length > maxHistory) {
-          newRedoStack.shift();
-        }
-        return newRedoStack;
-      });
-      setUndoStack(prevUndoStack => prevUndoStack.slice(0, -1));
+    if (canvas && undoStack.length > 1) {
+      const currentState = undoStack[undoStack.length - 1];
+      const previousState = undoStack[undoStack.length - 2];
+
+      setRedoStack(prevStack => addToStack(prevStack, currentState));
+      setUndoStack(prevStack => prevStack.slice(0, -1));
+
       canvas.loadFromJSON(JSON.parse(previousState), () => {
-        canvas.renderAll.bind(canvas);
-        // Restore grid lines to be unselectable
-        canvas.getObjects().forEach((obj) => {
-          if ((obj as any).isGrid) {
-            obj.set({ selectable: false, evented: false });
-          }
-        });
+        restoreGridProperties(canvas);
+        canvas.renderAll();
       });
     }
   };
+
   return (
     <div className='flex justify-center'>
       <button type='button' onClick={handleUndo} className='cursor-pointer hover:opacity-75'>

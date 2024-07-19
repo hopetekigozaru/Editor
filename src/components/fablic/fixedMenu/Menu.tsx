@@ -42,7 +42,9 @@ interface MenuProps {
     height: number;
   } | null;
   isMobail: boolean
-  maxHistory: number
+  MAX_HISTORY: number,
+  addToStack: (stack: string[], item: string) => string[]
+  restoreGridProperties: (canvas: fabric.Canvas) => void
 }
 
 
@@ -76,7 +78,9 @@ const Menu = ({
   height,
   keep,
   isMobail,
-  maxHistory,
+  MAX_HISTORY,
+  addToStack,
+  restoreGridProperties
 }: MenuProps) => {
   const [isFontSize, setIsFontSize] = useState<boolean>(false)
   const [isTextMenu, setIsTextMenu] = useState<boolean>(false)
@@ -96,7 +100,7 @@ const Menu = ({
 
 
   useEffect(() => {
-    if (undoStack.length > maxHistory) {
+    if (undoStack.length > MAX_HISTORY) {
       undoStack.shift();
     }
   }, [undoStack])
@@ -202,7 +206,7 @@ const Menu = ({
         setUndoStack={setUndoStack}
         saveState={saveState}
         setRedoStack={setRedoStack}
-        maxHistory={maxHistory}
+        MAX_HISTORY={MAX_HISTORY}
         setContinuous={setContinuous}
         clickInput={clickInput}
         continuous={continuous}
@@ -211,6 +215,8 @@ const Menu = ({
         height={height}
         keep={keep}
         isMobail={isMobail}
+        addToStack={addToStack}
+        restoreGridProperties={restoreGridProperties}
       />
       {containerRef.current &&
         <Root>

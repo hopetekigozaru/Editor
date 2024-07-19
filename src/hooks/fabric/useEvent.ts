@@ -1,7 +1,14 @@
 import { useEffect, useRef } from "react";
 import { fabric } from 'fabric-with-gestures';
 
-export const useEvent = (canvas:fabric.Canvas | null,isMobail: boolean, saveState: () => void) => {
+// カスタムインターフェースを定義
+interface CustomFabricObject extends fabric.Object {
+  lastScaleX?: number;
+  lastScaleY?: number;
+}
+
+
+export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean, saveState: () => void) => {
   const isDraggingRef = useRef(false);
   const lastPosXRef = useRef(0);
   const lastPosYRef = useRef(0);
@@ -26,31 +33,105 @@ export const useEvent = (canvas:fabric.Canvas | null,isMobail: boolean, saveStat
     }
   };
 
-  const handleObjectMove = (e: fabric.IEvent) => {
-    if(!canvas) return
-    const obj = e.target;
+  const handleObjectMoving = (e: fabric.IEvent) => {
+    if (!canvas) return;
+    const obj = e.target as fabric.Object;
+    if (!obj) return;
 
-    // Canvasの境界を取得
     const canvasWidth = canvas.getWidth();
     const canvasHeight = canvas.getHeight();
-    if (obj) {
-      if (obj.left! < 0) {
-        obj.left = 0;
-      } else if (obj.left! + obj.width! > canvasWidth) {
-        obj.left = canvasWidth - obj.width!;
-      }
 
-      if (obj.top! < 0) {
-        obj.top = 0;
-      } else if (obj.top! + obj.height! > canvasHeight) {
-        obj.top = canvasHeight - obj.height!;
-      }
+    // オブジェクトの現在の位置、サイズ、回転を取得
+    const angle = obj.angle || 0;
+    const width = obj.getScaledWidth();
+    const height = obj.getScaledHeight();
+
+    // 回転を考慮したバウンディングボックスを計算
+    const boundingRect = obj.getBoundingRect(true);
+    const boundWidth = boundingRect.width;
+    const boundHeight = boundingRect.height;
+
+    // オブジェクトの中心からの左右、上下のオフセットを計算
+    const offsetX = (boundWidth - width) / 2;
+    const offsetY = (boundHeight - height) / 2;
+
+    // 新しい位置を計算
+    let left = obj.left as number;
+    let top = obj.top as number;
+
+    // 左右の制限
+    const minLeft = offsetX;
+    const maxLeft = canvasWidth - (boundWidth - offsetX);
+    left = Math.min(Math.max(left, minLeft), maxLeft);
+
+    // 上下の制限
+    const minTop = offsetY;
+    const maxTop = canvasHeight - (boundHeight - offsetY);
+    top = Math.min(Math.max(top, minTop), maxTop);
+
+    // 新しい位置をセット
+    obj.set({ left, top });
+  };
+
+  const handleObjectScaling = (e: fabric.IEvent) => {
+    if (!canvas) return;
+
+    const obj = e.target as CustomFabricObject;
+    if (!obj) return;
+
+    const canvasWidth = canvas.getWidth();
+    const canvasHeight = canvas.getHeight();
+
+    // オブジェクトの現在のバウンディングボックスを取得
+    const boundingRect = obj.getBoundingRect(true);
+
+    // スケーリングの方向を判断
+    const scalingX = obj.scaleX! > (obj.lastScaleX ?? obj.scaleX!);
+    const scalingY = obj.scaleY! > (obj.lastScaleY ?? obj.scaleY!);
+
+    let scaleX = obj.scaleX!;
+    let scaleY = obj.scaleY!;
+
+    // 左端の制限
+    if (boundingRect.left < 0 && scalingX) {
+      scaleX = obj.lastScaleX ?? obj.scaleX!;
+    } else if (boundingRect.left + boundingRect.width > canvasWidth && scalingX) {
+      scaleX = obj.lastScaleX ?? obj.scaleX!;
     }
-    // オブジェクトの位置を制限
-  }
+
+    // 上端の制限
+    if (boundingRect.top < 0 && scalingY) {
+      scaleY = obj.lastScaleY ?? obj.scaleY!;
+    } else if (boundingRect.top + boundingRect.height > canvasHeight && scalingY) {
+      scaleY = obj.lastScaleY ?? obj.scaleY!;
+    }
+
+    // 新しいスケールをセット
+    obj.set({ scaleX, scaleY });
+
+    // 現在のスケールを保存
+    obj.lastScaleX = scaleX;
+    obj.lastScaleY = scaleY;
+
+    // オブジェクトの座標を更新
+    obj.setCoords();
+    handleObjectMoving(e)
+
+    // キャンバスを再描画
+    canvas.renderAll();
+  };
+
+  // オブジェクトが追加されたときに初期スケールを設定
+  const handleObjectAdded = (e: fabric.IEvent) => {
+    const obj = e.target as CustomFabricObject;
+    if (obj) {
+      obj.lastScaleX = obj.scaleX;
+      obj.lastScaleY = obj.scaleY;
+    }
+  };
 
   const handleMouseMove = (opt: fabric.IEvent) => {
-    if(!canvas) return
+    if (!canvas) return
     if (isDraggingRef.current) {
       const vpt = canvas.viewportTransform;
       if (isMobail) {
@@ -78,7 +159,7 @@ export const useEvent = (canvas:fabric.Canvas | null,isMobail: boolean, saveStat
   };
 
   const handleMouseUp = (e: fabric.IEvent) => {
-    if(!canvas) return
+    if (!canvas) return
     const object = e.target as fabric.Textbox
     if (object) {
       object.selectable = true;
@@ -90,13 +171,15 @@ export const useEvent = (canvas:fabric.Canvas | null,isMobail: boolean, saveStat
 
   const handleSelectionClear = (e: fabric.IEvent) => {
     const objects = e.deselected as Array<fabric.Object>
-    objects.map((obj) => {
-      obj.selectable = false
-    })
+    if (objects) {
+      objects.map((obj) => {
+        obj.selectable = false
+      })
+    }
   }
 
   const handleMouseDown = (opt: fabric.IEvent) => {
-    if(!canvas) return
+    if (!canvas) return
     const activeObj = canvas.getActiveObject()
     if (!activeObj) {
       isDraggingRef.current = true
@@ -112,8 +195,12 @@ export const useEvent = (canvas:fabric.Canvas | null,isMobail: boolean, saveStat
     }
   }
 
+
+
   return {
-    handleObjectMove,
+    handleObjectMoving,
+    handleObjectScaling,
+    handleObjectAdded,
     handleMouseMove,
     handleMouseUp,
     handleSelectionClear,

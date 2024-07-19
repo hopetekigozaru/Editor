@@ -10,6 +10,8 @@ interface keepProps {
   height: number;
 }
 
+export const dynamic = 'force-dynamic'
+
 const Register = async ({
   searchParams,
 }: {

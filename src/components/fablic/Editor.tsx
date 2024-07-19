@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { fabric } from 'fabric-with-gestures';
 import BubbleMenu from '@/components/fablic/BubbleMenu/BubbleMenu';
 import Menu from '@/components/fablic/fixedMenu/Menu';
@@ -23,33 +23,35 @@ interface EditorProps {
 }
 
 const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
-const {
-  canvasRef,
-  containerRef,
-  bubbleRef,
-  canvas,
-  bubbleMenuPosition,
-  setBubbleMenuPosition,
-  selectObject,
-  setSelectObject,
-  gridLines,
-  setGridLines,
-  activeObj,
-  setActiveObj,
-  undoStack,
-  setUndoStack,
-  redoStack,
-  setRedoStack,
-  continuous,
-  setContinuous,
-  canvasWidth,
-  canvasHeight,
-  isMobail,
-  maxHistory,
-  saveState,
-  drawGrid,
-  constrainViewport
-}  = useEditor(aspectRatio,keep)
+  const {
+    bubbleRef,
+    bubbleMenuPosition,
+    setBubbleMenuPosition,
+    selectObject,
+    setSelectObject,
+    activeObj,
+    setActiveObj,
+    undoStack,
+    setUndoStack,
+    redoStack,
+    setRedoStack,
+    continuous,
+    setContinuous,
+    isMobail,
+    MAX_HISTORY,
+    saveState,
+    constrainViewport,
+    containerRef,
+    canvasWidth,
+    canvasHeight,
+    canvas,
+    gridLines,
+    setGridLines,
+    drawGrid,
+    canvasRef,
+    addToStack,
+    restoreGridProperties
+  } = useEditor(keep,aspectRatio)
 
   return (
     <>
@@ -91,16 +93,18 @@ const {
             height={canvasHeight}
             keep={keep}
             isMobail={isMobail}
-            maxHistory={maxHistory}
+            MAX_HISTORY={MAX_HISTORY}
+            addToStack={addToStack}
+            restoreGridProperties={restoreGridProperties}
           />
           <div className={`${isMobail ? 'mt-3 justify-between' : 'h-full items-end'} flex pl-1`}>
             {isMobail &&
               <div className='flex'>
                 <div className={`${undoStack.length === 0 ? 'bg-gray-500' : 'bg-primary'} p-2`}>
-                  <UndoBtn canvas={canvas} undoStack={undoStack} continuous={continuous} setContinuous={setContinuous} setUndoStack={setUndoStack} setRedoStack={setRedoStack} maxHistory={maxHistory} isMobaile={isMobail} />
+                  <UndoBtn canvas={canvas} undoStack={undoStack} continuous={continuous} setContinuous={setContinuous} setUndoStack={setUndoStack} setRedoStack={setRedoStack} isMobaile={isMobail} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
                 </div>
                 <div className={` ${redoStack.length === 0 ? 'bg-gray-500' : 'bg-primary'} p-2 ml-2`}>
-                  <RedoBtn canvas={canvas} redoStack={redoStack} setUndoStack={setUndoStack} setRedoStack={setRedoStack} maxHistory={maxHistory} isMobaile={isMobail} />
+                  <RedoBtn canvas={canvas} redoStack={redoStack} setUndoStack={setUndoStack} setRedoStack={setRedoStack} isMobaile={isMobail} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
                 </div>
               </div>
             }

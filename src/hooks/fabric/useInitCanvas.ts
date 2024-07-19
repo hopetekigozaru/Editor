@@ -5,43 +5,45 @@ interface CustomLineOptions extends fabric.ILineOptions {
   isGrid?: boolean;
 }
 
-export const useInitCanvas = (aspectRatio:number) => {
+export const useInitCanvas = (aspectRatio: number) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-  const [canvasWidth, setCanvasWidth] = useState<number>(0)
-  const [canvasHeight, setCanvasHeight] = useState<number>(0)
-  const [windowSize, setWindowSize] = useState<{ WindowWidth: number | undefined, WindowHeight: number | undefined }>({
-    WindowWidth: undefined,
-    WindowHeight: undefined,
-  });
-  const [isMobail, setIsMobail] = useState(true)
+  const [canvasWidth, setCanvasWidth] = useState<number>(0);
+  const [canvasHeight, setCanvasHeight] = useState<number>(0);
   const [gridLines, setGridLines] = useState<fabric.Line[]>([]);
+  const [windowSize, setWindowSize] = useState<{ windowWidth: number | undefined, windowHeight: number | undefined }>({
+    windowWidth: undefined,
+    windowHeight: undefined,
+  });
+  const [isMobail, setIsMobail] = useState(true);
   const handleResize = () => {
     setWindowSize({
-      WindowWidth: window.innerWidth,
-      WindowHeight: window.innerHeight,
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight,
     });
   };
   useEffect(() => {
-    setIsMobail(window.innerWidth < window.innerHeight)
+    // クライアントサイドでのみ実行
+    if (typeof window !== 'undefined') {
+      setIsMobail(window.innerWidth < window.innerHeight);
 
-    // リサイズイベントを設定
-    window.addEventListener('resize', handleResize);
+      // 初期サイズを設定
+      handleResize();
 
-    // 初期サイズを設定
-    handleResize();
+      // リサイズイベントを設定
+      window.addEventListener('resize', handleResize);
 
-    // クリーンアップ関数
-    return () => window.removeEventListener('resize', handleResize);
+      // クリーンアップ関数
+      return () => window.removeEventListener('resize', handleResize);
+    }
   }, []);
 
 
   // キャンバスの高さと幅を設定
   useEffect(() => {
-    if (containerRef.current && windowSize.WindowWidth && windowSize.WindowHeight) {
-
-      if (windowSize.WindowWidth < windowSize.WindowHeight) {
+    if (containerRef.current && windowSize.windowWidth && windowSize.windowHeight) {
+      if (windowSize.windowWidth < windowSize.windowHeight) {
         const offsetWidth = containerRef.current.clientWidth;
         const offsetHeight = offsetWidth / aspectRatio;
 
@@ -55,9 +57,7 @@ export const useInitCanvas = (aspectRatio:number) => {
         setCanvasWidth(offsetWidth);
       }
     }
-  }, [containerRef, windowSize, isMobail,aspectRatio])
-
-
+  }, [containerRef, windowSize]);
 
   // fabricキャンバス初期化
   useEffect(() => {
@@ -117,5 +117,5 @@ export const useInitCanvas = (aspectRatio:number) => {
     drawGrid,
     setGridLines,
     gridLines
-  }
-}
+  };
+};

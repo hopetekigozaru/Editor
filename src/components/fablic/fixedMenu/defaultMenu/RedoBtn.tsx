@@ -6,30 +6,22 @@ interface RedoBtnProps {
   redoStack: string[];
   setUndoStack: React.Dispatch<React.SetStateAction<string[]>>;
   setRedoStack: React.Dispatch<React.SetStateAction<string[]>>;
-  maxHistory: number;
   isMobaile: boolean
+  addToStack:(stack: string[], item: string) => string[]
+  restoreGridProperties:(canvas:fabric.Canvas) => void
 }
 
-const RedoBtn = ({ canvas, redoStack, setRedoStack, setUndoStack, maxHistory, isMobaile }: RedoBtnProps) => {
+const RedoBtn = ({ canvas, redoStack, setRedoStack, setUndoStack, isMobaile,addToStack ,restoreGridProperties }: RedoBtnProps) => {
   const handleRedo = () => {
-    if (redoStack.length > 0 && canvas) {
+    if (canvas && redoStack.length > 0) {
       const nextState = redoStack[redoStack.length - 1];
-      setUndoStack(prevUndoStack => {
-        const newUndoStack = [...prevUndoStack, JSON.stringify(canvas.toJSON(['isGrid']))];
-        if (newUndoStack.length > maxHistory) {
-          newUndoStack.shift();
-        }
-        return newUndoStack;
-      });
-      setRedoStack(prevRedoStack => prevRedoStack.slice(0, -1));
+
+      setUndoStack(prevStack => addToStack(prevStack, JSON.stringify(canvas.toJSON(['isGrid']))));
+      setRedoStack(prevStack => prevStack.slice(0, -1));
+
       canvas.loadFromJSON(JSON.parse(nextState), () => {
-        canvas.renderAll.bind(canvas);
-        // Restore grid lines to be unselectable
-        canvas.getObjects().forEach((obj) => {
-          if ((obj as any).isGrid) {
-            obj.set({ selectable: false, evented: false });
-          }
-        });
+        restoreGridProperties(canvas);
+        canvas.renderAll();
       });
     }
   };
