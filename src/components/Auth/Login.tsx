@@ -12,6 +12,7 @@ const Login = () => {
   const supabase = createClientComponentClient()
   const router = useRouter();
 
+
   const sessionRedirect = async () => {
     const { data } = await supabase.auth.getSession();
 
