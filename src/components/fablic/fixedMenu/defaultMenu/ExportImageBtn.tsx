@@ -39,7 +39,7 @@ const ExportImageBtn = ({ canvas, gridLines, setGridLines, drawGrid }: exportIma
         </div>
         <div>
           <p className='text-sm'>
-            画像として出力
+            画像出力
           </p>
         </div>
       </button>

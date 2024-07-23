@@ -37,7 +37,7 @@ interface DefaultMenuProps {
 }
 const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, undoStack, setUndoStack, saveState, setRedoStack, MAX_HISTORY, setContinuous, clickInput, continuous, redoStack, width, height, keep, isMobail, addToStack, restoreGridProperties }: DefaultMenuProps) => {
   return (
-    <div className={`grid ${isMobail ? 'grid-cols-2 w-11/12 gap-y-10' : 'grid-cols-8 w-2/3'}`}>
+    <div className={`grid ${isMobail ? 'grid-cols-2 w-11/12 gap-y-10' : 'grid-cols-7 w-2/3'}`}>
       <AddTextBtn canvas={canvas} saveState={saveState} />
       <AddFileBtn canvas={canvas} saveState={saveState} clickInput={clickInput} />
       {!isMobail &&

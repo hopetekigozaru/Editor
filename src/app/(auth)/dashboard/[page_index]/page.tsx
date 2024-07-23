@@ -53,7 +53,7 @@ const DashBoard: React.FC<DashBoardProps> = async ({ params }) => {
 
   return (
     <>
-      <div className='w-full md:h-[85vh] flex items-center justify-center'>
+      <div className='w-full md:h-[85%] flex items-center justify-center'>
         <div className='size-full grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-y-10 gap-x-5 p-5'>
           {keeps &&
             keeps.map((keep) => (

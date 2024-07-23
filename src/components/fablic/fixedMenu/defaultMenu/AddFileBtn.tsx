@@ -81,7 +81,7 @@ const AddFileBtn = ({ canvas, saveState, clickInput }: AddFileProps) => {
         </div>
         <div>
           <p className='text-sm'>
-            ファイルを選択
+            ファイル＋
           </p>
         </div>
       </button>
