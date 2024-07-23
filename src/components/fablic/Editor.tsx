@@ -55,8 +55,8 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
 
   return (
     <>
-      <div className={`w-full ${isMobail ? 'h-[50vh]' : 'h-[75vh]'} flex justify-center items-center `}>
-        <div className={`${isMobail ? 'h-fit w-full' : 'h-[90%] w-fit flex'}`}>
+      <div className={`w-full ${isMobail ? 'h-[50vh]' : 'h-[75vh]'} flex justify-center items-center relative`}>
+        <div className={`${isMobail ? 'h-fit w-full' : 'h-[70%] w-fit flex'} fixed`}>
 
           <div ref={containerRef} className="border border-solid border-black">
             <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
