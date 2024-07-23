@@ -29,8 +29,8 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
       </Head>
       <body className={inter.className}>
         <ThemeRegistry options={{ key: 'mui' }}>
-          <main className="max-h-screen min-w-[100vw] h-[100vh] text-white overflow-hidden">
-            <header className="fixed w-screen top-0 left-0 h-[10%] bg-primary">
+          <main className="max-h-screen min-w-[100vw]  text-white overflow-hidden">
+            <header className="fixed w-screen top-0 left-0 h-[10vh] bg-primary">
               <div className="h-full flex justify-between items-center w-full">
                 <div className="w-1/2 flex items-center">
                   <p className="text-3xl font-bold pl-10 ">
@@ -43,7 +43,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
                 </div>
               </div>
             </header>
-            <div className="w-screen h-[10%]"></div>
+            <div className="w-screen h-[10vh]"></div>
             {children}
           </main>
         </ThemeRegistry>

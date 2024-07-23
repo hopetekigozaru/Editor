@@ -7,7 +7,8 @@ interface ChangeFontSizeSliderProps {
   saveState: () => void;
 }
 const ChangeFontSizeSlider = ({ canvas, activeObj, saveState }: ChangeFontSizeSliderProps) => {
-  const [fontSize, setFontSize] = useState<number>(24);
+  const size = activeObj?.fontSize as number
+  const [fontSize, setFontSize] = useState<number>(size);
 
   const debouncedFontSizeChange = debounce((fontSize: number) => {
     if (!canvas || !activeObj) return;
@@ -20,9 +21,10 @@ const ChangeFontSizeSlider = ({ canvas, activeObj, saveState }: ChangeFontSizeSl
       canvas.renderAll();
       saveState();
     }
-  }, 100); // 100ミリ秒のデバウンス時間
+  }, 50); // 100ミリ秒のデバウンス時間
 
   const handleFontSizeChange = (event: Event, value: number | number[], activeThumb: number) => {
+    console.log(value)
     const newSize = value as number;
     debouncedFontSizeChange(newSize); // デバウンスされた関数を呼び出す
   };
