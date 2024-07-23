@@ -7,7 +7,8 @@ interface ChangeFontSizeSliderMbProps {
   saveState: () => void;
 }
 const ChangeFontSizeSliderMb = ({ canvas, activeObj, saveState }: ChangeFontSizeSliderMbProps) => {
-  const [fontSize, setFontSize] = useState<number>(24);
+  const size = activeObj?.fontSize as number
+  const [fontSize, setFontSize] = useState<number>(size);
 
   const debouncedFontSizeChange = debounce((fontSize: number) => {
     if (!canvas || !activeObj) return;
