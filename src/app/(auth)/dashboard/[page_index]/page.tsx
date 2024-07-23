@@ -53,8 +53,8 @@ const DashBoard: React.FC<DashBoardProps> = async ({ params }) => {
 
   return (
     <>
-      <div className='w-full md:h-[85%] flex items-center justify-center'>
-        <div className='size-full grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-y-10 gap-x-5 p-5'>
+      <div className='w-full h-[90%] md:h-[85%] flex items-center justify-center '>
+        <div className='size-full grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-y-10 gap-x-5 p-5 overflow-scroll'>
           {keeps &&
             keeps.map((keep) => (
               <a href={"/edit?keep_id=" + keep.uuid} key={keep.uuid} className='flex justify-centerw-1/4 border-primary border-4 border-solid rounded-2xl hover:opacity-65'>
