@@ -20,7 +20,7 @@ const Pagination = ({ length, pageSize, totalKeeps }: PaginarionProps) => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
   return (
-    <div className='flex justify-center h-[5vh]'>
+    <div className='flex justify-center h-[5%]'>
       <Button onClick={handlePrevPage} color="secondary" disabled={currentPage === 1}>
         前へ
       </Button>

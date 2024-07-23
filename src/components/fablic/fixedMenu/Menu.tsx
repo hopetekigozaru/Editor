@@ -89,7 +89,7 @@ const Menu = ({
   const theme = useTheme();
   const drawwerHeightRef = useRef<string>('')
   useEffect(() => {
-    drawwerHeightRef.current = isMobail ? '42vh' : '17vh'
+    drawwerHeightRef.current = isMobail ? '42%' : '17%'
   }, [isMobail])
 
 
@@ -195,7 +195,7 @@ const Menu = ({
 
 
   return (
-    <div ref={containerRef} className={`fixed bottom-0 left-0 w-screen ${isMobail ? 'h-[40vh]' : 'h-[15vh]'} bg-primary flex justify-center items-center rounded-tl-[5rem] rounded-tr-[5rem]`}>
+    <div ref={containerRef} className={`fixed bottom-0 left-0 w-screen ${isMobail ? 'h-[40%]' : 'h-[15%]'} bg-primary flex justify-center items-center rounded-tl-[5rem] rounded-tr-[5rem]`}>
       <DefaultMenu
         canvas={canvas}
         gridLines={gridLines}
@@ -232,7 +232,7 @@ const Menu = ({
 
               },
               '.MuiModal-root': {
-                height: '17vh'
+                height: '17%'
               },
             }}
           />

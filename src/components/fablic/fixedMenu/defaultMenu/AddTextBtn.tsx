@@ -46,7 +46,7 @@ const AddTextBtn = ({ canvas, saveState }: AddTextProps) => {
         </div>
         <div>
           <p className='text-sm'>
-            テキストを追加
+            テキスト＋
           </p>
         </div>
       </button>

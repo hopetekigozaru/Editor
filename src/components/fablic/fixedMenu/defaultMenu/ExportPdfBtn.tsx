@@ -53,7 +53,7 @@ const ExportPdfBtn = ({ canvas, gridLines, setGridLines, containerElm, drawGrid 
         </div>
         <div>
           <p className='text-sm'>
-            PDFとして出力
+            PDF出力
           </p>
         </div>
       </button>
