@@ -33,7 +33,7 @@ const ChangeFontSizeSliderMb = ({ canvas, activeObj, saveState }: ChangeFontSize
       </div>
       <div className="flex items-center">
         <div className='w-full flex items-center'>
-          <Slider defaultValue={fontSize} size="medium" onChange={handleFontSizeChange} color="secondary" />
+          <Slider value={fontSize} size="medium" onChange={handleFontSizeChange} color="secondary" />
         </div>
         <p className='text-primary ml-5'>{fontSize}</p>
       </div>
