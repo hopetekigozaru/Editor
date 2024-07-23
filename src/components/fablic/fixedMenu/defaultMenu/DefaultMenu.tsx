@@ -36,8 +36,20 @@ interface DefaultMenuProps {
   restoreGridProperties: (canvas: fabric.Canvas) => void
 }
 const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, undoStack, setUndoStack, saveState, setRedoStack, MAX_HISTORY, setContinuous, clickInput, continuous, redoStack, width, height, keep, isMobail, addToStack, restoreGridProperties }: DefaultMenuProps) => {
+  const style = () => {
+    let style;
+    if(isMobail) {
+      style = 'grid-cols-2 w-11/12 gap-y-10';
+    } else if (keep) {
+      style = 'grid-cols-8 w-2/3'
+    } else {
+      style = 'grid-cols-7 w-2/3'
+    }
+
+    return style
+  }
   return (
-    <div className={`grid ${isMobail ? 'grid-cols-2 w-11/12 gap-y-10' : 'grid-cols-7 w-2/3'}`}>
+    <div className={`grid ${style()}`}>
       <AddTextBtn canvas={canvas} saveState={saveState} />
       <AddFileBtn canvas={canvas} saveState={saveState} clickInput={clickInput} />
       {!isMobail &&
