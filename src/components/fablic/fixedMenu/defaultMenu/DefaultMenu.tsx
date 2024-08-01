@@ -1,4 +1,3 @@
-import { MouseEvent } from "react"
 import AddFileBtn from "./AddFileBtn"
 import AddTextBtn from "./AddTextBtn"
 import ExportImageBtn from "./ExportImageBtn"
@@ -7,35 +6,9 @@ import RedoBtn from "./RedoBtn"
 import UndoBtn from "./UndoBtn"
 import SaveBtn from "./SaveBtn"
 import DeleteBtn from "./DeleteBts"
-interface DefaultMenuProps {
-  canvas: fabric.Canvas | null;
-  gridLines: fabric.Line[];
-  setGridLines: React.Dispatch<React.SetStateAction<fabric.Line[]>>;
-  containerElm: HTMLDivElement | null;
-  drawGrid: (canvas: fabric.Canvas) => void;
-  undoStack: string[];
-  setUndoStack: React.Dispatch<React.SetStateAction<string[]>>;
-  continuous: boolean;
-  setContinuous: React.Dispatch<React.SetStateAction<boolean>>;
-  redoStack: string[];
-  setRedoStack: React.Dispatch<React.SetStateAction<string[]>>;
-  MAX_HISTORY: number;
-  saveState: () => void;
-  clickInput: (e: MouseEvent<HTMLButtonElement>) => void;
-  width: number;
-  height: number;
-  keep: {
-    uuid: string;
-    title: string
-    fabric_object: fabric.Object | null; // fabric_objectがnullになる可能性も考慮
-    width: number;
-    height: number;
-  } | null;
-  isMobail: boolean
-  addToStack: (stack: string[], item: string) => string[]
-  restoreGridProperties: (canvas: fabric.Canvas) => void
-}
-const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, undoStack, setUndoStack, saveState, setRedoStack, MAX_HISTORY, setContinuous, clickInput, continuous, redoStack, width, height, keep, isMobail, addToStack, restoreGridProperties }: DefaultMenuProps) => {
+import { DefaultMenuProps } from "@/type/fabricType"
+
+const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, undoStack, setUndoStack, saveState, setRedoStack, setContinuous, clickInput, continuous, redoStack, keep, isMobail, addToStack, restoreGridProperties }: DefaultMenuProps) => {
   const style = () => {
     let style;
     if(isMobail) {
@@ -54,15 +27,15 @@ const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, 
       <AddFileBtn canvas={canvas} saveState={saveState} clickInput={clickInput} />
       {!isMobail &&
         <>
-          <UndoBtn canvas={canvas} undoStack={undoStack} setUndoStack={setUndoStack} continuous={continuous} setContinuous={setContinuous} setRedoStack={setRedoStack} isMobaile={isMobail} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
-          <RedoBtn canvas={canvas} redoStack={redoStack} setRedoStack={setRedoStack} setUndoStack={setUndoStack} isMobaile={isMobail} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
+          <UndoBtn canvas={canvas} undoStack={undoStack} setUndoStack={setUndoStack} continuous={continuous} setContinuous={setContinuous} setRedoStack={setRedoStack} isMobile ={isMobail} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
+          <RedoBtn canvas={canvas} redoStack={redoStack} setRedoStack={setRedoStack} setUndoStack={setUndoStack} isMobile ={isMobail} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
         </>
       }
       <ExportImageBtn canvas={canvas} gridLines={gridLines} setGridLines={setGridLines} drawGrid={drawGrid} />
       <ExportPdfBtn canvas={canvas} gridLines={gridLines} setGridLines={setGridLines} containerElm={containerElm} drawGrid={drawGrid} />
-      <SaveBtn canvas={canvas} width={width} height={height} setGridLines={setGridLines} gridLines={gridLines} keep={keep} />
+      <SaveBtn canvas={canvas} setGridLines={setGridLines} gridLines={gridLines} keep={keep} isMobail={isMobail} />
       {keep &&
-        <DeleteBtn uuid={keep.uuid} />
+        <DeleteBtn uuid={keep.uuid} isMobaile={isMobail}/>
       }
     </div>
   )

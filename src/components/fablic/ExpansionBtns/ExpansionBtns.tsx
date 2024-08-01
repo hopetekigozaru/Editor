@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
 import PanningBtn from "./PanningBtn"
 import ZoomBtn from "./ZoomBtns"
-interface ExpansionBtnsProps {
-  canvas: fabric.Canvas | null
-  constrainViewport: () => void
-  isMobaile: boolean
-}
-const ExpansionBtns = ({ canvas, constrainViewport,isMobaile }: ExpansionBtnsProps) => {
+import { ExpansionBtnsProps } from "@/type/fabricType";
+
+
+
+const ExpansionBtns = ({ canvas, constrainViewport,isMobile  }: ExpansionBtnsProps) => {
   const [isZoom, setIsZoom] = useState(true);
   const [isPan, setIsPan] = useState(false);
 
@@ -41,9 +40,9 @@ const ExpansionBtns = ({ canvas, constrainViewport,isMobaile }: ExpansionBtnsPro
     }
   }, [canvas])
   return (
-      <div className={`${isMobaile ? 'flex':'block'}`}>
-        <ZoomBtn canvas={canvas} isZoom={isZoom} setIsZoom={setIsZoom} setIsPan={setIsPan} constrainViewport={constrainViewport} isMobaile={isMobaile} />
-        <PanningBtn canvas={canvas} isPan={isPan} setIsPan={setIsPan} setIsZoom={setIsZoom} constrainViewport={constrainViewport} isMobaile={isMobaile} />
+      <div className={`${isMobile  ? 'flex':'block'}`}>
+        <ZoomBtn canvas={canvas} isZoom={isZoom} setIsZoom={setIsZoom} setIsPan={setIsPan} constrainViewport={constrainViewport} isMobile ={isMobile } />
+        <PanningBtn canvas={canvas} isPan={isPan} setIsPan={setIsPan} setIsZoom={setIsZoom} constrainViewport={constrainViewport} isMobile ={isMobile } />
       </div>
   )
 }

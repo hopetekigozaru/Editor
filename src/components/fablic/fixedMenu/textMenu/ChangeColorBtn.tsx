@@ -1,19 +1,14 @@
+import { ChangeColorBtnProps } from '@/type/fabricType';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import { debounce } from 'lodash';
 import { ChangeEventHandler, MouseEvent, useState } from 'react';
 
-interface ChangeColorBtnProps {
-  canvas: fabric.Canvas | null;
-  activeObj: fabric.Textbox | undefined;
-  clickInput: (e: MouseEvent<HTMLButtonElement>) => void
-  saveState: () => void;
-}
-
-const ChangeColorBtn = ({ canvas, activeObj, clickInput, saveState }: ChangeColorBtnProps) => {
+const ChangeColorBtn = ({ canvas, clickInput, saveState  }: ChangeColorBtnProps) => {
   const [color, setColor] = useState('#000000');
 
   const debouncedColorState = debounce((color: string) => {
     if (!canvas) return;
+    const activeObj = canvas.getActiveObject();
     if (activeObj && activeObj.type === 'textbox') {
       activeObj.set({ fill: color });
       canvas.renderAll();
@@ -32,10 +27,10 @@ const ChangeColorBtn = ({ canvas, activeObj, clickInput, saveState }: ChangeColo
       <input type="color" className='absolute opacity-0 w-0' value={color} onChange={(value) => handleColorChange(value)} />
       <button type='button' onClick={clickInput} className='hover:opacity-75'>
         <div>
-          <ColorLensIcon color='primary' />
+          <ColorLensIcon  />
         </div>
         <div>
-          <p className='text-primary'>
+          <p className={'text-white'}>
             色
           </p>
         </div>

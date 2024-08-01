@@ -1,14 +1,9 @@
+import { ChangeFontBtnProps } from '@/type/fabricType';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useState } from 'react';
 
-interface ChangeFontBtnProps {
-  canvas: fabric.Canvas | null;
-  activeObj: Object | null;
-  saveState: () => void;
-}
-
-const ChangeFontBtn = ({ canvas, activeObj, saveState }: ChangeFontBtnProps) => {
+const ChangeFontBtn = ({ canvas, saveState }: ChangeFontBtnProps) => {
   const [open, setOpen] = useState(false);
   const [fontFamily, setFontFamily] = useState('Arial');
 
@@ -19,9 +14,10 @@ const ChangeFontBtn = ({ canvas, activeObj, saveState }: ChangeFontBtnProps) => 
 
     if (!canvas) return;
 
-    const activeObject = activeObj as fabric.Textbox | undefined;
+    const activeObject = canvas.getActiveObject()
     if (activeObject && activeObject.type === 'textbox') {
-      activeObject.set({ fontFamily: newFont });
+      const text = activeObject as fabric.Textbox
+      text.set({ fontFamily: newFont });
       canvas.renderAll();
       saveState();
     }
@@ -31,10 +27,10 @@ const ChangeFontBtn = ({ canvas, activeObj, saveState }: ChangeFontBtnProps) => 
     <div className='h-full'>
       <button type='button' onClick={() => { setOpen(true) }} className='hover:opacity-75' >
         <div>
-          <FontDownloadIcon color='primary' />
+          <FontDownloadIcon />
         </div>
         <div>
-          <p className='text-primary'>
+          <p className='text-white'>
             フォント
           </p>
         </div>

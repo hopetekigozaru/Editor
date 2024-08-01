@@ -1,6 +1,5 @@
 'use client'
-
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const PageBack = () => {
   const router = useRouter();

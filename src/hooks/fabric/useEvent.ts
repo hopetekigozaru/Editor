@@ -1,18 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { fabric } from 'fabric-with-gestures';
+import { CustomFabricObject } from "@/type/fabricType";
 
-// カスタムインターフェースを定義
-interface CustomFabricObject extends fabric.Object {
-  lastScaleX?: number;
-  lastScaleY?: number;
-}
-
-
-export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean, saveState: () => void) => {
+export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean) => {
   const isDraggingRef = useRef(false);
   const lastPosXRef = useRef(0);
   const lastPosYRef = useRef(0);
 
+  /**
+   * Canvas内のビューポートの制限
+   */
   const constrainViewport = () => {
     if (canvas) {
       const vpt = canvas.viewportTransform;
@@ -33,6 +30,12 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean, saveSt
     }
   };
 
+  /**
+  // TODO オブジェクトを回転させ時の制限領域Fix
+   * オブジェクト移動イベント
+   * @param e
+   * @returns
+   */
   const handleObjectMoving = (e: fabric.IEvent) => {
     if (!canvas) return;
     const obj = e.target as fabric.Object;
@@ -73,6 +76,11 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean, saveSt
     obj.set({ left, top });
   };
 
+  /**
+   * オブジェクトスケーリングイベント
+   * @param e
+   * @returns
+   */
   const handleObjectScaling = (e: fabric.IEvent) => {
     if (!canvas) return;
 
@@ -121,7 +129,10 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean, saveSt
     canvas.renderAll();
   };
 
-  // オブジェクトが追加されたときに初期スケールを設定
+  /**
+   * オブジェクトが追加されたときに初期スケールを設定
+   * @param e
+   */
   const handleObjectAdded = (e: fabric.IEvent) => {
     const obj = e.target as CustomFabricObject;
     if (obj) {
@@ -130,6 +141,11 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean, saveSt
     }
   };
 
+  /**
+   * マウス移動イベント
+   * @param opt
+   * @returns
+   */
   const handleMouseMove = (opt: fabric.IEvent) => {
     if (!canvas) return
     if (isDraggingRef.current) {
@@ -158,6 +174,11 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean, saveSt
     }
   };
 
+  /**
+   * マウスアップイベント
+   * @param e
+   * @returns
+   */
   const handleMouseUp = (e: fabric.IEvent) => {
     if (!canvas) return
     const object = e.target as fabric.Textbox
@@ -169,15 +190,12 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean, saveSt
     isDraggingRef.current = false
   };
 
-  const handleSelectionClear = (e: fabric.IEvent) => {
-    const objects = e.deselected as Array<fabric.Object>
-    if (objects) {
-      objects.map((obj) => {
-        obj.selectable = false
-      })
-    }
-  }
 
+  /**
+   * マウスダウンイベント
+   * @param opt
+   * @returns
+   */
   const handleMouseDown = (opt: fabric.IEvent) => {
     if (!canvas) return
     const activeObj = canvas.getActiveObject()
@@ -196,6 +214,18 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean, saveSt
   }
 
 
+  /**
+ * オブジェクトの選択状態解除イベント
+ * @param e
+ */
+  const handleSelectionClear = (e: fabric.IEvent) => {
+    const objects = e.deselected as Array<fabric.Object>
+    if (objects) {
+      objects.map((obj) => {
+        obj.selectable = false
+      })
+    }
+  }
 
   return {
     handleObjectMoving,
@@ -205,6 +235,6 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean, saveSt
     handleMouseUp,
     handleSelectionClear,
     handleMouseDown,
-    constrainViewport
+    constrainViewport,
   }
 }

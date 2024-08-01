@@ -5,10 +5,10 @@ import { useState } from 'react';
 
 const style = {
   position: 'absolute' as 'absolute',
-  top: '50%',
+  top: '250%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: '80%',
   bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius: '20px',
@@ -17,7 +17,7 @@ const style = {
   pb: 3,
 };
 
-const DeleteBtn = ({ uuid }: { uuid: string }) => {
+const DeleteBtn = ({ uuid,isMobaile }: { uuid: string,isMobaile:boolean },) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -45,7 +45,6 @@ const DeleteBtn = ({ uuid }: { uuid: string }) => {
     if (res && res.status == 200) {
       router.push('/dashboard/1')
     }
-
   }
 
   return (
@@ -64,7 +63,7 @@ const DeleteBtn = ({ uuid }: { uuid: string }) => {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...style, width: '50vw' }}>
+        <Box sx={{ ...style, width: isMobaile? '90vw':'50vw' }}>
           <div className='w-full flex justify-center'>
             <div className="w-2/3 flex flex-col justify-center items-center my-10">
               <div className='text-black text-lg w-full text-center'>
@@ -74,7 +73,6 @@ const DeleteBtn = ({ uuid }: { uuid: string }) => {
                 <Button variant="contained" color="error" onClick={deleteKeep}>削除する</Button>
                 <Button variant="contained" color='secondary' onClick={() => setOpen(false)}>キャンセル</Button>
               </div>
-
             </div>
 
           </div>

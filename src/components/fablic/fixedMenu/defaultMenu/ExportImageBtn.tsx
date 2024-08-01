@@ -1,11 +1,5 @@
+import { exportImageBtnProps } from '@/type/fabricType';
 import ImageIcon from '@mui/icons-material/Image';
-
-interface exportImageBtnProps {
-  canvas: fabric.Canvas | null;
-  gridLines: fabric.Line[];
-  setGridLines: React.Dispatch<React.SetStateAction<fabric.Line[]>>;
-  drawGrid: (canvas: fabric.Canvas) => void;
-}
 
 const ExportImageBtn = ({ canvas, gridLines, setGridLines, drawGrid }: exportImageBtnProps) => {
   const exportAsImage = () => {

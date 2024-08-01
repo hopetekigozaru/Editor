@@ -1,14 +1,8 @@
 import Editor from "@/components/fablic/Editor";
+import { keep } from "@/type/fabricType";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { fabric } from "fabric"; // fabricのインポートが必要
 import { cookies } from "next/headers";
-interface keepProps {
-  uuid: string;
-  title: string;
-  fabric_object: fabric.Object; // fabric_objectがnullになる可能性も考慮
-  width: number;
-  height: number;
-}
+
 
 export const dynamic = 'force-dynamic'
 
@@ -33,7 +27,7 @@ const Register = async ({
     return <div>No keep found</div>;
   }
 
-  const keep = keeps[0] as keepProps; // 最初の要素にアクセス
+  const keep = keeps[0] as keep; // 最初の要素にアクセス
 
   return (
     <Editor aspectRatio={Number(keep.width) / Number(keep.height)} keep={keep} />

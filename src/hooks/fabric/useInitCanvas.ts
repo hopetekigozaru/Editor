@@ -1,9 +1,5 @@
+import { CustomLineOptions } from "@/type/fabricType";
 import { useEffect, useRef, useState } from "react";
-import { fabric } from 'fabric-with-gestures';
-
-interface CustomLineOptions extends fabric.ILineOptions {
-  isGrid?: boolean;
-}
 
 export const useInitCanvas = (aspectRatio: number) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -17,12 +13,20 @@ export const useInitCanvas = (aspectRatio: number) => {
     windowHeight: undefined,
   });
   const [isMobail, setIsMobail] = useState(true);
+
+
+  /**
+   * リサイズイベント
+   */
   const handleResize = () => {
-    setWindowSize({
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight,
-    });
+    if (typeof window !== 'undefined') {
+      setWindowSize({
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight,
+      });
+    }
   };
+
   useEffect(() => {
     // クライアントサイドでのみ実行
     if (typeof window !== 'undefined') {
@@ -38,7 +42,6 @@ export const useInitCanvas = (aspectRatio: number) => {
       return () => window.removeEventListener('resize', handleResize);
     }
   }, []);
-
 
   // キャンバスの高さと幅を設定
   useEffect(() => {
@@ -61,22 +64,32 @@ export const useInitCanvas = (aspectRatio: number) => {
 
   // fabricキャンバス初期化
   useEffect(() => {
-    const canvasElm = canvasRef.current;
-    if (!canvasElm || canvasWidth === 0 || canvasHeight === 0) return;
-    const canvasInstance = new fabric.Canvas(canvasElm, {
-      selection: false,
-    });
+    if (typeof window === 'undefined') return;
 
-    setCanvas(canvasInstance);
-    // Cleanup on unmount
-    return () => {
-      if (canvasInstance) {
-        canvasInstance.dispose();
-      }
-    };
+    import('fabric-with-gestures').then(({ fabric }) => {
+      const canvasElm = canvasRef.current;
+      if (!canvasElm || canvasWidth === 0 || canvasHeight === 0) return;
+
+      const canvasInstance = new fabric.Canvas(canvasElm, {
+        selection: false,
+      });
+
+      setCanvas(canvasInstance);
+      // Cleanup on unmount
+      return () => {
+        if (canvasInstance) {
+          canvasInstance.dispose();
+        }
+      };
+    });
   }, [canvasWidth, canvasHeight]);
 
-  const drawGrid = (canvas: fabric.Canvas) => {
+  /**
+   * Canvasにグリットラインを引く関数
+   * @param canvas
+   */
+  const drawGrid = async (canvas: fabric.Canvas) => {
+    const { fabric } = await import('fabric');
     const canvasHeight = canvas.getHeight(); // キャンバスの高さを取得
     const gridSize = canvasHeight / 4; // キャンバスの高さを4分割したサイズをグリッドサイズとする
     const canvasWidth = canvas.getWidth(); // キャンバスの幅を取得

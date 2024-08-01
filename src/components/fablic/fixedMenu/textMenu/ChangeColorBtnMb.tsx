@@ -1,25 +1,18 @@
-import ColorLensIcon from '@mui/icons-material/ColorLens';
+import { ChangeColorBtnMbProps } from '@/type/fabricType';
 import { debounce } from 'lodash';
-import { ChangeEventHandler, MouseEvent, useState } from 'react';
+import { useState } from 'react';
 
-interface ChangeColorBtnMbProps {
-  canvas: fabric.Canvas | null;
-  activeObj: fabric.Textbox | undefined;
-  clickInput: (e: MouseEvent<HTMLButtonElement>) => void
-  saveState: () => void;
-}
-
-const ChangeColorBtnMb = ({ canvas, activeObj, clickInput, saveState }: ChangeColorBtnMbProps) => {
+const ChangeColorBtnMb = ({ canvas,  clickInput, saveState }: ChangeColorBtnMbProps) => {
   const [color, setColor] = useState('#000000');
   const [paretColor, setParetColor] = useState('linear-gradient(to right, #f56565, #a78bfa, #3b82f6)');
 
   const debouncedColorState = debounce((color: string) => {
     if (!canvas) return;
+    const activeObj = canvas.getActiveObject();
     if (activeObj && activeObj.type === 'textbox') {
       activeObj.set({ fill: color });
       canvas.renderAll();
       setColor(color);
-      setParetColor(color)
       saveState();
     }
   }, 100); // 1秒のデバウンス時間

@@ -1,16 +1,14 @@
+import { DeleteBtnProps } from '@/type/fabricType';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Object } from 'fabric/fabric-impl';
 
-interface DeleteBtnProps {
-  canvas: fabric.Canvas | null;
-  activeObj: Object | null;
-  saveState: () => void;
-}
 
-const DeleteBtn = ({ canvas, activeObj, saveState }: DeleteBtnProps) => {
+
+const DeleteBtn = ({ canvas, saveState }: DeleteBtnProps) => {
 
   const deleteSelectedObject = () => {
-    if (canvas && activeObj) {
+    if (!canvas) return
+    const activeObj = canvas.getActiveObject();
+    if (activeObj) {
       if (activeObj.type === 'group') {
         canvas.remove(activeObj); // グループ自体も削除する
         deleteGroupObjects(activeObj as fabric.Group);

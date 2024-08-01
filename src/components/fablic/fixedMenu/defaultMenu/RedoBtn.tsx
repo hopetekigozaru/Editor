@@ -1,17 +1,7 @@
+import { RedoBtnProps } from '@/type/fabricType';
 import RedoIcon from '@mui/icons-material/Redo';
 
-
-interface RedoBtnProps {
-  canvas: fabric.Canvas | null;
-  redoStack: string[];
-  setUndoStack: React.Dispatch<React.SetStateAction<string[]>>;
-  setRedoStack: React.Dispatch<React.SetStateAction<string[]>>;
-  isMobaile: boolean
-  addToStack:(stack: string[], item: string) => string[]
-  restoreGridProperties:(canvas:fabric.Canvas) => void
-}
-
-const RedoBtn = ({ canvas, redoStack, setRedoStack, setUndoStack, isMobaile,addToStack ,restoreGridProperties }: RedoBtnProps) => {
+const RedoBtn = ({ canvas, redoStack, setRedoStack, setUndoStack, isMobile ,addToStack ,restoreGridProperties }: RedoBtnProps) => {
   const handleRedo = () => {
     if (canvas && redoStack.length > 0) {
       const nextState = redoStack[redoStack.length - 1];
@@ -32,7 +22,7 @@ const RedoBtn = ({ canvas, redoStack, setRedoStack, setUndoStack, isMobaile,addT
           <RedoIcon />
         </div>
         <div>
-          {!isMobaile &&
+          {!isMobile  &&
             <p className={`text-sm`}>
               進む
             </p>
