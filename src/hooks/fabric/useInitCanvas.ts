@@ -12,7 +12,7 @@ export const useInitCanvas = (aspectRatio: number) => {
     windowWidth: undefined,
     windowHeight: undefined,
   });
-  const [isMobail, setIsMobail] = useState(true);
+  const [isMobile, setisMobile] = useState(true);
 
 
   /**
@@ -30,7 +30,7 @@ export const useInitCanvas = (aspectRatio: number) => {
   useEffect(() => {
     // クライアントサイドでのみ実行
     if (typeof window !== 'undefined') {
-      setIsMobail(window.innerWidth < window.innerHeight);
+      setisMobile(window.innerWidth < window.innerHeight);
 
       // 初期サイズを設定
       handleResize();
@@ -122,7 +122,7 @@ export const useInitCanvas = (aspectRatio: number) => {
 
   return {
     canvas,
-    isMobail,
+    isMobile,
     canvasRef,
     containerRef,
     canvasWidth,

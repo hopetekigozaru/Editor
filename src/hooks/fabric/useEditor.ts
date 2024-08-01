@@ -17,7 +17,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
   const MAX_HISTORY = 50; // 履歴の最大数
   const {
     canvas,
-    isMobail,
+    isMobile,
     canvasRef,
     containerRef,
     canvasWidth,
@@ -36,7 +36,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
     handleSelectionClear,
     handleMouseDown,
     constrainViewport,
-  } = useEvent(canvas, isMobail)
+  } = useEvent(canvas, isMobile)
 
 
   /**
@@ -144,7 +144,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
     setRedoStack,
     continuous,
     setContinuous,
-    isMobail,
+    isMobile,
     MAX_HISTORY,
     saveState,
     constrainViewport,

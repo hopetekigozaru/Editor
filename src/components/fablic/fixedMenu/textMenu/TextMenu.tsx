@@ -8,16 +8,16 @@ import ChangeFontSizeSliderMb from '../FontSizeMenu/FontSizeSliderMb';
 import ChangeFontBtnMb from './ChangeFontBtnMb';
 import { TextMenuProps } from '@/type/fabricType';
 
-const TextMenu = ({ canvas, saveState, clickInput, setIsFontSize, isMobail }: TextMenuProps) => {
+const TextMenu = ({ canvas, saveState, clickInput, setIsFontSize, isMobile }: TextMenuProps) => {
 
   return (
-    <div className={isMobail ? 'w-full' : 'w-full'}>
-      <div className={`flex justify-center text-primary ${isMobail? 'text-xl':'hidden'}  font-bold`} >
+    <div className={isMobile ? 'w-full' : 'w-full'}>
+      <div className={`flex justify-center text-primary ${isMobile? 'text-xl':'hidden'}  font-bold`} >
         <div>
           <p>テキストメニュー</p>
         </div>
       </div>
-      {!isMobail &&
+      {!isMobile &&
         <div className='w-full flex justify-center h-fit'>
           <div className='w-1/3 flex justify-between'>
             <ChangeColorBtn canvas={canvas} clickInput={clickInput} saveState={saveState}/>
@@ -26,7 +26,7 @@ const TextMenu = ({ canvas, saveState, clickInput, setIsFontSize, isMobail }: Te
           </div>
         </div>
       }
-      {isMobail &&
+      {isMobile &&
         <div className='flex justify-center mt-5'>
           <div className='w-2/3'>
             <ChangeColorBtnMb canvas={canvas} clickInput={clickInput} saveState={saveState} />

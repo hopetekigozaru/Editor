@@ -17,7 +17,7 @@ const style = {
   pb: 3,
 };
 
-const DeleteBtn = ({ uuid,isMobaile }: { uuid: string,isMobaile:boolean },) => {
+const DeleteBtn = ({ uuid,isMobilee }: { uuid: string,isMobilee:boolean },) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -63,7 +63,7 @@ const DeleteBtn = ({ uuid,isMobaile }: { uuid: string,isMobaile:boolean },) => {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...style, width: isMobaile? '90vw':'50vw' }}>
+        <Box sx={{ ...style, width: isMobilee? '90vw':'50vw' }}>
           <div className='w-full flex justify-center'>
             <div className="w-2/3 flex flex-col justify-center items-center my-10">
               <div className='text-black text-lg w-full text-center'>

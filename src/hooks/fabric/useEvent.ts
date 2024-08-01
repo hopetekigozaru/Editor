@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { fabric } from 'fabric-with-gestures';
 import { CustomFabricObject } from "@/type/fabricType";
 
-export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean) => {
+export const useEvent = (canvas: fabric.Canvas | null, isMobile: boolean) => {
   const isDraggingRef = useRef(false);
   const lastPosXRef = useRef(0);
   const lastPosYRef = useRef(0);
@@ -150,7 +150,7 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean) => {
     if (!canvas) return
     if (isDraggingRef.current) {
       const vpt = canvas.viewportTransform;
-      if (isMobail) {
+      if (isMobile) {
         const touch = opt.e as TouchEvent
         if (vpt && lastPosXRef.current !== undefined && lastPosYRef.current !== undefined) {
           vpt[4] += touch.touches[0].clientX - lastPosXRef.current;
@@ -201,7 +201,7 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobail: boolean) => {
     const activeObj = canvas.getActiveObject()
     if (!activeObj) {
       isDraggingRef.current = true
-      if (isMobail) {
+      if (isMobile) {
         const touch = opt.e as TouchEvent
         lastPosXRef.current = touch.touches[0].clientX;
         lastPosYRef.current = touch.touches[0].clientY;

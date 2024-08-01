@@ -72,7 +72,7 @@ export interface DefaultMenuProps {
     width: number;
     height: number;
   } | null;
-  isMobail: boolean
+  isMobile: boolean
   addToStack: (stack: string[], item: string) => string[]
   restoreGridProperties: (canvas: fabric.Canvas) => void
 }
@@ -125,7 +125,7 @@ export interface SaveBtnProps {
     width: number;
     height: number;
   } | null;
-  isMobail:boolean
+  isMobile:boolean
 }
 
 export interface BackBtnProps {
@@ -179,7 +179,7 @@ export interface TextMenuProps {
   saveState: () => void;
   clickInput: (e: MouseEvent<HTMLButtonElement>) => void
   setIsFontSize: React.Dispatch<React.SetStateAction<boolean>>
-  isMobail: boolean
+  isMobile: boolean
 }
 
 export interface MenuProps {
@@ -210,7 +210,7 @@ export interface MenuProps {
     width: number;
     height: number;
   } | null;
-  isMobail: boolean
+  isMobile: boolean
   MAX_HISTORY: number,
   addToStack: (stack: string[], item: string) => string[]
   restoreGridProperties: (canvas: fabric.Canvas) => void
