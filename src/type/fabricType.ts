@@ -221,7 +221,7 @@ export interface EditorProps {
   keep: {
     uuid: string;
     title: string;
-    fabric_object: fabric.Object; // fabric_objectがnullになる可能性も考慮
+    fabric_object: fabric.Object | null; // fabric_objectがnullになる可能性も考慮
     width: number;
     height: number;
   } | null;
