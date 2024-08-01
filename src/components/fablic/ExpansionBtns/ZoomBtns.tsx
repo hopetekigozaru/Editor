@@ -1,16 +1,7 @@
+import { ZoomBtnProps } from '@/type/fabricType';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
-import { Dispatch, SetStateAction } from 'react';
 
-interface ZoomBtnProps {
-  canvas: fabric.Canvas | null
-  constrainViewport: () => void
-  isZoom: boolean
-  setIsZoom: Dispatch<SetStateAction<boolean>>
-  setIsPan: Dispatch<SetStateAction<boolean>>
-  isMobaile:boolean
-}
-
-const ZoomBtn = ({ canvas, constrainViewport, isZoom, setIsZoom, setIsPan,isMobaile }: ZoomBtnProps) => {
+const ZoomBtn = ({ canvas, constrainViewport, isZoom, setIsZoom, setIsPan,isMobile  }: ZoomBtnProps) => {
   const zoom = () => {
     if (canvas) {
       const zoom = canvas.getZoom();
@@ -28,7 +19,7 @@ const ZoomBtn = ({ canvas, constrainViewport, isZoom, setIsZoom, setIsPan,isMoba
   }
   return (
     <button className={`block p-2 ${isZoom ? 'bg-primary hover:opacity-80' : 'bg-gray-500'}`} onClick={zoom}>
-      <ZoomInIcon fontSize={isMobaile ? 'medium' : 'large'} className="text-white" />
+      <ZoomInIcon fontSize={isMobile  ? 'medium' : 'large'} className="text-white" />
     </button>
   )
 }

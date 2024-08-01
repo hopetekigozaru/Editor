@@ -1,22 +1,7 @@
-import { fabric } from 'fabric';
-import { Object } from 'fabric/fabric-impl';
-import { isEmpty } from 'lodash';
 import DeleteBtn from './DeleteBtn';
-import GroupBtn from './GroupBtn';
+import { BubbleMenuProps } from '@/type/fabricType';
 
-interface BubbleMenuProps {
-  canvas: fabric.Canvas | null;
-  activeObj: Object | null;
-  saveState: () => void;
-  bubbleRef: React.RefObject<HTMLDivElement>;
-  selectObject: boolean
-  bubbleMenuPosition: {
-    left: number | undefined;
-    top: number | undefined;
-  }
-
-}
-const BubbleMenu = ({ canvas, activeObj, saveState, bubbleRef, selectObject, bubbleMenuPosition }: BubbleMenuProps) => {
+const BubbleMenu = ({ canvas, saveState, bubbleRef, selectObject, bubbleMenuPosition }: BubbleMenuProps) => {
   return (
     <div
       ref={bubbleRef}
@@ -29,10 +14,7 @@ const BubbleMenu = ({ canvas, activeObj, saveState, bubbleRef, selectObject, bub
     >
       <div className='flex'>
         {/* バブルメニューのコンテンツをここに追加 */}
-        <DeleteBtn canvas={canvas} activeObj={activeObj} saveState={saveState} />
-        {(activeObj && !isEmpty((activeObj as fabric.Group)._objects) && (activeObj as fabric.Group).type != 'group' && (activeObj as fabric.Group)._objects.length != 0) &&
-          <GroupBtn canvas={canvas} saveState={saveState} />
-        }
+        <DeleteBtn canvas={canvas} saveState={saveState} />
       </div>
     </div>
   )

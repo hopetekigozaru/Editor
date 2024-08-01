@@ -1,37 +1,17 @@
 'use client'
+import useAuth from "@/hooks/Auth/useAuth";
 import { Button, Link, TextField } from "@mui/material"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
-
 const Singup = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const supabase = createClientComponentClient()
   const router = useRouter();
-
-  const handleSignUp = async () => {
-    try {
-      setIsLoading(true);
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-      if (error) throw error;
-      router.push('/signup/pre_register')
-    } catch (error: unknown) { // unknown 型を指定してエラーメッセージを取得
-      if (error instanceof Error) {
-        console.error(error.message)
-        alert(error.message);
-      } else {
-        alert("An unknown error occurred.");
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { email,
+    setEmail,
+    password,
+    setPassword,
+    isLoading,
+    handleSignUp
+  } = useAuth(router)
   return (
     <>
       <div className="flex justify-center md:hidden">

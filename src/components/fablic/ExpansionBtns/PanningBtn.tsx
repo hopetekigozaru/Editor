@@ -1,16 +1,7 @@
+import { PanningBtnProps } from '@/type/fabricType';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import { Dispatch, SetStateAction } from 'react';
 
-interface PanningBtnProps {
-  canvas: fabric.Canvas | null
-  constrainViewport: () => void;
-  isPan: boolean
-  setIsPan: Dispatch<SetStateAction<boolean>>
-  setIsZoom: Dispatch<SetStateAction<boolean>>
-  isMobaile:boolean
-}
-
-const PanningBtn = ({ canvas, constrainViewport, isPan, setIsPan, setIsZoom,isMobaile }: PanningBtnProps) => {
+const PanningBtn = ({ canvas, constrainViewport, isPan, setIsPan, setIsZoom,isMobile  }: PanningBtnProps) => {
   const panning = () => {
     if (canvas) {
       const zoom = canvas.getZoom();
@@ -27,8 +18,8 @@ const PanningBtn = ({ canvas, constrainViewport, isPan, setIsPan, setIsZoom,isMo
     }
   }
   return (
-    <button className={`block p-2 ${isMobaile ? 'ml-2':'ml-0 mt-1'} ${isPan ? 'bg-primary hover:opacity-80' : 'bg-gray-500'}`} onClick={panning} >
-      <ZoomOutIcon fontSize={isMobaile ? 'medium' : 'large'} className="text-white" />
+    <button className={`block p-2 ${isMobile  ? 'ml-2':'ml-0 mt-1'} ${isPan ? 'bg-primary hover:opacity-80' : 'bg-gray-500'}`} onClick={panning} >
+      <ZoomOutIcon fontSize={isMobile  ? 'medium' : 'large'} className="text-white" />
     </button>
   )
 }

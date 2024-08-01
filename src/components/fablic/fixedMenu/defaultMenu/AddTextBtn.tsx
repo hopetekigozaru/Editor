@@ -1,12 +1,10 @@
 
+import { AddTextProps } from '@/type/fabricType';
 import TitleIcon from '@mui/icons-material/Title';
 import { useTheme } from '@mui/material';
 import { fabric } from 'fabric';
 
-interface AddTextProps {
-  canvas: fabric.Canvas | null;
-  saveState: () => void;
-}
+
 
 const AddTextBtn = ({ canvas, saveState }: AddTextProps) => {
   const theme = useTheme().palette;
@@ -31,8 +29,9 @@ const AddTextBtn = ({ canvas, saveState }: AddTextProps) => {
         cornerColor: theme.secondary.main,  // コーナーの色
         cornerStyle: 'circle',
         cornerSize: 9,
-        selectable: false,
+        editable: true,
       });
+      console.log(textObject)
       canvas.add(textObject);
       canvas.setActiveObject(textObject)
       saveState();

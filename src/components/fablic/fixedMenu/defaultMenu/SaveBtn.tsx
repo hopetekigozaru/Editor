@@ -1,23 +1,8 @@
+import useSave from '@/hooks/fabric/useSave';
+import { SaveBtnProps } from '@/type/fabricType';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { Box, Button, Modal, TextField } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { FormEvent, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-
-interface SaveBtnProps {
-  canvas: fabric.Canvas | null;
-  width: number;
-  height: number;
-  gridLines: fabric.Line[];
-  setGridLines: React.Dispatch<React.SetStateAction<fabric.Line[]>>;
-  keep: {
-    uuid: string;
-    title: string
-    fabric_object: fabric.Object | null; // fabric_objectがnullになる可能性も考慮
-    width: number;
-    height: number;
-  } | null;
-}
+import { useRouter} from 'next/navigation';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -33,162 +18,16 @@ const style = {
   pb: 3,
 };
 
-const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, keep }: SaveBtnProps) => {
+const SaveBtn = ({ canvas, setGridLines, gridLines, keep, isMobail }: SaveBtnProps) => {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState(keep?.title ? keep!.title : "無題")
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const saveCanvas = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (canvas) {
-      canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
-      gridLines.forEach((line) => {
-        canvas.remove(line);
-      });
-      setGridLines([]);
-
-      let uuid = keep?.uuid ? keep.uuid : uuidv4();
-
-      const pathArray: string[] = [];
-      const imageObjects = canvas.getObjects('image') as Array<fabric.Image>;
-
-      if (imageObjects.length > 0) {
-        try {
-          const uploadPromises = imageObjects.map(async (img) => {
-            const src = img.getSrc();
-            if (src.startsWith('data:image')) {
-              const res = await fetch('/api/imageUpload', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ src: src, uuid: uuid }),
-              });
-
-              if (!res.ok) {
-                throw new Error(`Failed to upload image: ${res.status}`);
-              }
-
-              const jsonRes = await res.json();
-              const path = jsonRes.image.path;
-              const url = jsonRes.publicURL;
-
-              await new Promise<void>((resolve, reject) => {
-                img.setSrc(url, resolve, { crossOrigin: 'Anonymous' });
-              });
-
-              pathArray.push(path);
-            } else if (src.startsWith('http://') || src.startsWith('https://')) {
-              const trimmedSrc = src.replace(process.env.NEXT_PUBLIC_SUPABASE_URL + '/storage/v1/object/public/EditorBucket/', '');
-              pathArray.push(trimmedSrc);
-            }
-          });
-
-          await Promise.all(uploadPromises);
-
-          const deleteBody = {
-            pathArray,
-            uuid
-          };
-
-          const deleteImgResponse = await fetch('api/deleteImage', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(deleteBody),
-          });
-
-          if (!deleteImgResponse.ok) {
-            throw new Error(`Failed to delete image: ${deleteImgResponse.status}`);
-          }
-        } catch (error) {
-          console.error('Error uploading image:', error);
-        }
-      }
-
-      const json = canvas.toJSON();
-      const svg = canvas.toSVG();
-
-      const svgBody = {
-        svg,
-        uuid
-      };
-
-      try {
-        const registerSVG = await fetch('api/svg/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(svgBody),
-        });
-
-        if (!registerSVG.ok) {
-          throw new Error(`Failed to register SVG: ${registerSVG.status}`);
-        }
-
-        const svgResponse = await registerSVG.json();
-        const svgUrl = svgResponse.publicURL;
-
-        let res = null;
-        if (json.objects.length > 0) {
-          if (keep) {
-            const body = JSON.stringify({
-              uuid: uuid,
-              title: title,
-              json: json,
-              width: keep.width,
-              height: keep.height,
-              svg: svgUrl
-            });
-
-            res = await fetch('/api/update', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: body,
-            });
-          } else {
-            const body = JSON.stringify({
-              uuid: uuid,
-              json: json,
-              width: width,
-              height: height,
-              svg: svgUrl,
-              title: title
-            });
-
-            res = await fetch('/api/register', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: body,
-            });
-          }
-
-          if (res && res.status === 200) {
-            router.push('/dashboard/1');
-          } else {
-            throw new Error(`Failed to save canvas data: ${res ? res.status : 'unknown error'}`);
-          }
-        }
-      } catch (error) {
-        console.error('Error saving canvas:', error);
-      }
-
-    }
-  };
+  const {
+    handleOpen,
+    open,
+    handleClose,
+    saveCanvas,
+    title,
+    setTitle
+  } = useSave(canvas,keep,gridLines,setGridLines,router)
 
 
   return (
@@ -208,9 +47,9 @@ const SaveBtn = ({ canvas, width, height, setGridLines, gridLines, keep }: SaveB
         onClose={handleClose}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
-        style={{height: '100vh'}}
+        style={{ height: '100vh' }}
       >
-        <Box sx={{ ...style, width: '50vw' }}>
+        <Box sx={{ ...style, width: isMobail?'90vw':'50vw' }}>
           <div className="w-full flex flex-col justify-center my-10">
             <form onSubmit={saveCanvas}>
               <div className='flex justify-center'>

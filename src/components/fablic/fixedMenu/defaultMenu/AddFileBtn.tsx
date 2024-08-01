@@ -1,13 +1,9 @@
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import { ChangeEventHandler, MouseEvent } from 'react';
+import { ChangeEventHandler } from 'react';
 import { fabric } from 'fabric';
 import { useTheme } from '@mui/material';
+import { AddFileProps } from '@/type/fabricType';
 
-interface AddFileProps {
-  canvas: fabric.Canvas | null;
-  saveState: () => void;
-  clickInput: (e: MouseEvent<HTMLButtonElement>) => void
-}
 const AddFileBtn = ({ canvas, saveState, clickInput }: AddFileProps) => {
   const theme = useTheme().palette;
   const handleImageUpload: ChangeEventHandler<HTMLInputElement> = (event) => {

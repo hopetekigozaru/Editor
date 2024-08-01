@@ -4,23 +4,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { fabric } from 'fabric-with-gestures';
 import { useEvent } from './useEvent';
 import { useInitCanvas } from './useInitCanvas';
-import { IEvent } from 'fabric/fabric-impl';
-
-interface keep {
-  uuid: string;
-  title: string;
-  fabric_object: fabric.Object; // fabric_objectがnullになる可能性も考慮
-  width: number;
-  height: number;
-}
-
-
+import { keep } from '@/type/fabricType';
 
 export const useEditor = (keep: keep | null, aspectRatio: number) => {
   const bubbleRef = useRef<HTMLDivElement>(null);
   const [bubbleMenuPosition, setBubbleMenuPosition] = useState<{ left: number | undefined; top: number | undefined }>({ left: 0, top: 0 });
   const [selectObject, setSelectObject] = useState<boolean>(false);
-  const [activeObj, setActiveObj] = useState<fabric.Object | null>(null);
   const [undoStack, setUndoStack] = useState<string[]>([]);
   const [redoStack, setRedoStack] = useState<string[]>([]);
   const [continuous, setContinuous] = useState<boolean>(false);
@@ -37,6 +26,17 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
     setGridLines,
     gridLines
   } = useInitCanvas(aspectRatio)
+
+  const {
+    handleObjectMoving,
+    handleObjectScaling,
+    handleObjectAdded,
+    handleMouseMove,
+    handleMouseUp,
+    handleSelectionClear,
+    handleMouseDown,
+    constrainViewport,
+  } = useEvent(canvas, isMobail)
 
 
   /**
@@ -77,41 +77,38 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
     }
   }, [canvas, undoStack]);
 
-  const {
-    handleObjectMoving,
-    handleObjectScaling,
-    handleObjectAdded,
-    handleMouseMove,
-    handleMouseUp,
-    handleSelectionClear,
-    handleMouseDown,
-    constrainViewport,
-  } = useEvent(canvas, isMobail, saveState)
+  /**
+   * JsonObject復元関数
+   * @param canvas
+   */
+  const loadJson = async (canvas: fabric.Canvas) => {
+    if (keep) {
+      // Jsonをfabricオブジェクトに復元
+      canvas.loadFromJSON(keep!.fabric_object, () => {
+        canvas.forEachObject(obj => {
+          if (obj.type === 'textbox') {
+            obj as fabric.Textbox
+            obj.set({
+              borderColor: theme.palette.secondary.main,  // 枠線の色
+              cornerColor: theme.palette.secondary.main,  // コーナーの色
+              cornerStyle: 'circle',
+              cornerSize: 9,
+              selectable: false,
+            });
+          }
+        });
+      })
+      await drawGrid(canvas);
+      canvas.renderAll.bind(canvas)
+    } else {
+      await drawGrid(canvas)
+    }
+    saveState(); // Save initial state
+  }
 
   useEffect(() => {
     if (canvas) {
-      if (keep) {
-        // Jsonをfabricオブジェクトに復元
-        canvas.loadFromJSON(keep!.fabric_object, () => {
-          canvas.forEachObject(obj => {
-            if (obj.type === 'textbox') {
-              obj as fabric.Textbox
-              obj.set({
-                borderColor: theme.palette.secondary.main,  // 枠線の色
-                cornerColor: theme.palette.secondary.main,  // コーナーの色
-                cornerStyle: 'circle',
-                cornerSize: 9,
-                selectable: false,
-              });
-            }
-          });
-          drawGrid(canvas);
-          canvas.renderAll.bind(canvas)
-        })
-      } else {
-        drawGrid(canvas)
-      }
-      saveState(); // Save initial state
+      loadJson(canvas)
       canvas.on('object:modified', saveState);
       canvas.on('object:moving', handleObjectMoving);
       canvas.on('object:scaling', handleObjectScaling);
@@ -141,8 +138,6 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
     setBubbleMenuPosition,
     selectObject,
     setSelectObject,
-    activeObj,
-    setActiveObj,
     undoStack,
     setUndoStack,
     redoStack,

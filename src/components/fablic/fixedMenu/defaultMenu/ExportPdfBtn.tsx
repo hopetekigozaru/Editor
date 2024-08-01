@@ -1,14 +1,7 @@
+import { exportPdfBtnProps } from '@/type/fabricType';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-
-interface exportPdfBtnProps {
-  canvas: fabric.Canvas | null;
-  gridLines: fabric.Line[];
-  setGridLines: React.Dispatch<React.SetStateAction<fabric.Line[]>>;
-  containerElm: HTMLDivElement | null;
-  drawGrid: (canvas: fabric.Canvas) => void;
-}
 
 const ExportPdfBtn = ({ canvas, gridLines, setGridLines, containerElm, drawGrid }: exportPdfBtnProps) => {
 

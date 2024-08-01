@@ -5,7 +5,6 @@ import TopMenuBtn from "@/components/TopMenuBtn";
 import React, { ReactNode } from "react";
 import ThemeRegistry from "./ThemeRegistry";
 import PageTitle from "@/components/PageTitle";
-import Head from "next/head";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,12 +23,9 @@ type RootLayoutProps = {
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="ja">
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-      </Head>
       <body className={inter.className}>
         <ThemeRegistry options={{ key: 'mui' }}>
-          <main className="max-h-screen min-w-[100vw]  text-white overflow-hidden">
+          <main className="h-screen min-w-[100vw]  text-white">
             <header className="fixed w-screen top-0 left-0 h-[10vh] bg-primary">
               <div className="h-full flex justify-between items-center w-full">
                 <div className="w-1/2 flex items-center">

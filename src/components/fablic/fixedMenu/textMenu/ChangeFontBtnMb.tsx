@@ -1,14 +1,8 @@
-import FontDownloadIcon from '@mui/icons-material/FontDownload';
+import { ChangeFontBtnMbProps } from '@/type/fabricType';
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useState } from 'react';
 
-interface ChangeFontBtnMbProps {
-  canvas: fabric.Canvas | null;
-  activeObj: Object | null;
-  saveState: () => void;
-}
-
-const ChangeFontBtnMb = ({ canvas, activeObj, saveState }: ChangeFontBtnMbProps) => {
+const ChangeFontBtnMb = ({ canvas, saveState }: ChangeFontBtnMbProps) => {
   const [open, setOpen] = useState(false);
   const [fontFamily, setFontFamily] = useState('Arial');
 
@@ -19,9 +13,10 @@ const ChangeFontBtnMb = ({ canvas, activeObj, saveState }: ChangeFontBtnMbProps)
 
     if (!canvas) return;
 
-    const activeObject = activeObj as fabric.Textbox | undefined;
+    const activeObject = canvas.getActiveObject()
     if (activeObject && activeObject.type === 'textbox') {
-      activeObject.set({ fontFamily: newFont });
+      const text = activeObject as fabric.Textbox
+      text.set({ fontFamily: newFont });
       canvas.renderAll();
       saveState();
     }
