@@ -84,26 +84,28 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
   const loadJson = async (canvas: fabric.Canvas) => {
     if (keep) {
       // Jsonをfabricオブジェクトに復元
-      canvas.loadFromJSON(keep!.fabric_object, () => {
+      canvas.loadFromJSON(keep!.fabric_object, async () => {
         canvas.forEachObject(obj => {
-          if (obj.type === 'textbox') {
-            obj as fabric.Textbox
-            obj.set({
-              borderColor: theme.palette.secondary.main,  // 枠線の色
-              cornerColor: theme.palette.secondary.main,  // コーナーの色
-              cornerStyle: 'circle',
-              cornerSize: 9,
-              selectable: false,
-            });
-          }
+          obj as fabric.Object
+          obj.set({
+            borderColor: theme.palette.secondary.main,  // 枠線の色
+            cornerColor: theme.palette.secondary.main,  // コーナーの色
+            cornerStyle: 'circle',
+            cornerSize: 9,
+            selectable: false,
+          });
         });
+         drawGrid(canvas)
       })
-      await drawGrid(canvas);
       canvas.renderAll.bind(canvas)
     } else {
       await drawGrid(canvas)
     }
-    saveState(); // Save initial state
+
+    // TODO 非同期の処理がうまくできないので一旦setTimeoutにしています
+    setTimeout(() => {
+      saveState(); // Save initial state
+    }, 500);
   }
 
   useEffect(() => {

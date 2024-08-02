@@ -102,6 +102,7 @@ const useSave = (canvas: fabric.Canvas | null, keep: keep | null, gridLines: fab
     gridLines.forEach((line) => {
       canvas.remove(line);
     });
+    console.log(canvas)
     setGridLines([]);
 
     // Canvasの高さ・幅を設定

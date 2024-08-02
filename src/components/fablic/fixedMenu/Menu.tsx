@@ -197,7 +197,7 @@ const Menu = ({
 
               },
               '.MuiModal-root': {
-                height: '17%'
+                height: '0%'
               },
             }}
           />

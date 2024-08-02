@@ -103,7 +103,7 @@ export const useInitCanvas = (aspectRatio: number) => {
       );
       lines.push(vertical);
       canvas.add(vertical);
-      vertical.moveTo(0);
+      vertical.moveTo(0); // オブジェクトを一番背面に移動
     }
 
     // 水平線を描画
@@ -114,9 +114,13 @@ export const useInitCanvas = (aspectRatio: number) => {
       );
       lines.push(horizontal);
       canvas.add(horizontal);
-      horizontal.moveTo(0);
+      horizontal.moveTo(0); // オブジェクトを一番背面に移動
     }
 
+    // レンダリングして表示
+    canvas.renderAll();
+
+    // グリッドラインを保存する
     setGridLines(lines);
   };
 

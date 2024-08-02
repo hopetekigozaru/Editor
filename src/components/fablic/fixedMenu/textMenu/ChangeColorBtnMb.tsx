@@ -46,12 +46,13 @@ const ChangeColorBtnMb = ({ canvas,  clickInput, saveState }: ChangeColorBtnMbPr
         <button className='w-[1.5rem] h-[1.5rem] rounded-full border-2 border-solid border-gray-300' onClick={() => handleColorChange('#eab308')}>
           <div className='bg-yellow-500 *:w-full h-full rounded-full'></div>
         </button>
-        <div>
+        {/* TODO スマホだとカラーパレットが表示されない */}
+        {/* <div>
           <input type="color" className='absolute opacity-0 w-0 -top-[10%] left-[25%]' value={color} onChange={(value) => handleColorChange(value.target.value)} />
           <button type='button' onClick={clickInput} className='w-[1.5rem] h-[1.5rem] rounded-full border-2 border-solid border-gray-300'>
             <div className={`w-full h-full rounded-full`} style={{background: paretColor}} ></div>
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   )

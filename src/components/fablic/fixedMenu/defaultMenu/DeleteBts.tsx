@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 const style = {
   position: 'absolute' as 'absolute',
-  top: '250%',
+  top: '50vh',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '80%',
@@ -17,7 +17,7 @@ const style = {
   pb: 3,
 };
 
-const DeleteBtn = ({ uuid,isMobilee }: { uuid: string,isMobilee:boolean },) => {
+const DeleteBtn = ({ uuid,isMobile }: { uuid: string,isMobile:boolean },) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -63,7 +63,7 @@ const DeleteBtn = ({ uuid,isMobilee }: { uuid: string,isMobilee:boolean },) => {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...style, width: isMobilee? '90vw':'50vw' }}>
+        <Box sx={{ ...style, width: isMobile? '90vw':'50vw' }}>
           <div className='w-full flex justify-center'>
             <div className="w-2/3 flex flex-col justify-center items-center my-10">
               <div className='text-black text-lg w-full text-center'>

@@ -2,7 +2,7 @@ import { UndoBtnProps } from '@/type/fabricType';
 import UndoIcon from '@mui/icons-material/Undo';
 import { useTheme } from '@mui/material';
 
-const UndoBtn = ({ canvas, undoStack, setUndoStack, setRedoStack, isMobile , addToStack, restoreGridProperties }: UndoBtnProps) => {
+const UndoBtn = ({ canvas, undoStack, setUndoStack, setRedoStack, isMobile, addToStack, restoreGridProperties }: UndoBtnProps) => {
   const theme = useTheme().palette;
   const handleUndo = () => {
     if (canvas && undoStack.length > 1) {
@@ -28,7 +28,7 @@ const UndoBtn = ({ canvas, undoStack, setUndoStack, setRedoStack, isMobile , add
           }
         });
 
-
+        console.log(undoStack)
         canvas.renderAll();
       });
     }
@@ -41,7 +41,7 @@ const UndoBtn = ({ canvas, undoStack, setUndoStack, setRedoStack, isMobile , add
           <UndoIcon />
         </div>
         <div>
-          {!isMobile  &&
+          {!isMobile &&
             <p className={`text-sm`}>
               戻る
             </p>

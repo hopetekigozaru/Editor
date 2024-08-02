@@ -35,7 +35,7 @@ const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, 
       <ExportPdfBtn canvas={canvas} gridLines={gridLines} setGridLines={setGridLines} containerElm={containerElm} drawGrid={drawGrid} />
       <SaveBtn canvas={canvas} setGridLines={setGridLines} gridLines={gridLines} keep={keep} isMobile={isMobile} />
       {keep &&
-        <DeleteBtn uuid={keep.uuid} isMobilee={isMobile}/>
+        <DeleteBtn uuid={keep.uuid} isMobile={isMobile}/>
       }
     </div>
   )
