@@ -111,6 +111,7 @@ const Menu = ({
       const activeObj = canvas.getActiveObject()
 
       if (activeObj?.type === 'textbox') {
+        console.log(1)
         setIsTextMenu(true)
       }
       if (e.selected) {

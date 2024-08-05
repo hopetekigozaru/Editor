@@ -30,6 +30,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
   const {
     handleObjectMoving,
     handleObjectScaling,
+    handleObjectRotation,
     handleObjectAdded,
     handleMouseMove,
     handleMouseUp,
@@ -94,8 +95,17 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
             cornerSize: 9,
             selectable: false,
           });
+          const customControls = {
+            tl: fabric.Object.prototype.controls.tl, // 左上
+            tr: fabric.Object.prototype.controls.tr, // 右上
+            br: fabric.Object.prototype.controls.br, // 右下
+            bl: fabric.Object.prototype.controls.bl, // 左下
+            mtr: fabric.Object.prototype.controls.mtr // ローテーション
+          };
+
+          obj.controls = customControls;
         });
-         drawGrid(canvas)
+        drawGrid(canvas)
       })
       canvas.renderAll.bind(canvas)
     } else {
@@ -114,6 +124,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
       canvas.on('object:modified', saveState);
       canvas.on('object:moving', handleObjectMoving);
       canvas.on('object:scaling', handleObjectScaling);
+      canvas.on('object:rotating', handleObjectRotation);
       canvas.on('object:added', handleObjectAdded);
       canvas.on('selection:cleared', handleSelectionClear)
       canvas.on('mouse:move', handleMouseMove);

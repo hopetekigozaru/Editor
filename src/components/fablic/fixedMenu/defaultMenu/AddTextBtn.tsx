@@ -17,6 +17,15 @@ const AddTextBtn = ({ canvas, saveState }: AddTextProps) => {
     canvas: fabric.Canvas | null
   ) => {
     if (canvas) {
+
+      const customControls = {
+        tl: fabric.Object.prototype.controls.tl, // 左上
+        tr: fabric.Object.prototype.controls.tr, // 右上
+        br: fabric.Object.prototype.controls.br, // 右下
+        bl: fabric.Object.prototype.controls.bl, // 左下
+        mtr: fabric.Object.prototype.controls.mtr // ローテーション
+      };
+
       const textObject = new fabric.Textbox(text, {
         left: x,
         top: y,
@@ -31,7 +40,10 @@ const AddTextBtn = ({ canvas, saveState }: AddTextProps) => {
         cornerSize: 9,
         editable: true,
       });
-      console.log(textObject)
+
+      // カスタムコントロールを設定
+      textObject.controls = customControls;
+
       canvas.add(textObject);
       canvas.setActiveObject(textObject)
       saveState();

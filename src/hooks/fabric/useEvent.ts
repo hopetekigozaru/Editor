@@ -31,7 +31,6 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobile: boolean) => {
   };
 
   /**
-  // TODO オブジェクトを回転させ時の制限領域Fix
    * オブジェクト移動イベント
    * @param e
    * @returns
@@ -44,37 +43,63 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobile: boolean) => {
     const canvasWidth = canvas.getWidth();
     const canvasHeight = canvas.getHeight();
 
-    // オブジェクトの現在の位置、サイズ、回転を取得
-    const angle = obj.angle || 0;
-    const width = obj.getScaledWidth();
-    const height = obj.getScaledHeight();
+    // オブジェクトのコーナー座標を取得
+    const corners = obj.getCoords().map((corner, index) => ({ ...corner, index }));
 
-    // 回転を考慮したバウンディングボックスを計算
-    const boundingRect = obj.getBoundingRect(true);
-    const boundWidth = boundingRect.width;
-    const boundHeight = boundingRect.height;
-
-    // オブジェクトの中心からの左右、上下のオフセットを計算
-    const offsetX = (boundWidth - width) / 2;
-    const offsetY = (boundHeight - height) / 2;
+    // 最も右、左、上、下のコーナーを見つける
+    const rightMostPoint = corners.reduce((max, corner) => corner.x > max.x ? corner : max, corners[0]);
+    const leftMostPoint = corners.reduce((min, corner) => corner.x < min.x ? corner : min, corners[0]);
+    const topMostPoint = corners.reduce((min, corner) => corner.y < min.y ? corner : min, corners[0]);
+    const bottomMostPoint = corners.reduce((max, corner) => corner.y > max.y ? corner : max, corners[0]);
 
     // 新しい位置を計算
-    let left = obj.left as number;
-    let top = obj.top as number;
+    let newLeft = obj.left as number;
+    let newTop = obj.top as number;
 
     // 左右の制限
-    const minLeft = offsetX;
-    const maxLeft = canvasWidth - (boundWidth - offsetX);
-    left = Math.min(Math.max(left, minLeft), maxLeft);
+    if (rightMostPoint.x >= canvasWidth) { //右の制限
+      if (rightMostPoint.index === 0) {
+        newLeft = Math.min(newLeft, canvasWidth);
+      } else if (rightMostPoint.index === 1 || rightMostPoint.index === 2) {
+        newLeft = Math.min(newLeft, canvasWidth - (rightMostPoint.x - corners[0].x));
+      } else if (rightMostPoint.index === 3) {
+        newLeft = Math.min(newLeft, corners[0].x);
+      }
+    } else if (leftMostPoint.x <= 0) { //左の制限
+      if (leftMostPoint.index === 0) {
+        newLeft = Math.max(0, Math.min(newLeft, canvasWidth - (rightMostPoint.x - leftMostPoint.x)));
+      } else if (leftMostPoint.index === 1 || leftMostPoint.index === 2) {
+        newLeft = Math.max(newLeft, corners[0].x);
+      } else if (leftMostPoint.index === 3) {
+        newLeft = Math.max(corners[0].x, Math.min(newLeft, canvasWidth - (rightMostPoint.x - leftMostPoint.x)));
+      }
+    }
 
     // 上下の制限
-    const minTop = offsetY;
-    const maxTop = canvasHeight - (boundHeight - offsetY);
-    top = Math.min(Math.max(top, minTop), maxTop);
+    if (bottomMostPoint.y >= canvasHeight) { // 下の制限
+      if (bottomMostPoint.index === 0) {
+        newTop = Math.min(newTop, canvasHeight);
+      } else if (bottomMostPoint.index === 1 || bottomMostPoint.index === 2) {
+        newTop = Math.min(newTop, canvasHeight - (bottomMostPoint.y - corners[0].y));
+      } else if (bottomMostPoint.index === 3) {
+        newTop = Math.min(newTop, corners[0].y);
+      }
+    } else if (topMostPoint.y <= 0) { // 上の制限
+      if (topMostPoint.index === 0) {
+        newTop = Math.max(0, Math.min(newTop, canvasHeight - (bottomMostPoint.y - topMostPoint.y)));
+      } else if (topMostPoint.index === 1 || topMostPoint.index === 2) {
+        newTop = Math.max(newTop, corners[0].y);
+      } else if (topMostPoint.index === 3) {
+        newTop = Math.max(corners[0].y, Math.min(newTop, canvasHeight - (bottomMostPoint.y - topMostPoint.y)));
+      }
+    }
 
-    // 新しい位置をセット
-    obj.set({ left, top });
+    // 新しい位置を設定
+    obj.set({ left: newLeft, top: newTop });
+    obj.setCoords(); // 座標の再計算
+    canvas.renderAll(); // キャンバスを再描画
   };
+
 
   /**
    * オブジェクトスケーリングイベント
@@ -90,44 +115,146 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobile: boolean) => {
     const canvasWidth = canvas.getWidth();
     const canvasHeight = canvas.getHeight();
 
-    // オブジェクトの現在のバウンディングボックスを取得
-    const boundingRect = obj.getBoundingRect(true);
 
-    // スケーリングの方向を判断
-    const scalingX = obj.scaleX! > (obj.lastScaleX ?? obj.scaleX!);
-    const scalingY = obj.scaleY! > (obj.lastScaleY ?? obj.scaleY!);
+    // スケーリングと位置調整を行う関数
+    const adjustScaleAndPosition = (scaleX: number, scaleY: number, left: number, top: number) => {
+      obj.set({ scaleX, scaleY, left, top });
+      obj.setCoords();
+      const boundingRect = obj.getBoundingRect(true);
 
-    let scaleX = obj.scaleX!;
-    let scaleY = obj.scaleY!;
+      // キャンバス内に収まるようにスケールと位置を調整
+      if (boundingRect.left < 0) {
+        left -= boundingRect.left;
+      }
+      if (boundingRect.top < 0) {
+        top -= boundingRect.top;
+      }
+      if (boundingRect.left + boundingRect.width > canvasWidth) {
+        const overflowX = boundingRect.left + boundingRect.width - canvasWidth;
+        scaleX = Math.max(0.1, scaleX - (overflowX / obj.width!));
+        left -= overflowX / 2;
+      }
+      if (boundingRect.top + boundingRect.height > canvasHeight) {
+        const overflowY = boundingRect.top + boundingRect.height - canvasHeight;
+        scaleY = Math.max(0.1, scaleY - (overflowY / obj.height!));
+        top -= overflowY / 2;
+      }
 
-    // 左端の制限
-    if (boundingRect.left < 0 && scalingX) {
-      scaleX = obj.lastScaleX ?? obj.scaleX!;
-    } else if (boundingRect.left + boundingRect.width > canvasWidth && scalingX) {
-      scaleX = obj.lastScaleX ?? obj.scaleX!;
+      return { scaleX, scaleY, left, top };
+    };
+
+    // 初期値を設定
+    let { scaleX, scaleY, left, top } = {
+      scaleX: obj.scaleX!,
+      scaleY: obj.scaleY!,
+      left: obj.left!,
+      top: obj.top!
+    };
+
+    // スケーリングと位置調整を繰り返し適用（最大10回）
+    for (let i = 0; i < 10; i++) {
+      const result = adjustScaleAndPosition(scaleX, scaleY, left, top);
+      if (result.scaleX === scaleX && result.scaleY === scaleY &&
+        result.left === left && result.top === top) {
+        break; // 変更がなければループを抜ける
+      }
+      ({ scaleX, scaleY, left, top } = result);
     }
 
-    // 上端の制限
-    if (boundingRect.top < 0 && scalingY) {
-      scaleY = obj.lastScaleY ?? obj.scaleY!;
-    } else if (boundingRect.top + boundingRect.height > canvasHeight && scalingY) {
-      scaleY = obj.lastScaleY ?? obj.scaleY!;
-    }
-
-    // 新しいスケールをセット
-    obj.set({ scaleX, scaleY });
+    // 最終的な値を設定
+    obj.set({ scaleX, scaleY, left, top });
+    obj.setCoords();
 
     // 現在のスケールを保存
     obj.lastScaleX = scaleX;
     obj.lastScaleY = scaleY;
 
-    // オブジェクトの座標を更新
-    obj.setCoords();
-    handleObjectMoving(e)
-
     // キャンバスを再描画
     canvas.renderAll();
   };
+
+  /**
+   * オブジェクトローテーションイベント
+   // TODO 全然動かない
+   * @param e
+   * @returns
+   */
+  const handleObjectRotation = (e: fabric.IEvent<Event>) => {
+    if (!canvas) return;
+    const obj = e.target as fabric.Object;
+    if (!obj) return;
+
+    const canvasWidth = canvas.getWidth();
+    const canvasHeight = canvas.getHeight();
+
+    // 現在の角度と位置を記録
+    const currentAngle = obj.angle!;
+    const currentLeft = obj.left!;
+    const currentTop = obj.top!;
+
+    // コーナーがキャンバス内にあるかチェックする関数
+    const isCornerWithinCanvas = (corner: fabric.Point) => {
+        return corner.x >= 0 && corner.x <= canvasWidth && corner.y >= 0 && corner.y <= canvasHeight;
+    };
+
+    // オブジェクトがキャンバス内にあるかチェックする関数
+    const isObjectWithinCanvas = () => {
+        const corners = obj.getCoords();
+        return corners.every(isCornerWithinCanvas);
+    };
+
+    // はみ出ない最大角度を求める関数（より精密な方法）
+    const findMaxAngle = (startAngle: number, direction: number) => {
+        let low = startAngle;
+        let high = startAngle + 360 * direction;
+        let maxAngle = startAngle;
+
+        while (Math.abs(high - low) > 0.1) {
+            const mid = (low + high) / 2;
+            obj.set({ angle: mid, left: currentLeft, top: currentTop });
+            obj.setCoords();
+
+            if (isObjectWithinCanvas()) {
+                maxAngle = mid;
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+
+        return maxAngle;
+    };
+
+    // 新しい角度を取得
+    let newAngle = obj.angle!;
+
+    // 回転方向を決定
+    const rotationDirection = Math.sign(newAngle - currentAngle);
+
+    // はみ出ない最大角度を求める
+    const maxAngle = findMaxAngle(currentAngle, rotationDirection);
+
+    // 新しい角度が最大角度を超えている場合、最大角度に制限する
+    if (rotationDirection > 0 && newAngle > maxAngle) {
+        newAngle = maxAngle;
+    } else if (rotationDirection < 0 && newAngle < maxAngle) {
+        newAngle = maxAngle;
+    }
+
+    // 最終的な角度を設定（位置は元の位置に固定）
+    obj.set({
+        angle: newAngle,
+        left: currentLeft,
+        top: currentTop
+    });
+    obj.setCoords();
+    canvas.renderAll();
+
+    console.log(`Max Angle: ${maxAngle}, New Angle: ${newAngle}`);
+};
+
+
+
 
   /**
    * オブジェクトが追加されたときに初期スケールを設定
@@ -215,9 +342,9 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobile: boolean) => {
 
 
   /**
- * オブジェクトの選択状態解除イベント
- * @param e
- */
+  * オブジェクトの選択状態解除イベント
+  * @param e
+  */
   const handleSelectionClear = (e: fabric.IEvent) => {
     const objects = e.deselected as Array<fabric.Object>
     if (objects) {
@@ -227,9 +354,11 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobile: boolean) => {
     }
   }
 
+
   return {
     handleObjectMoving,
     handleObjectScaling,
+    handleObjectRotation,
     handleObjectAdded,
     handleMouseMove,
     handleMouseUp,
