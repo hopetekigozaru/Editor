@@ -18,7 +18,7 @@ const style = {
   pb: 3,
 };
 
-const SaveBtn = ({ canvas, setGridLines, gridLines, keep, isMobail }: SaveBtnProps) => {
+const SaveBtn = ({ canvas, setGridLines, gridLines, keep, isMobile }: SaveBtnProps) => {
   const router = useRouter();
   const {
     handleOpen,
@@ -49,7 +49,7 @@ const SaveBtn = ({ canvas, setGridLines, gridLines, keep, isMobail }: SaveBtnPro
         aria-describedby="child-modal-description"
         style={{ height: '100vh' }}
       >
-        <Box sx={{ ...style, width: isMobail?'90vw':'50vw' }}>
+        <Box sx={{ ...style, width: isMobile?'90vw':'50vw' }}>
           <div className="w-full flex flex-col justify-center my-10">
             <form onSubmit={saveCanvas}>
               <div className='flex justify-center'>

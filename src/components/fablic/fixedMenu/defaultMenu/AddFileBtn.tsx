@@ -58,6 +58,16 @@ const AddFileBtn = ({ canvas, saveState, clickInput }: AddFileProps) => {
             selectable: true
           });
 
+          const customControls = {
+            tl: fabric.Object.prototype.controls.tl, // 左上
+            tr: fabric.Object.prototype.controls.tr, // 右上
+            br: fabric.Object.prototype.controls.br, // 右下
+            bl: fabric.Object.prototype.controls.bl, // 左下
+            mtr: fabric.Object.prototype.controls.mtr // ローテーション
+          };
+
+          fabricImg.controls = customControls;
+
           canvas.add(fabricImg);
           canvas.setActiveObject(fabricImg);
           canvas.renderAll();

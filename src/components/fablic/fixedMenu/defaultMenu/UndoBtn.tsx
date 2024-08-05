@@ -1,7 +1,9 @@
 import { UndoBtnProps } from '@/type/fabricType';
 import UndoIcon from '@mui/icons-material/Undo';
+import { useTheme } from '@mui/material';
 
-const UndoBtn = ({ canvas, undoStack, setUndoStack, setRedoStack, isMobile , addToStack, restoreGridProperties }: UndoBtnProps) => {
+const UndoBtn = ({ canvas, undoStack, setUndoStack, setRedoStack, isMobile, addToStack, restoreGridProperties }: UndoBtnProps) => {
+  const theme = useTheme().palette;
   const handleUndo = () => {
     if (canvas && undoStack.length > 1) {
       const currentState = undoStack[undoStack.length - 1];
@@ -12,6 +14,21 @@ const UndoBtn = ({ canvas, undoStack, setUndoStack, setRedoStack, isMobile , add
 
       canvas.loadFromJSON(JSON.parse(previousState), () => {
         restoreGridProperties(canvas);
+
+        canvas.forEachObject(obj => {
+          if (obj.type === 'textbox' || obj.type === 'image' || obj.type === 'rect' || obj.type === 'circle') {
+            obj.set({
+              borderColor: theme.secondary.main,  // 枠線の色
+              cornerColor: theme.secondary.main,  // コーナーの色
+              cornerStyle: 'circle',
+              cornerSize: 9,
+              transparentCorners: false,
+              selectable: true
+            });
+          }
+        });
+
+        console.log(undoStack)
         canvas.renderAll();
       });
     }
@@ -24,7 +41,7 @@ const UndoBtn = ({ canvas, undoStack, setUndoStack, setRedoStack, isMobile , add
           <UndoIcon />
         </div>
         <div>
-          {!isMobile  &&
+          {!isMobile &&
             <p className={`text-sm`}>
               戻る
             </p>

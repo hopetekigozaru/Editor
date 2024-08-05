@@ -1,7 +1,9 @@
 import { RedoBtnProps } from '@/type/fabricType';
 import RedoIcon from '@mui/icons-material/Redo';
+import { useTheme } from '@mui/material';
 
 const RedoBtn = ({ canvas, redoStack, setRedoStack, setUndoStack, isMobile ,addToStack ,restoreGridProperties }: RedoBtnProps) => {
+  const theme = useTheme().palette;
   const handleRedo = () => {
     if (canvas && redoStack.length > 0) {
       const nextState = redoStack[redoStack.length - 1];
@@ -11,6 +13,20 @@ const RedoBtn = ({ canvas, redoStack, setRedoStack, setUndoStack, isMobile ,addT
 
       canvas.loadFromJSON(JSON.parse(nextState), () => {
         restoreGridProperties(canvas);
+
+        canvas.forEachObject(obj => {
+          if (obj.type === 'textbox' || obj.type === 'image' || obj.type === 'rect' || obj.type === 'circle') {
+            obj.set({
+              borderColor: theme.secondary.main,  // 枠線の色
+              cornerColor: theme.secondary.main,  // コーナーの色
+              cornerStyle: 'circle',
+              cornerSize: 9,
+              transparentCorners: false,
+              selectable: true
+            });
+          }
+        });
+
         canvas.renderAll();
       });
     }

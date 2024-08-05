@@ -21,7 +21,7 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
     setRedoStack,
     continuous,
     setContinuous,
-    isMobail,
+    isMobile,
     MAX_HISTORY,
     saveState,
     constrainViewport,
@@ -39,8 +39,8 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
 
   return (
     <>
-      <div className={`w-full ${isMobail ? 'h-[50vh]' : 'h-[75vh]'} flex justify-center items-center relative`}>
-        <div className={`${isMobail ? 'h-fit w-full' : 'h-[70%] w-fit flex'} fixed`}>
+      <div className={`w-full ${isMobile ? 'h-[50vh]' : 'h-[75vh]'} flex justify-center items-center relative`}>
+        <div className={`${isMobile ? 'h-fit w-full' : 'h-[70%] w-fit flex'} fixed`}>
 
           <div ref={containerRef} className="border border-solid border-black">
             <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
@@ -71,23 +71,23 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
             setGridLines={setGridLines}
             drawGrid={drawGrid}
             keep={keep}
-            isMobail={isMobail}
+            isMobile={isMobile}
             MAX_HISTORY={MAX_HISTORY}
             addToStack={addToStack}
             restoreGridProperties={restoreGridProperties}
           />
-          <div className={`${isMobail ? 'mt-3 justify-between' : 'h-full items-end'} flex pl-1`}>
-            {isMobail &&
+          <div className={`${isMobile ? 'mt-3 justify-between' : 'h-full items-end'} flex pl-1`}>
+            {isMobile &&
               <div className='flex'>
                 <div className={`${undoStack.length === 0 ? 'bg-gray-500' : 'bg-primary'} p-2`}>
-                  <UndoBtn canvas={canvas} undoStack={undoStack} continuous={continuous} setContinuous={setContinuous} setUndoStack={setUndoStack} setRedoStack={setRedoStack} isMobile ={isMobail} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
+                  <UndoBtn canvas={canvas} undoStack={undoStack} continuous={continuous} setContinuous={setContinuous} setUndoStack={setUndoStack} setRedoStack={setRedoStack} isMobile ={isMobile} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
                 </div>
                 <div className={` ${redoStack.length === 0 ? 'bg-gray-500' : 'bg-primary'} p-2 ml-2`}>
-                  <RedoBtn canvas={canvas} redoStack={redoStack} setUndoStack={setUndoStack} setRedoStack={setRedoStack} isMobile ={isMobail} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
+                  <RedoBtn canvas={canvas} redoStack={redoStack} setUndoStack={setUndoStack} setRedoStack={setRedoStack} isMobile ={isMobile} addToStack={addToStack} restoreGridProperties={restoreGridProperties} />
                 </div>
               </div>
             }
-            <ExpansionBtns canvas={canvas} constrainViewport={constrainViewport} isMobile ={isMobail} />
+            <ExpansionBtns canvas={canvas} constrainViewport={constrainViewport} isMobile ={isMobile} />
           </div>
         </div>
       </div>

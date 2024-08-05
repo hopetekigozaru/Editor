@@ -12,7 +12,7 @@ export const useInitCanvas = (aspectRatio: number) => {
     windowWidth: undefined,
     windowHeight: undefined,
   });
-  const [isMobail, setIsMobail] = useState(true);
+  const [isMobile, setisMobile] = useState(true);
 
 
   /**
@@ -30,7 +30,7 @@ export const useInitCanvas = (aspectRatio: number) => {
   useEffect(() => {
     // クライアントサイドでのみ実行
     if (typeof window !== 'undefined') {
-      setIsMobail(window.innerWidth < window.innerHeight);
+      setisMobile(window.innerWidth < window.innerHeight);
 
       // 初期サイズを設定
       handleResize();
@@ -103,7 +103,7 @@ export const useInitCanvas = (aspectRatio: number) => {
       );
       lines.push(vertical);
       canvas.add(vertical);
-      vertical.moveTo(0);
+      vertical.moveTo(0); // オブジェクトを一番背面に移動
     }
 
     // 水平線を描画
@@ -114,15 +114,19 @@ export const useInitCanvas = (aspectRatio: number) => {
       );
       lines.push(horizontal);
       canvas.add(horizontal);
-      horizontal.moveTo(0);
+      horizontal.moveTo(0); // オブジェクトを一番背面に移動
     }
 
+    // レンダリングして表示
+    canvas.renderAll();
+
+    // グリッドラインを保存する
     setGridLines(lines);
   };
 
   return {
     canvas,
-    isMobail,
+    isMobile,
     canvasRef,
     containerRef,
     canvasWidth,

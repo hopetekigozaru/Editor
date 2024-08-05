@@ -17,7 +17,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
   const MAX_HISTORY = 50; // 履歴の最大数
   const {
     canvas,
-    isMobail,
+    isMobile,
     canvasRef,
     containerRef,
     canvasWidth,
@@ -30,13 +30,14 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
   const {
     handleObjectMoving,
     handleObjectScaling,
+    handleObjectRotation,
     handleObjectAdded,
     handleMouseMove,
     handleMouseUp,
     handleSelectionClear,
     handleMouseDown,
     constrainViewport,
-  } = useEvent(canvas, isMobail)
+  } = useEvent(canvas, isMobile)
 
 
   /**
@@ -84,26 +85,37 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
   const loadJson = async (canvas: fabric.Canvas) => {
     if (keep) {
       // Jsonをfabricオブジェクトに復元
-      canvas.loadFromJSON(keep!.fabric_object, () => {
+      canvas.loadFromJSON(keep!.fabric_object, async () => {
         canvas.forEachObject(obj => {
-          if (obj.type === 'textbox') {
-            obj as fabric.Textbox
-            obj.set({
-              borderColor: theme.palette.secondary.main,  // 枠線の色
-              cornerColor: theme.palette.secondary.main,  // コーナーの色
-              cornerStyle: 'circle',
-              cornerSize: 9,
-              selectable: false,
-            });
-          }
+          obj as fabric.Object
+          obj.set({
+            borderColor: theme.palette.secondary.main,  // 枠線の色
+            cornerColor: theme.palette.secondary.main,  // コーナーの色
+            cornerStyle: 'circle',
+            cornerSize: 9,
+            selectable: false,
+          });
+          const customControls = {
+            tl: fabric.Object.prototype.controls.tl, // 左上
+            tr: fabric.Object.prototype.controls.tr, // 右上
+            br: fabric.Object.prototype.controls.br, // 右下
+            bl: fabric.Object.prototype.controls.bl, // 左下
+            mtr: fabric.Object.prototype.controls.mtr // ローテーション
+          };
+
+          obj.controls = customControls;
         });
+        drawGrid(canvas)
       })
-      await drawGrid(canvas);
       canvas.renderAll.bind(canvas)
     } else {
       await drawGrid(canvas)
     }
-    saveState(); // Save initial state
+
+    // TODO 非同期の処理がうまくできないので一旦setTimeoutにしています
+    setTimeout(() => {
+      saveState(); // Save initial state
+    }, 500);
   }
 
   useEffect(() => {
@@ -112,6 +124,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
       canvas.on('object:modified', saveState);
       canvas.on('object:moving', handleObjectMoving);
       canvas.on('object:scaling', handleObjectScaling);
+      canvas.on('object:rotating', handleObjectRotation);
       canvas.on('object:added', handleObjectAdded);
       canvas.on('selection:cleared', handleSelectionClear)
       canvas.on('mouse:move', handleMouseMove);
@@ -144,7 +157,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
     setRedoStack,
     continuous,
     setContinuous,
-    isMobail,
+    isMobile,
     MAX_HISTORY,
     saveState,
     constrainViewport,

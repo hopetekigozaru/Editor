@@ -33,7 +33,7 @@ const Menu = ({
   setGridLines,
   drawGrid,
   keep,
-  isMobail,
+  isMobile,
   MAX_HISTORY,
   addToStack,
   restoreGridProperties
@@ -45,8 +45,8 @@ const Menu = ({
   const theme = useTheme();
   const drawwerHeightRef = useRef<string>('')
   useEffect(() => {
-    drawwerHeightRef.current = isMobail ? '42%' : '17%'
-  }, [isMobail])
+    drawwerHeightRef.current = isMobile ? '42%' : '17%'
+  }, [isMobile])
 
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -111,6 +111,7 @@ const Menu = ({
       const activeObj = canvas.getActiveObject()
 
       if (activeObj?.type === 'textbox') {
+        console.log(1)
         setIsTextMenu(true)
       }
       if (e.selected) {
@@ -144,7 +145,7 @@ const Menu = ({
   }, [canvas, bubbleElm, canvasElm, selectObject])
 
   return (
-    <div ref={containerRef} className={`fixed bottom-0 left-0 w-screen ${isMobail ? 'h-[40%]' : 'h-[15%]'} bg-primary flex justify-center items-center rounded-tl-[5rem] rounded-tr-[5rem]`}>
+    <div ref={containerRef} className={`fixed bottom-0 left-0 w-screen ${isMobile ? 'h-[40%]' : 'h-[15%]'} bg-primary flex justify-center items-center rounded-tl-[5rem] rounded-tr-[5rem]`}>
       {!open &&
         <DefaultMenu
           canvas={canvas}
@@ -161,12 +162,12 @@ const Menu = ({
           continuous={continuous}
           redoStack={redoStack}
           keep={keep}
-          isMobail={isMobail}
+          isMobile={isMobile}
           addToStack={addToStack}
           restoreGridProperties={restoreGridProperties}
         />
       }
-      {(open && !isMobail) &&
+      {(open && !isMobile) &&
         <div className='w-full flex justify-center items-center h-full'>
           {(!isFontSize && isTextMenu) &&
             <TextMenu
@@ -174,16 +175,16 @@ const Menu = ({
               saveState={saveState}
               clickInput={clickInput}
               setIsFontSize={setIsFontSize}
-              isMobail={isMobail}
+              isMobile={isMobile}
             />
           }
           {
-            (isFontSize && !isMobail) &&
+            (isFontSize && !isMobile) &&
             <FontSizeMenu canvas={canvas} saveState={saveState} setIsFontSize={setIsFontSize} />
           }
         </div>
       }
-      {(containerRef.current && isMobail) &&
+      {(containerRef.current && isMobile) &&
         <Root>
           <CssBaseline />
           <Global
@@ -197,7 +198,7 @@ const Menu = ({
 
               },
               '.MuiModal-root': {
-                height: '17%'
+                height: '0%'
               },
             }}
           />
@@ -235,11 +236,11 @@ const Menu = ({
                       saveState={saveState}
                       clickInput={clickInput}
                       setIsFontSize={setIsFontSize}
-                      isMobail={isMobail}
+                      isMobile={isMobile}
                     />
                   }
                   {
-                    (isFontSize && !isMobail) &&
+                    (isFontSize && !isMobile) &&
                     <FontSizeMenu canvas={canvas} saveState={saveState} setIsFontSize={setIsFontSize} />
                   }
                 </div>
