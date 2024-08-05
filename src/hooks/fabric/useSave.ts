@@ -28,11 +28,11 @@ const useSave = (canvas: fabric.Canvas | null, keep: keep | null, gridLines: fab
     if (canvas) {
       const [height, width] = await initialCanvas(canvas)
 
-      const uuid:string = await uploadImage(canvas)
+      const uuid: string = await uploadImage(canvas)
 
       const json = canvas.toJSON();
 
-      const svgUrl = await uploadSvg(canvas,uuid)
+      const svgUrl = await uploadSvg(canvas, uuid)
 
       try {
         let res = null;
@@ -93,8 +93,8 @@ const useSave = (canvas: fabric.Canvas | null, keep: keep | null, gridLines: fab
    * @returns [height,width]
    */
   const initialCanvas = (canvas: fabric.Canvas) => {
-    let height
-    let width
+    let height: number;
+    let width: number;
 
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
 
@@ -102,22 +102,42 @@ const useSave = (canvas: fabric.Canvas | null, keep: keep | null, gridLines: fab
     gridLines.forEach((line) => {
       canvas.remove(line);
     });
-    console.log(canvas)
     setGridLines([]);
 
-    // Canvasの高さ・幅を設定
+    // 現在のCanvasのサイズを取得
+    const currentWidth = canvas.getWidth();
+    const currentHeight = canvas.getHeight();
+
+
+
+    // 新しいCanvasの高さ・幅を設定
     if (keep) {
-      height = keep.height
-      width = keep.width
+      height = keep.height;
+      width = keep.width;
     } else {
-      height = Number(searchParams.get('height'))
-      width = Number(searchParams.get('width'))
+      height = Number(searchParams.get('height'));
+      width = Number(searchParams.get('width'));
     }
 
-    canvas.setHeight(height)
-    canvas.setWidth(width)
+    const scaleX =  width / currentWidth
+    const scaleY = height / currentHeight
 
-    return [height, width]
+    // Canvasのサイズを設定
+    canvas.setHeight(height);
+    canvas.setWidth(width);
+
+    // Canvasの全オブジェクトをスケーリング
+    canvas.getObjects().forEach((obj) => {
+      obj.scaleX = obj.scaleX! * scaleX;
+      obj.scaleY = obj.scaleY! * scaleY;
+      obj.left = obj.left! * scaleX;
+      obj.top = obj.top! * scaleY;
+      obj.setCoords();
+    });
+
+    canvas.renderAll();
+
+    return [height, width];
   }
 
   /**
@@ -125,7 +145,7 @@ const useSave = (canvas: fabric.Canvas | null, keep: keep | null, gridLines: fab
    * @param canvas
    * @returns uuid
    */
-  const uploadImage = async (canvas: fabric.Canvas):Promise<string> => {
+  const uploadImage = async (canvas: fabric.Canvas): Promise<string> => {
     const uuid = keep?.uuid ? keep.uuid : uuidv4();
 
     const pathArray: string[] = [];

@@ -30,7 +30,6 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
   const {
     handleObjectMoving,
     handleObjectScaling,
-    handleObjectRotation,
     handleObjectAdded,
     handleMouseMove,
     handleMouseUp,
@@ -88,13 +87,21 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
       canvas.loadFromJSON(keep!.fabric_object, async () => {
         canvas.forEachObject(obj => {
           obj as fabric.Object
+          const scaleX = canvas.getWidth() / keep.width
+          const scaleY = canvas.getHeight() / keep.height
+          console.log(obj.scaleX)
           obj.set({
             borderColor: theme.palette.secondary.main,  // 枠線の色
             cornerColor: theme.palette.secondary.main,  // コーナーの色
             cornerStyle: 'circle',
             cornerSize: 9,
             selectable: false,
+            scaleX: obj.scaleX! * scaleX,
+            scaleY: obj.scaleY! * scaleY,
+            left: obj.left! * scaleX,
+            top: obj.top! * scaleY
           });
+
           const customControls = {
             tl: fabric.Object.prototype.controls.tl, // 左上
             tr: fabric.Object.prototype.controls.tr, // 右上
@@ -104,6 +111,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
           };
 
           obj.controls = customControls;
+
         });
         drawGrid(canvas)
       })
@@ -124,7 +132,6 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
       canvas.on('object:modified', saveState);
       canvas.on('object:moving', handleObjectMoving);
       canvas.on('object:scaling', handleObjectScaling);
-      canvas.on('object:rotating', handleObjectRotation);
       canvas.on('object:added', handleObjectAdded);
       canvas.on('selection:cleared', handleSelectionClear)
       canvas.on('mouse:move', handleMouseMove);
