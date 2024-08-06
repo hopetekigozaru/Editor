@@ -45,7 +45,7 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
   return (
     <>
       {loading !== null &&
-        <div className={`w-full h-[100vh] bg-white absolute z-[99] flex flex-col justify-center items-center top-0`}>
+        <div className={`w-full h-[100vh] bg-white fixed overflow-hidden z-[99] flex flex-col justify-center items-center top-0`}>
           <Oval
             height="80"
             width="80"
