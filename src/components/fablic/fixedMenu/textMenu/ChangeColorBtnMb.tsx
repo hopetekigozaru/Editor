@@ -4,12 +4,10 @@ import { useEffect, useState } from 'react';
 import "react-color-palette/css";
 
 const ChangeColorBtnMb = ({ canvas, clickInput, saveState, setShowPicker, colorPick }: ChangeColorBtnMbProps) => {
-  const [color, setColor] = useState('#000000');
-  const [paretColor, setParetColor] = useState('linear-gradient(to right, #f56565, #a78bfa, #3b82f6)');
+  const [color, setColor] = useState(colorPick.hex);
 
   useEffect(() => {
     setColor(colorPick.hex)
-    setParetColor(colorPick.hex)
   }, [colorPick])
 
   useEffect(() => {
@@ -61,7 +59,7 @@ const ChangeColorBtnMb = ({ canvas, clickInput, saveState, setShowPicker, colorP
         {/* TODO スマホだとカラーパレットが表示されない */}
         <div>
           <button type='button' onClick={() => setShowPicker(true)} className='w-[1.5rem] h-[1.5rem] rounded-full border-2 border-solid border-gray-300'>
-            <div className={`w-full h-full rounded-full`} style={{ background: paretColor }} ></div>
+            <div className={`w-full h-full rounded-full`} style={{ background: 'linear-gradient(to right, #f56565, #a78bfa, #3b82f6)' }} ></div>
           </button>
         </div>
       </div>

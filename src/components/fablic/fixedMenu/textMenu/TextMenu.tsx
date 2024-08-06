@@ -12,7 +12,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const TextMenu = ({ canvas, saveState, clickInput, setIsFontSize, isMobile }: TextMenuProps) => {
   const [showPicker, setShowPicker] = useState<boolean>(false)
-  const [colorPick, setColorPick] = useColor('#000000')
+  const [colorPick, setColorPick] = useColor(canvas?.getActiveObject()?.get('fill') as string)
 
   const handleColorPicker = (e: IColor) => {
     setColorPick(e)
@@ -22,7 +22,6 @@ const TextMenu = ({ canvas, saveState, clickInput, setIsFontSize, isMobile }: Te
     if (!canvas) return;
     const activeObj = canvas.getActiveObject();
     if (activeObj && activeObj.type === 'textbox') {
-      console.log('hex')
       activeObj.set({ fill: colorPick.hex });
       canvas.renderAll();
     }
