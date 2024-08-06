@@ -25,7 +25,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
     <html lang="ja">
       <body className={inter.className}>
         <ThemeRegistry options={{ key: 'mui' }}>
-          <main className="h-screen min-w-[100vw]  text-white">
+          <main className="h-screen min-w-[100vw]  text-white overflow-hidden">
             <header className="fixed w-screen top-0 left-0 h-[10vh] bg-primary">
               <div className="h-full flex justify-between items-center w-full">
                 <div className="w-1/2 flex items-center">
