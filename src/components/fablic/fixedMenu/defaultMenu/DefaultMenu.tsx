@@ -8,7 +8,7 @@ import SaveBtn from "./SaveBtn"
 import DeleteBtn from "./DeleteBts"
 import { DefaultMenuProps } from "@/type/fabricType"
 
-const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, undoStack, setUndoStack, saveState, setRedoStack, setContinuous, clickInput, continuous, redoStack, keep, isMobile, addToStack, restoreGridProperties }: DefaultMenuProps) => {
+const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, undoStack, setUndoStack, saveState, setRedoStack, setContinuous, clickInput, continuous, redoStack, keep, isMobile, addToStack, restoreGridProperties, setLoading }: DefaultMenuProps) => {
   const style = () => {
     let style;
     if(isMobile) {
@@ -33,9 +33,9 @@ const DefaultMenu = ({ canvas, gridLines, setGridLines, containerElm, drawGrid, 
       }
       <ExportImageBtn canvas={canvas} gridLines={gridLines} setGridLines={setGridLines} drawGrid={drawGrid} />
       <ExportPdfBtn canvas={canvas} gridLines={gridLines} setGridLines={setGridLines} containerElm={containerElm} drawGrid={drawGrid} />
-      <SaveBtn canvas={canvas} setGridLines={setGridLines} gridLines={gridLines} keep={keep} isMobile={isMobile} />
+      <SaveBtn canvas={canvas} setGridLines={setGridLines} gridLines={gridLines} keep={keep} isMobile={isMobile} setLoading={setLoading} />
       {keep &&
-        <DeleteBtn uuid={keep.uuid} isMobile={isMobile}/>
+        <DeleteBtn uuid={keep.uuid} isMobile={isMobile} setLoading={setLoading}/>
       }
     </div>
   )

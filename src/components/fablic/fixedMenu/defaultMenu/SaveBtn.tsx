@@ -18,7 +18,7 @@ const style = {
   pb: 3,
 };
 
-const SaveBtn = ({ canvas, setGridLines, gridLines, keep, isMobile }: SaveBtnProps) => {
+const SaveBtn = ({ canvas, setGridLines, gridLines, keep, isMobile, setLoading }: SaveBtnProps) => {
   const router = useRouter();
   const {
     handleOpen,
@@ -27,7 +27,7 @@ const SaveBtn = ({ canvas, setGridLines, gridLines, keep, isMobile }: SaveBtnPro
     saveCanvas,
     title,
     setTitle
-  } = useSave(canvas,keep,gridLines,setGridLines,router)
+  } = useSave(canvas,keep,gridLines,setGridLines,router,setLoading)
 
 
   return (

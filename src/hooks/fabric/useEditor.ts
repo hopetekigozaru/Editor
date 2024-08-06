@@ -13,6 +13,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
   const [undoStack, setUndoStack] = useState<string[]>([]);
   const [redoStack, setRedoStack] = useState<string[]>([]);
   const [continuous, setContinuous] = useState<boolean>(false);
+  const [loading,setLoading] = useState<string | null>(null)
   const theme = useTheme()
   const MAX_HISTORY = 50; // 履歴の最大数
   const {
@@ -177,7 +178,9 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
     drawGrid,
     canvasRef,
     addToStack,
-    restoreGridProperties
+    restoreGridProperties,
+    loading,
+    setLoading
   }
 
 }

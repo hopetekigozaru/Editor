@@ -1,10 +1,20 @@
 import { ChangeColorBtnMbProps } from '@/type/fabricType';
 import { debounce } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import "react-color-palette/css";
 
-const ChangeColorBtnMb = ({ canvas,  clickInput, saveState }: ChangeColorBtnMbProps) => {
+const ChangeColorBtnMb = ({ canvas, clickInput, saveState, setShowPicker, colorPick }: ChangeColorBtnMbProps) => {
   const [color, setColor] = useState('#000000');
   const [paretColor, setParetColor] = useState('linear-gradient(to right, #f56565, #a78bfa, #3b82f6)');
+
+  useEffect(() => {
+    setColor(colorPick.hex)
+    setParetColor(colorPick.hex)
+  }, [colorPick])
+
+  useEffect(() => {
+    debouncedColorState(color)
+  }, [color])
 
   const debouncedColorState = debounce((color: string) => {
     if (!canvas) return;
@@ -12,15 +22,17 @@ const ChangeColorBtnMb = ({ canvas,  clickInput, saveState }: ChangeColorBtnMbPr
     if (activeObj && activeObj.type === 'textbox') {
       activeObj.set({ fill: color });
       canvas.renderAll();
-      setColor(color);
       saveState();
     }
   }, 100); // 1秒のデバウンス時間
 
   // カラーが変更されたときに呼び出される関数
   const handleColorChange = (color: string) => {
-    debouncedColorState(color); // debouncedSaveStateを呼び出す
+    setColor(color); // debouncedSaveStateを呼び出す
   };
+
+
+
 
   return (
     <>
@@ -47,12 +59,11 @@ const ChangeColorBtnMb = ({ canvas,  clickInput, saveState }: ChangeColorBtnMbPr
           <div className='bg-yellow-500 *:w-full h-full rounded-full'></div>
         </button>
         {/* TODO スマホだとカラーパレットが表示されない */}
-        {/* <div>
-          <input type="color" className='absolute opacity-0 w-0 -top-[10%] left-[25%]' value={color} onChange={(value) => handleColorChange(value.target.value)} />
-          <button type='button' onClick={clickInput} className='w-[1.5rem] h-[1.5rem] rounded-full border-2 border-solid border-gray-300'>
-            <div className={`w-full h-full rounded-full`} style={{background: paretColor}} ></div>
+        <div>
+          <button type='button' onClick={() => setShowPicker(true)} className='w-[1.5rem] h-[1.5rem] rounded-full border-2 border-solid border-gray-300'>
+            <div className={`w-full h-full rounded-full`} style={{ background: paretColor }} ></div>
           </button>
-        </div> */}
+        </div>
       </div>
     </>
   )
