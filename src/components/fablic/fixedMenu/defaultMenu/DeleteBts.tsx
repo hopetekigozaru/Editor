@@ -69,7 +69,7 @@ const DeleteBtn = ({ uuid,isMobile , setLoading }: { uuid: string,isMobile:boole
       >
         <Box sx={{ ...style, width: isMobile? '90vw':'50vw' }}>
           <div className='w-full flex justify-center'>
-            <div className="w-2/3 flex flex-col justify-center items-center my-10">
+            <div className="w-[80%] flex flex-col justify-center items-center my-10">
               <div className='text-black text-lg w-full text-center'>
                 削除しますか？
               </div>
