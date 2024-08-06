@@ -1,7 +1,7 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, Modal } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -17,7 +17,7 @@ const style = {
   pb: 3,
 };
 
-const DeleteBtn = ({ uuid,isMobile }: { uuid: string,isMobile:boolean },) => {
+const DeleteBtn = ({ uuid,isMobile , setLoading }: { uuid: string,isMobile:boolean, setLoading:Dispatch<SetStateAction<string | null>> },) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -30,6 +30,8 @@ const DeleteBtn = ({ uuid,isMobile }: { uuid: string,isMobile:boolean },) => {
   };
 
   const deleteKeep = async () => {
+    handleClose()
+    setLoading('Deleting')
     const body = JSON.stringify({
       uuid: uuid,
     });
@@ -44,6 +46,8 @@ const DeleteBtn = ({ uuid,isMobile }: { uuid: string,isMobile:boolean },) => {
 
     if (res && res.status == 200) {
       router.push('/dashboard/1')
+    } else {
+      setLoading(null)
     }
   }
 

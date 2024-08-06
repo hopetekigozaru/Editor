@@ -21,10 +21,10 @@ declare module '@mui/material/Button' {
 
 // theme.js
 const colors = {
-  primary: '#552cac', // Tailwind CSS と MUI の primary カラー
-  secondary: '#6e41ce', // Tailwind CSS と MUI の secondary カラー
-  primaryDark:'#552cac',
-  secondaryDark:'#6e41ce',
+  primary: '#5eae53', // Tailwind CSS と MUI の primary カラー
+  secondary: '#8dc686', // Tailwind CSS と MUI の secondary カラー
+  primaryDark:'#5eae53',
+  secondaryDark:'#8dc686',
   accent: '#6e41ce'
 };
 

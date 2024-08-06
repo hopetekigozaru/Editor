@@ -1,4 +1,5 @@
 import { Dispatch, MouseEvent, SetStateAction } from "react";
+import { IColor } from "react-color-palette";
 
 export interface BubbleMenuProps {
   canvas: fabric.Canvas | null;
@@ -75,6 +76,7 @@ export interface DefaultMenuProps {
   isMobile: boolean
   addToStack: (stack: string[], item: string) => string[]
   restoreGridProperties: (canvas: fabric.Canvas) => void
+  setLoading :  React.Dispatch<React.SetStateAction<string | null>>
 }
 
 export interface exportImageBtnProps {
@@ -126,6 +128,7 @@ export interface SaveBtnProps {
     height: number;
   } | null;
   isMobile:boolean
+  setLoading:  React.Dispatch<React.SetStateAction<string | null>>
 }
 
 export interface BackBtnProps {
@@ -158,6 +161,8 @@ export interface ChangeColorBtnMbProps {
   canvas: fabric.Canvas | null;
   clickInput: (e: MouseEvent<HTMLButtonElement>) => void
   saveState: () => void;
+  setShowPicker: React.Dispatch<React.SetStateAction<boolean>>
+  colorPick: IColor
 }
 
 export interface ChangeFontBtnProps {
@@ -214,6 +219,7 @@ export interface MenuProps {
   MAX_HISTORY: number,
   addToStack: (stack: string[], item: string) => string[]
   restoreGridProperties: (canvas: fabric.Canvas) => void
+  setLoading:  React.Dispatch<React.SetStateAction<string | null>>
 }
 
 export interface EditorProps {

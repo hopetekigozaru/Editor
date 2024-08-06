@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
-const useSave = (canvas: fabric.Canvas | null, keep: keep | null, gridLines: fabric.Line[], setGridLines: React.Dispatch<React.SetStateAction<fabric.Line[]>>, router: AppRouterInstance) => {
+const useSave = (canvas: fabric.Canvas | null, keep: keep | null, gridLines: fabric.Line[], setGridLines: React.Dispatch<React.SetStateAction<fabric.Line[]>>, router: AppRouterInstance, setLoading: React.Dispatch<React.SetStateAction<string | null>>) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(keep?.title ? keep!.title : "無題")
   const searchParams = useSearchParams();
@@ -26,6 +26,8 @@ const useSave = (canvas: fabric.Canvas | null, keep: keep | null, gridLines: fab
   const saveCanvas = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (canvas) {
+      handleClose()
+      setLoading('Saving')
       const [height, width] = await initialCanvas(canvas)
 
       const uuid: string = await uploadImage(canvas)
@@ -81,8 +83,8 @@ const useSave = (canvas: fabric.Canvas | null, keep: keep | null, gridLines: fab
         }
       } catch (error) {
         console.error('Error saving canvas:', error);
+        setLoading(null)
       }
-
     }
   };
 
@@ -119,7 +121,7 @@ const useSave = (canvas: fabric.Canvas | null, keep: keep | null, gridLines: fab
       width = Number(searchParams.get('width'));
     }
 
-    const scaleX =  width / currentWidth
+    const scaleX = width / currentWidth
     const scaleY = height / currentHeight
 
     // Canvasのサイズを設定

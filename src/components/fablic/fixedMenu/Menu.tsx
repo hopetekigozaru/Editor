@@ -3,7 +3,7 @@ import { fabric } from 'fabric';
 import DefaultMenu from './defaultMenu/DefaultMenu';
 import TextMenu from './textMenu/TextMenu';
 import FontSizeMenu from './FontSizeMenu/FontSizeMenu';
-import { Box, CssBaseline, styled, SwipeableDrawer, useTheme } from '@mui/material';
+import { Box, CssBaseline, Drawer, styled, SwipeableDrawer, useTheme } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { Global } from '@emotion/react';
 import { MenuProps } from '@/type/fabricType';
@@ -36,7 +36,8 @@ const Menu = ({
   isMobile,
   MAX_HISTORY,
   addToStack,
-  restoreGridProperties
+  restoreGridProperties,
+  setLoading
 }: MenuProps) => {
   const [isFontSize, setIsFontSize] = useState<boolean>(false)
   const [isTextMenu, setIsTextMenu] = useState<boolean>(false)
@@ -85,7 +86,7 @@ const Menu = ({
 
       // 左右の画面外に出た場合の調整
       if (left > canvasRect.right) {
-        left = canvasRect.right - boundingRect.width -50; // 画面右端に合わせる
+        left = canvasRect.right - boundingRect.width - 50; // 画面右端に合わせる
       } else if (left < canvasRect.left) {
         left = canvasRect.left + 10; // 画面左端に合わせる
       }
@@ -165,6 +166,7 @@ const Menu = ({
           isMobile={isMobile}
           addToStack={addToStack}
           restoreGridProperties={restoreGridProperties}
+          setLoading={setLoading}
         />
       }
       {(open && !isMobile) &&
@@ -203,21 +205,21 @@ const Menu = ({
             }}
           />
           {containerRef.current && ( // containerRef.current が初期化されていることを確認
-            <SwipeableDrawer
-              // container={containerRef.current}
+            <Drawer
               anchor="bottom"
               open={open}
               onClose={toggleDrawer(false)}
-              onOpen={toggleDrawer(true)}
-              swipeAreaWidth={0}
-              disableSwipeToOpen={false}
-              disableBackdropTransition={true}
-              hideBackdrop={true}
               ModalProps={{
                 keepMounted: true,
                 hideBackdrop: true,
               }}
-
+              PaperProps={{
+                elevation: 0,
+                style: {
+                  touchAction: 'none',
+                  pointerEvents: 'auto' // 子要素のイベントを有効にする
+                }
+              }}
             >
               <Box
                 sx={{
@@ -245,7 +247,7 @@ const Menu = ({
                   }
                 </div>
               </Box>
-            </SwipeableDrawer>
+            </Drawer>
           )}
         </Root>
       }
