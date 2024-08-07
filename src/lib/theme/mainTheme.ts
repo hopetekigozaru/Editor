@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material";
 
+// カスタム型定義
 declare module "@mui/material/styles" {
   interface Palette {
     accent: {
@@ -20,12 +21,13 @@ declare module '@mui/material/Button' {
 }
 
 // theme.js
+// 色変えたい場合はここを変える
 const colors = {
   primary: '#5eae53', // Tailwind CSS と MUI の primary カラー
   secondary: '#8dc686', // Tailwind CSS と MUI の secondary カラー
   primaryDark:'#5eae53',
   secondaryDark:'#8dc686',
-  accent: '#6e41ce'
+  accent: '#8dc686'
 };
 
 export const tailwindTheme = {

@@ -1,31 +1,33 @@
 'use client'
 import { Button } from "@mui/material"
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"
 
-interface PaginarionProps {
-  length: number,
-  pageSize: number
+interface PaginationProps {
+  pageSize: number | null
   totalKeeps: number
   currentPage: number
 }
 
-const Pagination = ({ length, pageSize, totalKeeps,currentPage }: PaginarionProps) => {
+const Pagination = ({ pageSize, totalKeeps, currentPage }: PaginationProps) => {
   const router = useRouter()
-  const handlePrevPage = () => {
-    router.push('/dashboard/' + (Number(currentPage) - 1))
+  if (!pageSize) return null;
 
+  const handlePrevPage = () => {
+    router.push(`/dashboard/${currentPage - 1}`);
   };
 
   const handleNextPage = () => {
-    router.push('/dashboard/' + (Number(currentPage) + 1))
+    router.push(`/dashboard/${currentPage + 1}`);
   };
+
   return (
     <div className='flex justify-center h-[5%]'>
-      <Button onClick={handlePrevPage} color="secondary" disabled={currentPage == 1}>
-        前へ
+      <Button onClick={handlePrevPage} color="secondary" disabled={currentPage <= 1}>
+        <p className="text-xl font-bold">＜</p>
       </Button>
-      <Button onClick={handleNextPage} color="secondary" disabled={length < pageSize || currentPage * pageSize >= totalKeeps}>
-        次へ
+      <p className="text-xl text-primary font-bold mx-5">{currentPage}</p>
+      <Button onClick={handleNextPage} color="secondary" disabled={totalKeeps <= pageSize || currentPage * pageSize >= totalKeeps}>
+      <p className="text-xl font-bold">＞</p>
       </Button>
     </div>
   )

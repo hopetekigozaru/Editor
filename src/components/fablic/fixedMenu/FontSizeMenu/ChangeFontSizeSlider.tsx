@@ -57,7 +57,7 @@ const ChangeFontSizeSlider = ({ canvas, saveState }: ChangeFontSizeSliderProps) 
       <div className='w-1/3 flex items-center'>
         <Slider value={fontSize} size="medium" onChange={handleFontSizeChange} color="secondary" />
       </div>
-      <p className='text-white ml-5'>{fontSize}</p>
+      <p className='text-white ml-5 flex items-center'>{fontSize}</p>
     </>
   )
 }

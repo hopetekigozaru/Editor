@@ -14,6 +14,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
   const [redoStack, setRedoStack] = useState<string[]>([]);
   const [continuous, setContinuous] = useState<boolean>(false);
   const [loading,setLoading] = useState<string | null>(null)
+  const [size,setSize] = useState<string>("")
   const theme = useTheme()
   const MAX_HISTORY = 50; // 履歴の最大数
   const {
@@ -39,6 +40,16 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
     constrainViewport,
   } = useEvent(canvas, isMobile)
 
+
+  useEffect(() => {
+    if(aspectRatio > 1){
+      setSize("w-full")
+    } else if(aspectRatio === 1) {
+      setSize("w-[90%]")
+    } else {
+      setSize("h-[40vh]")
+    }
+  },[])
 
   /**
    * グリッドのプロパティを復元する関数
@@ -180,7 +191,8 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
     addToStack,
     restoreGridProperties,
     loading,
-    setLoading
+    setLoading,
+    size
   }
 
 }

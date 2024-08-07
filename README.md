@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 使用技術一覧
 
-## Getting Started
+[![NEXT.js](https://img.shields.io/badge/NEXT-black?style=for-the-badge&logo=NEXT.js)](https://nextjs.org/) [![SUPABASE](https://img.shields.io/badge/SUPABASE-black?style=for-the-badge&logo=SUPABASE)](https://supabase.com/) [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=REACT) ](https://ja.react.dev/)[![Tailwind](https://img.shields.io/badge/Tailwindcss-black?style=for-the-badge&logo=Tailwindcss)](https://tailwindcss.com/)
+## 目次
 
-First, run the development server:
+1. [プロジェクトについて](#プロジェクトについて)
+2. [環境](#環境)
+3. [ディレクトリ構成](#ディレクトリ構成)
+4. [開発環境構築](#開発環境構築)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# Editor
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<!-- プロジェクトについて -->
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## プロジェクトについて
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+自由編集機能を使用した画像作成アプリケーション
 
-## Learn More
+## 環境
 
-To learn more about Next.js, take a look at the following resources:
+<!-- 言語、フレームワーク、ミドルウェア、インフラの一覧とバージョンを記載 -->
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| 言語・フレームワーク  | バージョン |
+| --------------------- | ---------- |
+| Next.js                | 14.2.4     |
+| React                | 18      |
+| SUPABASE | -     |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+その他のパッケージのバージョンは package.json を参照してください
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## ディレクトリ構成
+
+<!-- Treeコマンドを使ってディレクトリ構成を記載 -->
+
+❯ tree -a -I "node_modules|.next|.git" -d
+.
+├── .env.example
+├── .env.local
+├── .eslintrc.json
+├── .gitignore
+├── README.md
+├── next-env.d.ts
+├── next.config.mjs
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── tailwind.config.ts
+├── tsconfig.json
+├── public
+│   └── images
+└── src
+    ├── app
+    │   ├── (auth)
+    │   │   ├── dashboard
+    │   │   │   └── [page_index]
+    │   │   ├── edit
+    │   │   └── register
+    │   ├── (login)
+    │   │   └── signup
+    │   │       └── pre_register
+    │   └── api
+    │       ├── delete
+    │       ├── deleteImage
+    │       ├── getKeeps
+    │       ├── imageUpload
+    │       ├── register
+    │       ├── svg
+    │       │   └── register
+    │       └── update
+    ├── components
+    │   ├── Auth
+    │   ├── fablic
+    │   │   ├── BubbleMenu
+    │   │   ├── ExpansionBtns
+    │   │   └── fixedMenu
+    │   │       ├── FontSizeMenu
+    │   │       ├── defaultMenu
+    │   │       └── textMenu
+    │   └── list
+    ├── hooks
+    │   ├── Auth
+    │   └── fabric
+    ├── lib
+    │   └── theme
+    └── type
+
+
+## 開発環境構築
+
+<!-- コンテナの作成方法、パッケージのインストール方法など、開発環境構築に必要な情報を記載 -->
+
+### .env.localファイル作成
+
+.env.local ファイルを以下の環境変数例と[環境変数の一覧](#環境変数の一覧)を元に作成
+
+.env.local
+NEXT_PUBLIC_SUPABASE_URL=〇〇
+NEXT_PUBLIC_SUPABASE_ANON_KEY=〇〇
+
+### 必要なパッケージをインストール
+ルートディレクトリで
+❯ npm install
+
+### 動作確認
+❯ npm run dev
+
+http://localhost:3000 にアクセスできるか確認
+アクセスできたら成功
+
+
+### 環境変数の一覧
+
+| 変数名                 | 役割                                      | デフォルト値|
+| ---------------------- | ----------------------------------------- | ----------------------------------|
+| NEXT_PUBLIC_SUPABASE_URL    | SUPABASEで発行されるURL | - |
+| NEXT_PUBLIC_SUPABASE_ANON_KEY         | SUPABASEで発行される秘密鍵   | - |

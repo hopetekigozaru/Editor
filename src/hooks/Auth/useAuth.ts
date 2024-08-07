@@ -2,24 +2,24 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useEffect, useState } from "react";
 
-const useAuth = (router:AppRouterInstance) => {
+const useAuth = (router: AppRouterInstance) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClientComponentClient()
 
-  const sessionRedirect = async () => {
-    const { data } = await supabase.auth.getSession();
-
-    if (data.session) {
-      router.push("/dashboard/1"); // ダッシュボードページにリダイレクト
-    }
-  }
-
   useEffect(() => {
+    const sessionRedirect = async () => {
+      const { data } = await supabase.auth.getSession();
+
+      if (data.session) {
+        router.push("/dashboard/1"); // ダッシュボードページにリダイレクト
+      }
+    };
+
     // ログイン状態を確認し、ログインしていればダッシュボードにリダイレクト
-    sessionRedirect()
-  }, [sessionRedirect]);
+    sessionRedirect();
+  }, [router, supabase]);
 
   const handleLogin = async () => {
     try {
@@ -75,16 +75,16 @@ const useAuth = (router:AppRouterInstance) => {
 
   }
 
-return {
-  email,
-  setEmail,
-  password,
-  setPassword,
-  handleLogin,
-  isLoading,
-  handleSignUp,
-  logout
-}
+  return {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    handleLogin,
+    isLoading,
+    handleSignUp,
+    logout
+  }
 
 }
 
