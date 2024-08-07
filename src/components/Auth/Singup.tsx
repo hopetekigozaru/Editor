@@ -1,5 +1,5 @@
 'use client'
-import useAuth from "@/hooks/Auth/useAuth";
+import useAuth from "@/hooks/auth/useAuth";
 import { Button, Link, TextField } from "@mui/material"
 import { useRouter } from "next/navigation";
 

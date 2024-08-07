@@ -2,7 +2,7 @@ import React, { useEffect, useState, MouseEvent, useRef } from 'react';
 import { fabric } from 'fabric';
 import DefaultMenu from './defaultMenu/DefaultMenu';
 import TextMenu from './textMenu/TextMenu';
-import FontSizeMenu from './FontSizeMenu/FontSizeMenu';
+import FontSizeMenu from './fontSizeMenu/FontSizeMenu';
 import { Box, CssBaseline, Drawer, styled, SwipeableDrawer, useTheme } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { Global } from '@emotion/react';

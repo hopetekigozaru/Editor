@@ -1,7 +1,7 @@
 'use client'
-import Pagination from "@/components/list/Pagination";
-import Preview from "@/components/list/preview";
-import RegisterButtonMb from "@/components/list/RegisterButtonMb";
+import Pagination from "@/components/dashboard/Pagination";
+import Preview from "@/components/dashboard/Preview";
+import RegisterButtonMb from "@/components/dashboard/RegisterButtonMb";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback, useMemo } from "react";
 

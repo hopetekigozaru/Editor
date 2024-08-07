@@ -1,9 +1,9 @@
 'use client'
 
 import { usePathname } from "next/navigation"
-import RegisterButton from "./list/RegisterButton"
+import RegisterButton from "./dashboard/RegisterButton"
 import PageBack from "./fablic/PageBack"
-import Logout from "./Auth/Logout"
+import Logout from "./auth/Logout"
 
 const TopMenuBtn = () => {
   const pathName = usePathname()
