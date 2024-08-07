@@ -1,11 +1,16 @@
 ## 使用技術一覧
+
 ### 言語/フレームワーク
+
 [![JavaScript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](https://developer.mozilla.org/ja/docs/Web/JavaScript) [![NEXT.js](https://img.shields.io/badge/NEXT-black?style=for-the-badge&logo=NEXT.js)](https://nextjs.org/) [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=REACT)](https://ja.react.dev/)
+
 ### バックエンド / データベース
+
 [![SUPABASE](https://img.shields.io/badge/SUPABASE-black?style=for-the-badge&logo=SUPABASE)](https://supabase.com/)
+
 ### UI / スタイリング
+
 [![Tailwind](https://img.shields.io/badge/Tailwindcss-black?style=for-the-badge&logo=Tailwindcss)](https://tailwindcss.com/) [![MUI](https://img.shields.io/badge/MUI-007FFF?style=for-the-badge&logo=mui&logoColor=white)](https://mui.com/)
-</br>
 
 ## 目次
 
@@ -15,18 +20,15 @@
 4. [開発環境構築](#開発環境構築)
 5. [テーマについて](#テーマについて)
 
-</br>
 
 # Editor
-</br>
 <!-- プロジェクトについて -->
 
 ## プロジェクトについて
 自由編集機能を使用した画像作成アプリケーション
 
-</br>
 
-## ディレクトリ構成
+##  ディレクトリ構成
 ```
 .
 ├── .env.example
@@ -144,55 +146,65 @@
 ├── tailwind.config.ts
 └── tsconfig.json
 ```
-### 1. components/Authディレクトリ
-&emsp; 認証関係のコンポーネントファイル
-### 2. components/fabricディレクトリ
-&emsp; 自由編集画面関係コンポーネント
-#### &emsp; ① /bubbleMenu
-&emsp;&emsp; バブルメニューコンポーネント
-#### &emsp; ② /expansionBtns
-&emsp;&emsp; ズームイン/アウトコンポーネント
-#### &emsp; ③ /fixedMenu
-&emsp;&emsp; 下部固定メニューコンポーネント
-##### &emsp;&emsp;&emsp;/FontSizeMenu
-&emsp;&emsp;&emsp;フォントサイズ変更関連コンポーネント
-##### &emsp;&emsp;&emsp;/defaultMenu
-&emsp;&emsp;&emsp;初期表示メニュー関連コンポーネント
-##### &emsp;&emsp;&emsp;/textMenu　
-&emsp;&emsp;&emsp;テキスト選択時メニュー関連コンポーネント
-### 3. components/dashboardディレクトリ
-&emsp; ダッシュボードコンポーネント
-### 4. hooks/authディレクトリ
-&emsp; 認証関連のカスタムフック
-### 5. hooks/fabricディレクトリ
-&emsp; 自由編集のカスタムフック
-### 6. lib/themeディレクトリ
-&emsp; tailwindとmuiのテーマ設定ファイル
-### 7. typeディレクトリ
-&emsp; 型定義ファイル
+###   components/Authディレクトリ
+認証関係のコンポーネントファイル
 
-</br>
+###   components/fabricディレクトリ
+自由編集画面関係コンポーネント
 
-## 環境
+- (1)  /bubbleMenu
+バブルメニューコンポーネント
+
+- (2) /expansionBtns
+ズームイン/アウトコンポーネント
+
+- (3) /fixedMenu
+下部固定メニューコンポーネント
+
+  - 1 : /FontSizeMenu
+  フォントサイズ変更関連コンポーネント
+
+  - 2 : /defaultMenu
+  初期表示メニュー関連コンポーネント
+
+  - 3 : /textMenu　
+  テキスト選択時メニュー関連コンポーネント
+
+###   components/dashboardディレクトリ
+ダッシュボードコンポーネント
+
+###   hooks/authディレクトリ
+認証関連のカスタムフック
+
+###   hooks/fabricディレクトリ
+自由編集のカスタムフック
+
+###   lib/themeディレクトリ
+tailwindとmuiのテーマ設定ファイル
+
+###   typeディレクトリ
+型定義ファイル
+
+
+##  環境
 
 <!-- 言語、フレームワーク、ミドルウェア、インフラの一覧とバージョンを記載 -->
 
-| 言語・フレームワーク  | バージョン |
-| --------------------- | ---------- |
-| Next.js                | 14.2.4     |
-| React                | 18      |
-| SUPABASE | -     |
+| 言語・フレームワーク | バージョン |
+| -----------------| --------- |
+| Next.js          | 14.2.4    |
+| React            | 18        |
+| SUPABASE         | -         |
 
 
 その他のパッケージのバージョンは package.json を参照してください
 
-</br>
 
-## 開発環境構築
+##  開発環境構築
 
 <!-- コンテナの作成方法、パッケージのインストール方法など、開発環境構築に必要な情報を記載 -->
 
-### .env.localファイル作成
+###  .env.localファイル作成
 
 .env.local ファイルを以下の環境変数例と[環境変数の一覧](#環境変数の一覧)を元に作成
 
@@ -200,28 +212,25 @@
 NEXT_PUBLIC_SUPABASE_URL=〇〇
 NEXT_PUBLIC_SUPABASE_ANON_KEY=〇〇
 
-### 必要なパッケージをインストール
+###  必要なパッケージをインストール
 ルートディレクトリで
 ❯ npm install
 
-### 動作確認
+###  動作確認
 ❯ npm run dev
 
 http://localhost:3000 にアクセスできるか確認
 アクセスできたら成功
 
-</br>
+###  環境変数の一覧
 
-### 環境変数の一覧
+| 変数名                        | 役割                    | デフォルト値|
+| -----------------------------| -----------------------| ----------|
+| NEXT_PUBLIC_SUPABASE_URL     | SUPABASEで発行されるURL  | -         |
+| NEXT_PUBLIC_SUPABASE_ANON_KEY| SUPABASEで発行される秘密鍵| -         |
 
-| 変数名                 | 役割                                      | デフォルト値|
-| ---------------------- | ----------------------------------------- | ----------------------------------|
-| NEXT_PUBLIC_SUPABASE_URL    | SUPABASEで発行されるURL | - |
-| NEXT_PUBLIC_SUPABASE_ANON_KEY         | SUPABASEで発行される秘密鍵   | - |
 
-</br>
-
-## テーマについて
+##  テーマについて
 テーマは
 ./src/lib/theme/mainTheme.ts
 で設定
