@@ -1,31 +1,38 @@
 import { ChangeFontBtnProps } from '@/type/fabricType';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { Menu, MenuItem, Button } from '@mui/material';
 import { useState } from 'react';
 
 const ChangeFontBtn = ({ canvas, saveState }: ChangeFontBtnProps) => {
-  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [fontFamily, setFontFamily] = useState('Arial');
 
-  const handleFontFamilyChange = (event: SelectChangeEvent<string>) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const newFont = event.target.value;
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleFontFamilyChange = (newFont: string) => {
     setFontFamily(newFont);
+    handleClose();
 
     if (!canvas) return;
 
-    const activeObject = canvas.getActiveObject()
+    const activeObject = canvas.getActiveObject();
     if (activeObject && activeObject.type === 'textbox') {
-      const text = activeObject as fabric.Textbox
+      const text = activeObject as fabric.Textbox;
       text.set({ fontFamily: newFont });
       canvas.renderAll();
       saveState();
     }
-
   };
+
   return (
     <div className='h-full'>
-      <button type='button' onClick={() => { setOpen(true) }} className='hover:opacity-75' >
+      <button type='button' className='hover:opacity-75' onClick={handleClick} >
         <div>
           <FontDownloadIcon />
         </div>
@@ -35,33 +42,27 @@ const ChangeFontBtn = ({ canvas, saveState }: ChangeFontBtnProps) => {
           </p>
         </div>
       </button>
-      {open &&
-        <Select className='absolute' value={fontFamily} onChange={handleFontFamilyChange} open={open}
-          onClose={() => setOpen(false)}
-          MenuProps={{
-            anchorOrigin: {
-              vertical: 'bottom',
-              horizontal: 'left',
-            },
-            transformOrigin: {
-              vertical: 'top',
-              horizontal: 'left',
-            },
-            PaperProps: {
-              style: {
-                maxHeight: 200, // メニューの最大高さを設定
-              },
-            },
-          }}>
-          <MenuItem value="Arial">Arial</MenuItem>
-          <MenuItem value="Helvetica">Helvetica</MenuItem>
-          <MenuItem value="Times New Roman">Times New Roman</MenuItem>
-          <MenuItem value="Courier New">Courier New</MenuItem>
-          <MenuItem value="Verdana">Verdana</MenuItem>
-        </Select>
-      }
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <MenuItem onClick={() => handleFontFamilyChange('Arial')}>Arial</MenuItem>
+        <MenuItem onClick={() => handleFontFamilyChange('Helvetica')}>Helvetica</MenuItem>
+        <MenuItem onClick={() => handleFontFamilyChange('Times New Roman')}>Times New Roman</MenuItem>
+        <MenuItem onClick={() => handleFontFamilyChange('Courier New')}>Courier New</MenuItem>
+        <MenuItem onClick={() => handleFontFamilyChange('Verdana')}>Verdana</MenuItem>
+      </Menu>
     </div>
-  )
-}
+  );
+};
 
-export default ChangeFontBtn
+export default ChangeFontBtn;

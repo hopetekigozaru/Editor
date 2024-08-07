@@ -56,7 +56,6 @@ const ChangeColorBtnMb = ({ canvas, clickInput, saveState, setShowPicker, colorP
         <button className='w-[1.5rem] h-[1.5rem] rounded-full border-2 border-solid border-gray-300' onClick={() => handleColorChange('#eab308')}>
           <div className='bg-yellow-500 *:w-full h-full rounded-full'></div>
         </button>
-        {/* TODO スマホだとカラーパレットが表示されない */}
         <div>
           <button type='button' onClick={() => setShowPicker(true)} className='w-[1.5rem] h-[1.5rem] rounded-full border-2 border-solid border-gray-300'>
             <div className={`w-full h-full rounded-full`} style={{ background: 'linear-gradient(to right, #f56565, #a78bfa, #3b82f6)' }} ></div>

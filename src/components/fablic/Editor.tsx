@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BubbleMenu from '@/components/fablic/BubbleMenu/BubbleMenu';
 import Menu from '@/components/fablic/fixedMenu/Menu';
 import ExpansionBtns from './ExpansionBtns/ExpansionBtns';
@@ -7,7 +7,7 @@ import RedoBtn from './fixedMenu/defaultMenu/RedoBtn';
 import UndoBtn from './fixedMenu/defaultMenu/UndoBtn';
 import { useEditor } from '@/hooks/fabric/useEditor';
 import { EditorProps } from '@/type/fabricType';
-import { Audio, Grid, Oval } from 'react-loader-spinner';
+import {  Oval } from 'react-loader-spinner';
 import { useTheme } from '@mui/material';
 
 const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
@@ -39,7 +39,8 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
     addToStack,
     restoreGridProperties,
     loading,
-    setLoading
+    setLoading,
+    size
   } = useEditor(keep, aspectRatio)
 
   return (
@@ -59,9 +60,9 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
         </div>
       }
       <div className={`w-full ${isMobile ? 'h-[50vh]' : 'h-[75vh]'} flex justify-center items-center relative`}>
-        <div className={`${isMobile ? 'h-fit w-full' : 'h-[70%] w-fit flex'} fixed`}>
+        <div className={` fixed flex ${isMobile ? 'h-fit w-full flex-col items-center' : 'h-[70%] w-fit'}`}>
 
-          <div ref={containerRef} className="border border-solid border-black">
+          <div ref={containerRef} className={` ${isMobile ? size : 'w-full'} border border-solid border-black`}>
             <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
           </div>
           <BubbleMenu
@@ -96,7 +97,7 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
             restoreGridProperties={restoreGridProperties}
             setLoading={setLoading}
           />
-          <div className={`${isMobile ? 'mt-3 justify-between' : 'h-full items-end'} flex pl-1`}>
+          <div className={`${isMobile ? 'mt-3 justify-between w-full' : 'h-full items-end'} flex pl-1`}>
             {isMobile &&
               <div className='flex'>
                 <div className={`${undoStack.length === 0 ? 'bg-gray-500' : 'bg-primary'} p-2`}>

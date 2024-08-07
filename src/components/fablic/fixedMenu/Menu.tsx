@@ -112,7 +112,6 @@ const Menu = ({
       const activeObj = canvas.getActiveObject()
 
       if (activeObj?.type === 'textbox') {
-        console.log(1)
         setIsTextMenu(true)
       }
       if (e.selected) {
@@ -121,6 +120,7 @@ const Menu = ({
         selectedObject = e.target;
       }
       if (selectedObject) {
+        selectedObject.bringToFront()
         showBubbleMenu();
         setOpen(true)
       }
