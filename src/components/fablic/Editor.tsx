@@ -1,14 +1,16 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import BubbleMenu from '@/components/fablic/bubbleMenu/BubbleMenu';
+
 import Menu from '@/components/fablic/fixedMenu/Menu';
-import ExpansionBtns from './expansionBtns/ExpansionBtns';
+
 import RedoBtn from './fixedMenu/defaultMenu/RedoBtn';
 import UndoBtn from './fixedMenu/defaultMenu/UndoBtn';
 import { useEditor } from '@/hooks/fabric/useEditor';
 import { EditorProps } from '@/type/fabricType';
 import {  Oval } from 'react-loader-spinner';
 import { useTheme } from '@mui/material';
+import BubbleMenu from './bubbleMenu/BubbleMenu';
+import ExpansionBtns from './expansionBtns/ExpansionBtns';
 
 const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
   const theme = useTheme().palette
