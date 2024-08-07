@@ -9,8 +9,9 @@ import { useEditor } from '@/hooks/fabric/useEditor';
 import { EditorProps } from '@/type/fabricType';
 import {  Oval } from 'react-loader-spinner';
 import { useTheme } from '@mui/material';
-import BubbleMenu from './bubbleMenu/BubbleMenu';
+
 import ExpansionBtns from './expansionBtns/ExpansionBtns';
+import BubbleMenu from './bubbleMenu/BubbleMenu';
 
 const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
   const theme = useTheme().palette
