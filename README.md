@@ -1,12 +1,11 @@
 ## 使用技術一覧
 
-[![NEXT.js](https://img.shields.io/badge/NEXT-black?style=for-the-badge&logo=NEXT.js)](https://nextjs.org/) [![SUPABASE](https://img.shields.io/badge/SUPABASE-black?style=for-the-badge&logo=SUPABASE)](https://supabase.com/) [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=REACT)](https://ja.react.dev/) [![Tailwind](https://img.shields.io/badge/Tailwindcss-black?style=for-the-badge&logo=Tailwindcss)](https://tailwindcss.com/)
+[![NEXT.js](https://img.shields.io/badge/NEXT-black?style=for-the-badge&logo=NEXT.js)](https://nextjs.org/) [![SUPABASE](https://img.shields.io/badge/SUPABASE-black?style=for-the-badge&logo=SUPABASE)](https://supabase.com/) [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=REACT) ](https://ja.react.dev/)[![Tailwind](https://img.shields.io/badge/Tailwindcss-black?style=for-the-badge&logo=Tailwindcss)](https://tailwindcss.com/)
 ## 目次
 
 1. [プロジェクトについて](#プロジェクトについて)
 2. [環境](#環境)
-3. [ディレクトリ構成](#ディレクトリ構成)
-4. [開発環境構築](#開発環境構築)
+3. [開発環境構築](#開発環境構築)
 
 # Editor
 
@@ -29,62 +28,6 @@
 
 その他のパッケージのバージョンは package.json を参照してください
 
-
-## ディレクトリ構成
-
-<!-- Treeコマンドを使ってディレクトリ構成を記載 -->
-
-❯ tree -a -I "node_modules|.next|.git" -d
-.
-├── .env.example
-├── .env.local
-├── .eslintrc.json
-├── .gitignore
-├── README.md
-├── next-env.d.ts
-├── next.config.mjs
-├── package-lock.json
-├── package.json
-├── postcss.config.mjs
-├── tailwind.config.ts
-├── tsconfig.json
-├── public
-│   └── images
-└── src
-    ├── app
-    │   ├── (auth)
-    │   │   ├── dashboard
-    │   │   │   └── [page_index]
-    │   │   ├── edit
-    │   │   └── register
-    │   ├── (login)
-    │   │   └── signup
-    │   │       └── pre_register
-    │   └── api
-    │       ├── delete
-    │       ├── deleteImage
-    │       ├── getKeeps
-    │       ├── imageUpload
-    │       ├── register
-    │       ├── svg
-    │       │   └── register
-    │       └── update
-    ├── components
-    │   ├── Auth
-    │   ├── fablic
-    │   │   ├── BubbleMenu
-    │   │   ├── ExpansionBtns
-    │   │   └── fixedMenu
-    │   │       ├── FontSizeMenu
-    │   │       ├── defaultMenu
-    │   │       └── textMenu
-    │   └── list
-    ├── hooks
-    │   ├── Auth
-    │   └── fabric
-    ├── lib
-    │   └── theme
-    └── type
 
 
 ## 開発環境構築
