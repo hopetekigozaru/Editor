@@ -1,4 +1,4 @@
-import Singup from "@/components/Auth/Singup"
+import Singup from "@/components/auth/Singup"
 
 const singupPage = () => {
 return(

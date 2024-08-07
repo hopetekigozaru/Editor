@@ -2,11 +2,12 @@ import React, { useEffect, useState, MouseEvent, useRef } from 'react';
 import { fabric } from 'fabric';
 import DefaultMenu from './defaultMenu/DefaultMenu';
 import TextMenu from './textMenu/TextMenu';
-import FontSizeMenu from './FontSizeMenu/FontSizeMenu';
+
 import { Box, CssBaseline, Drawer, styled, SwipeableDrawer, useTheme } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { Global } from '@emotion/react';
 import { MenuProps } from '@/type/fabricType';
+import FontSizeMenu from './fontSizeMenu/FontSizeMenu';
 
 const Root = styled('div')(({ theme }) => ({
   // height: '50%',
@@ -113,6 +114,7 @@ const Menu = ({
 
       if (activeObj?.type === 'textbox') {
         setIsTextMenu(true)
+        setOpen(true)
       }
       if (e.selected) {
         selectedObject = e.selected[0];
@@ -122,7 +124,6 @@ const Menu = ({
       if (selectedObject) {
         selectedObject.bringToFront()
         showBubbleMenu();
-        setOpen(true)
       }
     }
   };

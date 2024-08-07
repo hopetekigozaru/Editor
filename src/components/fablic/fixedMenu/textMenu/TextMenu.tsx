@@ -4,16 +4,16 @@ import ChangeColorBtn from './ChangeColorBtn';
 import ChangeFontSizeBtn from './ChangeFontSizeBtn';
 import ChangeFontBtn from './ChangeFontBtn';
 import ChangeColorBtnMb from './ChangeColorBtnMb';
-import ChangeFontSizeSliderMb from '../FontSizeMenu/FontSizeSliderMb';
+
 import ChangeFontBtnMb from './ChangeFontBtnMb';
 import { TextMenuProps } from '@/type/fabricType';
 import { ColorPicker, IColor, useColor } from 'react-color-palette';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ChangeFontSizeSliderMb from '../fontSizeMenu/FontSizeSliderMb';
 
 const TextMenu = ({ canvas, saveState, clickInput, setIsFontSize, isMobile }: TextMenuProps) => {
   const [showPicker, setShowPicker] = useState<boolean>(false)
   const [colorPick, setColorPick] = useColor(canvas?.getActiveObject()?.get('fill') as string)
-
   const handleColorPicker = (e: IColor) => {
     setColorPick(e)
   }

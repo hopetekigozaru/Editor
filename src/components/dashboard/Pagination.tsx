@@ -25,7 +25,7 @@ const Pagination = ({ pageSize, totalKeeps, currentPage }: PaginationProps) => {
       <Button onClick={handlePrevPage} color="secondary" disabled={currentPage <= 1}>
         <p className="text-xl font-bold">＜</p>
       </Button>
-      <p className="text-xl text-primary font-bold mx-5">{currentPage}</p>
+      <p className="text-xl text-primary font-bold mx-5 flex items-center">{currentPage}</p>
       <Button onClick={handleNextPage} color="secondary" disabled={totalKeeps <= pageSize || currentPage * pageSize >= totalKeeps}>
       <p className="text-xl font-bold">＞</p>
       </Button>

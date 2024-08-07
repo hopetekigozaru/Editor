@@ -1,4 +1,4 @@
-import Dashboard from "@/components/list/Dashboard";
+import Dashboard from "@/components/dashboard/Dashboard";
 
 
 interface DashBoardProps {
