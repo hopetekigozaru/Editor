@@ -1,6 +1,8 @@
 ## 使用技術一覧
-
-[![NEXT.js](https://img.shields.io/badge/NEXT-black?style=for-the-badge&logo=NEXT.js)](https://nextjs.org/) [![SUPABASE](https://img.shields.io/badge/SUPABASE-black?style=for-the-badge&logo=SUPABASE)](https://supabase.com/) [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=REACT)](https://ja.react.dev/) [![Tailwind](https://img.shields.io/badge/Tailwindcss-black?style=for-the-badge&logo=Tailwindcss)](https://tailwindcss.com/)
+### 言語/フレームワーク
+[![NEXT.js](https://img.shields.io/badge/NEXT-black?style=for-the-badge&logo=NEXT.js)](https://nextjs.org/) [![SUPABASE](https://img.shields.io/badge/SUPABASE-black?style=for-the-badge&logo=SUPABASE)](https://supabase.com/) [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=REACT)](https://ja.react.dev/)
+### スタイル
+[![Tailwind](https://img.shields.io/badge/Tailwindcss-black?style=for-the-badge&logo=Tailwindcss)](https://tailwindcss.com/) [![MUI](https://img.shields.io/badge/MUI-007FFF?style=for-the-badge&logo=mui&logoColor=white)](https://mui.com/)
 ## 目次
 
 1. [プロジェクトについて](#プロジェクトについて)
@@ -59,3 +61,19 @@ http://localhost:3000 にアクセスできるか確認
 | ---------------------- | ----------------------------------------- | ----------------------------------|
 | NEXT_PUBLIC_SUPABASE_URL    | SUPABASEで発行されるURL | - |
 | NEXT_PUBLIC_SUPABASE_ANON_KEY         | SUPABASEで発行される秘密鍵   | - |
+
+
+## テーマについて
+テーマは
+./src/lib/theme/mainTheme.ts
+で設定
+```javascript
+const colors = {
+  primary: '#5eae53',
+  secondary: '#8dc686',
+  primaryDark:'#5eae53',
+  secondaryDark:'#8dc686',
+  accent: '#8dc686'
+};
+```
+この変数のカラーコードを変えることで全体のテーマを変更
