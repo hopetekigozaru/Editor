@@ -113,6 +113,7 @@ const Menu = ({
 
       if (activeObj?.type === 'textbox') {
         setIsTextMenu(true)
+        setOpen(true)
       }
       if (e.selected) {
         selectedObject = e.selected[0];
@@ -122,7 +123,6 @@ const Menu = ({
       if (selectedObject) {
         selectedObject.bringToFront()
         showBubbleMenu();
-        setOpen(true)
       }
     }
   };

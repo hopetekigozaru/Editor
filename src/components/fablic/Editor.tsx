@@ -1,8 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import BubbleMenu from '@/components/fablic/BubbleMenu/BubbleMenu';
+import BubbleMenu from '@/components/fablic/bubbleMenu/BubbleMenu';
 import Menu from '@/components/fablic/fixedMenu/Menu';
-import ExpansionBtns from './ExpansionBtns/ExpansionBtns';
+import ExpansionBtns from './expansionBtns/ExpansionBtns';
 import RedoBtn from './fixedMenu/defaultMenu/RedoBtn';
 import UndoBtn from './fixedMenu/defaultMenu/UndoBtn';
 import { useEditor } from '@/hooks/fabric/useEditor';
