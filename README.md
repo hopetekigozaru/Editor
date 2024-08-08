@@ -37,6 +37,10 @@
 :memo: 自由編集機能を使用した画像作成アプリケーション
 
 ## ディレクトリ構成
+<details>
+
+<summary>開く</summary>
+
 ```
 .
 ├── .env.example
@@ -154,6 +158,8 @@
 ├── tailwind.config.ts
 └── tsconfig.json
 ```
+
+</details>
 
 ## 環境
 
@@ -315,7 +321,8 @@ const colors = {
 
 
 
->[keep_uuid]には格納されている[テーブル](#keepsテーブル)のuuidが入る
+>[!IMPORTANT]
+>[keep_uuid]には格納されている[テーブル](#keepsテーブル)のuuidが入る</br>
 >[image_uuid]には画像を識別する一意なuuidが入る
 
 
