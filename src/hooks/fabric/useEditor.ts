@@ -99,7 +99,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
           obj as fabric.Object
           const scaleX = canvas.getWidth() / keep.width
           const scaleY = canvas.getHeight() / keep.height
-          console.log(obj.scaleX)
+
           obj.set({
             borderColor: theme.palette.secondary.main,  // 枠線の色
             cornerColor: theme.palette.secondary.main,  // コーナーの色
