@@ -13,8 +13,6 @@ export async function POST(req: NextRequest) {
         {
           fabric_object: body.json,
           title: body.title,
-          width: body.width,
-          height: body.height,
           svg: body.svg
         }
       ]).eq('uuid', body.uuid);
