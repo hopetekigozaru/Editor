@@ -35,7 +35,6 @@ const Dashboard = ({ currentPage }: { currentPage: number }) => {
       }
       const json = await res.json();
       if(json.keeps.length == 0) router.push('/dashboard/1')
-        console.log(1)
 
       setKeepObject(json);
     } catch (error) {

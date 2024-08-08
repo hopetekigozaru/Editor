@@ -65,7 +65,7 @@ const Editor: React.FC<EditorProps> = ({ aspectRatio, keep }) => {
       <div className={`w-full ${isMobile ? 'h-[50vh]' : 'h-[75vh]'} flex justify-center items-center relative`}>
         <div className={` fixed flex ${isMobile ? 'h-fit w-full flex-col items-center' : 'h-[70%] w-fit'}`}>
 
-          <div ref={containerRef} className={` ${isMobile ? size : 'w-full'} border border-solid border-black`}>
+          <div ref={containerRef} className={`border border-solid border-black`} style={isMobile ? size! :{width: "100%"}}>
             <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
           </div>
           <BubbleMenu

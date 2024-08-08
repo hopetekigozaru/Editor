@@ -28,7 +28,6 @@ const UndoBtn = ({ canvas, undoStack, setUndoStack, setRedoStack, isMobile, addT
           }
         });
 
-        console.log(undoStack)
         canvas.renderAll();
       });
     }
