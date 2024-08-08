@@ -168,7 +168,7 @@
 | SUPABASE         | -         |
 
 
-==:bulb: その他のパッケージのバージョンは package.json を参照してください==
+:bulb: その他のパッケージのバージョンは package.json を参照してください
 
 
 
@@ -314,10 +314,10 @@ const colors = {
 ```
 
 
-:::info
-[keep_uuid]には格納されている[テーブル](#keepsテーブル)のuuidが入る
-[image_uuid]には画像を識別する一意なuuidが入る
-:::
+
+>[keep_uuid]には格納されている[テーブル](#keepsテーブル)のuuidが入る
+>[image_uuid]には画像を識別する一意なuuidが入る
+
 
 ---
 
