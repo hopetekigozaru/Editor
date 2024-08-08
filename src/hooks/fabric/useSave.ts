@@ -44,8 +44,6 @@ const useSave = (canvas: fabric.Canvas | null, keep: keep | null, gridLines: fab
               uuid: uuid,
               title: title,
               json: json,
-              width: width,
-              height: height,
               svg: svgUrl
             });
 
@@ -77,7 +75,6 @@ const useSave = (canvas: fabric.Canvas | null, keep: keep | null, gridLines: fab
 
           if (res && res.status === 200) {
             router.replace('/dashboard/1')
-            // router.push('/dashboard/1');
           } else {
             throw new Error(`Failed to save canvas data: ${res ? res.status : 'unknown error'}`);
           }
