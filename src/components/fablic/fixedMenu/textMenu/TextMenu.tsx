@@ -4,7 +4,6 @@ import ChangeColorBtn from './ChangeColorBtn';
 import ChangeFontSizeBtn from './ChangeFontSizeBtn';
 import ChangeFontBtn from './ChangeFontBtn';
 import ChangeColorBtnMb from './ChangeColorBtnMb';
-
 import ChangeFontBtnMb from './ChangeFontBtnMb';
 import { TextMenuProps } from '@/type/fabricType';
 import { ColorPicker, IColor, useColor } from 'react-color-palette';
