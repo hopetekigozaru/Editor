@@ -48,19 +48,13 @@ export const useInitCanvas = (aspectRatio: number) => {
     if (containerRef.current && windowSize.windowWidth && windowSize.windowHeight) {
       if (isMobile) {
         if (aspectRatio > 1) {
-          console.log(aspectRatio)
+
           const offsetWidth = containerRef.current.clientWidth;
           const offsetHeight = offsetWidth / aspectRatio;
 
           setCanvasHeight(offsetHeight);
           setCanvasWidth(offsetWidth);
-        } else if (aspectRatio === 1) {
-          const offsetWidth = containerRef.current.clientWidth;
-          const offsetHeight = offsetWidth / aspectRatio;
-
-          setCanvasHeight(offsetHeight);
-          setCanvasWidth(offsetWidth);
-        } else {
+        }  else {
           const offsetHeight = containerRef.current.offsetHeight;
           const offsetWidth = offsetHeight * aspectRatio;
 
@@ -75,7 +69,7 @@ export const useInitCanvas = (aspectRatio: number) => {
         setCanvasWidth(offsetWidth);
       }
     }
-  }, [containerRef, windowSize]);
+  }, [containerRef, windowSize,aspectRatio,isMobile]);
 
   // fabricキャンバス初期化
   useEffect(() => {

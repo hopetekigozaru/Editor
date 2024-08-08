@@ -1,6 +1,6 @@
 'use client'
 import { useTheme } from '@mui/material';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 import { fabric } from 'fabric-with-gestures';
 import { useEvent } from './useEvent';
 import { useInitCanvas } from './useInitCanvas';
@@ -14,7 +14,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
   const [redoStack, setRedoStack] = useState<string[]>([]);
   const [continuous, setContinuous] = useState<boolean>(false);
   const [loading,setLoading] = useState<string | null>(null)
-  const [size,setSize] = useState<string>("")
+  const [size,setSize] = useState<CSSProperties | null>()
   const theme = useTheme()
   const MAX_HISTORY = 50; // 履歴の最大数
   const {
@@ -43,13 +43,11 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
 
   useEffect(() => {
     if(aspectRatio > 1){
-      setSize("w-full")
-    } else if(aspectRatio === 1) {
-      setSize("w-[90%]")
-    } else {
-      setSize("h-[40vh]")
+      setSize({width: '100%'})
+    }else {
+      setSize({height: '40vh'})
     }
-  },[])
+  },[aspectRatio])
 
   /**
    * グリッドのプロパティを復元する関数

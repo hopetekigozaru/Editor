@@ -250,7 +250,7 @@ export const useEvent = (canvas: fabric.Canvas | null, isMobile: boolean) => {
     obj.setCoords();
     canvas.renderAll();
 
-    console.log(`Max Angle: ${maxAngle}, New Angle: ${newAngle}`);
+    // console.log(`Max Angle: ${maxAngle}, New Angle: ${newAngle}`);
 };
 
 
