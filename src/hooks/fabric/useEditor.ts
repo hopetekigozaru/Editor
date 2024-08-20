@@ -103,11 +103,10 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
       // JSONデータを使用してキャンバスを復元
       canvas.loadFromJSON(keep!.fabric_object, async () => {
         canvas.forEachObject(obj => {
-          obj as fabric.Object;
-          const scaleX = canvas.getWidth() / keep.width;
-          const scaleY = canvas.getHeight() / keep.height;
+          obj as fabric.Object
+          const scaleX = canvas.getWidth() / keep.width
+          const scaleY = canvas.getHeight() / keep.height
 
-          // オブジェクトのプロパティを設定
           obj.set({
             borderColor: theme.palette.secondary.main,  // 枠線の色
             cornerColor: theme.palette.secondary.main,  // コーナーの色
