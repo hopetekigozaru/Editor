@@ -7,16 +7,18 @@ import { useInitCanvas } from './useInitCanvas';
 import { keep } from '@/type/fabricType';
 
 export const useEditor = (keep: keep | null, aspectRatio: number) => {
-  const bubbleRef = useRef<HTMLDivElement>(null);
+  const bubbleRef = useRef<HTMLDivElement>(null); // バブルメニューの参照
   const [bubbleMenuPosition, setBubbleMenuPosition] = useState<{ left: number | undefined; top: number | undefined }>({ left: 0, top: 0 });
-  const [selectObject, setSelectObject] = useState<boolean>(false);
-  const [undoStack, setUndoStack] = useState<string[]>([]);
-  const [redoStack, setRedoStack] = useState<string[]>([]);
-  const [continuous, setContinuous] = useState<boolean>(false);
-  const [loading,setLoading] = useState<string | null>(null)
-  const [size,setSize] = useState<CSSProperties | null>()
-  const theme = useTheme()
+  const [selectObject, setSelectObject] = useState<boolean>(false); // オブジェクト選択状態
+  const [undoStack, setUndoStack] = useState<string[]>([]); // Undo スタック
+  const [redoStack, setRedoStack] = useState<string[]>([]); // Redo スタック
+  const [continuous, setContinuous] = useState<boolean>(false); // 継続的な操作状態
+  const [loading, setLoading] = useState<string | null>(null); // ローディング状態
+  const [size, setSize] = useState<CSSProperties | null>(); // キャンバスのサイズ
+  const theme = useTheme(); // テーマ設定
   const MAX_HISTORY = 50; // 履歴の最大数
+
+  // キャンバスの初期化と関連情報の取得
   const {
     canvas,
     isMobile,
@@ -27,8 +29,9 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
     drawGrid,
     setGridLines,
     gridLines
-  } = useInitCanvas(aspectRatio)
+  } = useInitCanvas(aspectRatio);
 
+  // イベントハンドラを取得
   const {
     handleObjectMoving,
     handleObjectScaling,
@@ -38,23 +41,25 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
     handleSelectionClear,
     handleMouseDown,
     constrainViewport,
-  } = useEvent(canvas, isMobile)
+  } = useEvent(canvas, isMobile);
 
-
+  // アスペクト比に応じたキャンバスサイズの設定
   useEffect(() => {
-    if(aspectRatio > 1){
-      setSize({width: '100%'})
-    }else {
-      setSize({height: '40vh'})
+    if (aspectRatio > 1) {
+      setSize({ width: '100%' });
+    } else {
+      setSize({ height: '40vh' });
     }
-  },[aspectRatio])
+  }, [aspectRatio]);
 
   /**
-   * グリッドのプロパティを復元する関数
-   * @param canvas キャンバスオブジェクト
+   * グリッドのプロパティを復元する関数です。
+   * @param canvas - fabric.Canvas オブジェクト
    */
   const restoreGridProperties = (canvas: fabric.Canvas) => {
+    // キャンバス内の全オブジェクトに対して処理を行う
     canvas.getObjects().forEach((obj) => {
+      // グリッドオブジェクトの場合、選択不可およびイベント無効に設定
       if ((obj as any).isGrid) {
         obj.set({ selectable: false, evented: false });
       }
@@ -62,44 +67,47 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
   };
 
   /**
-   * スタックに追加する関数（最大履歴数を考慮）
-   * @param stack 現在の履歴
-   * @param item 追加する履歴
+   * スタックに履歴を追加する関数です。
+   * 最大履歴数を超えた場合、古い履歴を削除します。
+   * @param stack - 現在の履歴
+   * @param item - 追加する履歴
    * @returns 新しい履歴
    */
   const addToStack = (stack: string[], item: string) => {
+    // 新しい履歴を追加し、最大履歴数に制限
     const newStack = [...stack, item];
     return newStack.slice(-MAX_HISTORY);
   };
 
-
   /**
-   * 状態を保存する関数
+   * 現在のキャンバスの状態を保存する関数です。
+   * 直前の状態と比較して変更があった場合のみ保存します。
    */
   const saveState = useCallback(() => {
     if (canvas) {
       const currentState = JSON.stringify(canvas.toJSON(['isGrid']));
-      // 直前の状態と比較して変更がある場合のみ保存
+      // 直前の状態と異なる場合のみ保存
       if (undoStack.length === 0 || currentState !== undoStack[undoStack.length - 1]) {
         setUndoStack(prevStack => addToStack(prevStack, currentState));
-        setRedoStack([]); // Redoスタックをクリア
+        setRedoStack([]); // Redo スタックをクリア
       }
     }
   }, [canvas, undoStack]);
 
   /**
-   * JsonObject復元関数
-   * @param canvas
+   * JSONデータを用いてキャンバスの状態を復元する関数です。
+   * @param canvas - fabric.Canvas オブジェクト
    */
   const loadJson = async (canvas: fabric.Canvas) => {
     if (keep) {
-      // Jsonをfabricオブジェクトに復元
+      // JSONデータを使用してキャンバスを復元
       canvas.loadFromJSON(keep!.fabric_object, async () => {
         canvas.forEachObject(obj => {
-          obj as fabric.Object
-          const scaleX = canvas.getWidth() / keep.width
-          const scaleY = canvas.getHeight() / keep.height
-          console.log(obj.scaleX)
+          obj as fabric.Object;
+          const scaleX = canvas.getWidth() / keep.width;
+          const scaleY = canvas.getHeight() / keep.height;
+
+          // オブジェクトのプロパティを設定
           obj.set({
             borderColor: theme.palette.secondary.main,  // 枠線の色
             cornerColor: theme.palette.secondary.main,  // コーナーの色
@@ -112,6 +120,7 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
             top: obj.top! * scaleY
           });
 
+          // カスタムコントロールを設定
           const customControls = {
             tl: fabric.Object.prototype.controls.tl, // 左上
             tr: fabric.Object.prototype.controls.tr, // 右上
@@ -121,37 +130,42 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
           };
 
           obj.controls = customControls;
-
         });
-        drawGrid(canvas)
-      })
-      canvas.renderAll.bind(canvas)
+
+        // グリッドを描画
+        drawGrid(canvas);
+      });
+
+      // キャンバスを再描画するバインド関数
+      canvas.renderAll.bind(canvas);
     } else {
-      await drawGrid(canvas)
+      // グリッドを描画
+      await drawGrid(canvas);
     }
 
-    // TODO 非同期の処理がうまくできないので一旦setTimeoutにしています
+    // TODO: 非同期処理の問題を回避するため、setTimeoutを使用
     setTimeout(() => {
-      saveState(); // Save initial state
+      saveState(); // 初期状態を保存
     }, 500);
-  }
+  };
 
   useEffect(() => {
     if (canvas) {
-      loadJson(canvas)
+      // キャンバスの初期設定とイベントリスナーの追加
+      loadJson(canvas);
       canvas.on('object:modified', saveState);
       canvas.on('object:moving', handleObjectMoving);
       canvas.on('object:scaling', handleObjectScaling);
       canvas.on('object:added', handleObjectAdded);
-      canvas.on('selection:cleared', handleSelectionClear)
+      canvas.on('selection:cleared', handleSelectionClear);
       canvas.on('mouse:move', handleMouseMove);
       canvas.on('mouse:up', handleMouseUp);
       canvas.on('mouse:down', handleMouseDown);
 
-
+      // クリーンアップ処理: イベントリスナーの削除
       return () => {
-        canvas.off('object:modified', saveState); // Cleanup
-        canvas.off('selection:cleared', handleSelectionClear)
+        canvas.off('object:modified', saveState);
+        canvas.off('selection:cleared', handleSelectionClear);
         canvas.off('mouse:move', handleMouseMove);
         canvas.off('mouse:up', handleMouseUp);
         canvas.off('mouse:down', handleMouseDown);
@@ -191,6 +205,5 @@ export const useEditor = (keep: keep | null, aspectRatio: number) => {
     loading,
     setLoading,
     size
-  }
-
+  };
 }
